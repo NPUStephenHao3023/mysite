@@ -31,8 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'assnrule',
-    'rhythm',
+    'assnrule.apps.AssnruleConfig',
+    'rhythm.apps.RhythmConfig',
     'polls.apps.PollsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
