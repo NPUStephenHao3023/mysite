@@ -10,16 +10,18 @@ import tkinter
 import numpy as np
 from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
-import equal_grid
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.backends.backend_tkagg import NavigationToolbar2TkAgg
+from mpl_toolkits.mplot3d import Axes3D
+
+
+import equal_grid
 import kdtree
 import equal_3d
-from mpl_toolkits.mplot3d import Axes3D
 import kdtree_3
 import hebing
 import time_space
-import sapce_time
+import space_time
 #matplotlib.use('TkAgg')
 
 
@@ -65,23 +67,23 @@ def func_menu():
     text.insert(tkinter.INSERT, str)
 def updata():
     print(r.get())  
-    if r.get()==1:
-        data = np.array(pd.read_csv('.\\dataset\\dataset1.csv',header=None) )
-        print(data[:5,:])
-    if r.get()==2:
-        data = np.array(pd.read_csv('.\\dataset\\dataset2.csv',header=None) )
-        print(data[:5,:])
-    return data
+    # if r.get()==1:
+    #     data = np.array(pd.read_csv('.\\dataset\\dataset1.csv',header=None) )
+    #     print(data[:5,:])
+    # if r.get()==2:
+    #     data = np.array(pd.read_csv('.\\dataset\\dataset2.csv',header=None) )
+    #     print(data[:5,:])
+    # return data
 def updataff():
     print(ff.get())  
 
 def draw_fig2():
     # 电视框
-    '''
-    tv = Image.open("tv.png")
-    tkImage = ImageTk.PhotoImage(image=tv)
-    label = tkinter.Label(root, image=tkImage)
-    label.place(x=300,y=100,)'''
+    # '''
+    # tv = Image.open("tv.png")
+    # tkImage = ImageTk.PhotoImage(image=tv)
+    # label = tkinter.Label(root, image=tkImage)
+    # label.place(x=300,y=100,)'''
     #画出网格图
     if r.get()==1:
         df =  np.array(pd.read_csv('.\\dataset\\dataset1.csv',header=None) )
@@ -94,7 +96,7 @@ def draw_fig2():
     toolbar.update()
     toolbar.place(x=300,y=70)
     if ff.get()==1:
-        
+        # sp 代表参数
         sp = int(f11.get() )
         ax = fig.add_subplot(111)
         equal_grid.equal_grid(ax,df,sp)
@@ -180,7 +182,7 @@ def draw_fig2():
     if ff.get()==7:
         sp1 = int(f71.get())
         sp2 = int(f72.get())
-        grid_num = sapce_time.draw_f7(df,sp1,sp2,fig)
+        grid_num = space_time.draw_f7(df,sp1,sp2,fig)
         hp.set(str(calc_ent(np.array(grid_num))))
         s2.set(str(np.var(grid_num)) )
         guideline3.set(str(np.std(grid_num)))

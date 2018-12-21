@@ -24,7 +24,7 @@ def draw_fig(df,ax,sp):
     #fig = plt.figure()
     #ax = Axes3D(fig)  
     for i in range(sp):
-        print(i)
+        # print(i)
         for j in range(sp):
             for k in range(sp):
                 x = minx + i*xl
@@ -49,7 +49,7 @@ def plot_linear_cube(ax,x, y, z, dx, dy, dz, color='red'):
     ax.plot3D([x, x], [y+dy, y+dy], [z, z+dz], **kwargs)
     ax.plot3D([x+dx, x+dx], [y+dy, y+dy], [z, z+dz], **kwargs)
     ax.plot3D([x+dx, x+dx], [y, y], [z, z+dz], **kwargs)
-    plt.show()
+    # plt.show()
     
 
 def  state_num(df,sp):

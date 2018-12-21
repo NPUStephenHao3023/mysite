@@ -25,5 +25,5 @@ def results(request, method_name, parameter):
 
 def select(request):
     method_name = request.POST['choice']
-    parameter = request.POST['number']
+    parameter = request.POST['argument']
     return HttpResponseRedirect(reverse('rhythm:results', args=(method_name,parameter,)))

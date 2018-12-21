@@ -29,7 +29,7 @@ def xifen(df,xs = 50,ys = 50,zs = 30):
 
     st = np.zeros((xs*ys*zs,12))
     for i in range(xs):
-        print(i)
+        # print(i)
         for j in range(ys):
             #print(j)
             for k in range(zs):
@@ -65,7 +65,7 @@ def  hebing2(df):
     i = 0
     new_id = len(st1)
     while len(st1[st1[:,12]==0])>0:
-        if i%100==0:print(i)
+        # if i%100==0:print(i)
         st2 = st1[st1[:,12]==0] # 未合并的数据集
         if len(st2)==0:break
         minxid = st2[0,6]

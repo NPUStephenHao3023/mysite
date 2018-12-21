@@ -77,7 +77,7 @@ class KDTree:
                     ax.plot3D(*zip(s,e), color=color[cl])   
                 if np.sum(np.abs(s-e)) == h2[1]-h2[0]:
                     ax.plot3D(*zip(s,e), color=color[cl])  
-            plt.show()                 
+            # plt.show()                 
             
         if self.child1 is not None:
             if depth is None:
