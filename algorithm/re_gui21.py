@@ -1,3 +1,4 @@
+import os.path as pwd
 import matplotlib.pyplot as plt
 import mpld3
 import pandas as pd
@@ -27,7 +28,7 @@ def calc_ent(x):
         ent -= p * logp
     return ent
 
-def figure_to_html(dataset_, method_, args):
+def figure_to_img(dataset_, method_, args):
     """dataset_ is the full name of dataset in csv format file,
         method_ is the full name of selected method,
         args is an list of arguments.
@@ -37,41 +38,54 @@ def figure_to_html(dataset_, method_, args):
             "2d_kdtree", "3d_equal_grid", "3d_kdtree", "3d_slice_merge",
             "time_space", "space_time", and of args is like [5] or [4, 10]
     """
+    dirname_ = pwd.dirname(__file__)
+    dataset_path = dirname_ + "\\dataset\\" + dataset_
     # database_ = np.array(pd.read_csv('.\\dataset\\' + dataset_, header=None))
-    database_ = np.array(pd.read_csv('E:\\lenovo\\repos\\mysite\\algorithm\\dataset\\' + dataset_, header=None))
+    database_ = np.array(pd.read_csv(dataset_path, header=None))
     whole_figure = plt.figure()
     extra_information = []
+    img_address = dirname_ + "\\..\\"
     if method_ == "2d_equal_grid":
         parameter_ = args[0]
         subplot_added = whole_figure.add_subplot(1, 1, 1)
         equal_grid.equal_grid(subplot_added, database_, parameter_)
         grid_count = equal_grid.state_grid(database_, parameter_)
+        img_address += method_ + "-" + str(parameter_)
     if method_ == "2d_kdtree":
         parameter_ = args[0]
         subplot_added = whole_figure.add_subplot(1, 1, 1)
         grid_count = kdtree.draw_fig(database_, subplot_added, parameter_)
+        img_address += method_ + "-" + str(parameter_)
     if method_ == "3d_equal_grid":
         parameter_ = args[0]
         subplot_added = Axes3D(whole_figure)
         equal_3d.draw_fig(database_, subplot_added, parameter_)
         grid_count = equal_3d.state_num(database_, parameter_)
+        img_address += method_ + "-" + str(parameter_)        
     if method_ == "3d_kdtree":
         parameter_ = args[0]
         subplot_added = whole_figure.gca(projection='3d')
         grid_count = kdtree_3.draw_fig(database_, parameter_, subplot_added)
+        img_address += method_ + "-" + str(parameter_)
     if method_ == "3d_slice_merge":
+        hebing.xifen(database_,xs = 50,ys = 50,zs = 30)  # slice
+        hebing.hebing2(database_)                        # merge
         parameter_ = args[0]
         hebing.draw_fig(database_, parameter_, whole_figure)
         grid_count = hebing.state_num()
+        img_address += method_ + "-" + str(parameter_)
     if method_ == "time_space":
         parameter_first = args[0]
         parameter_second = args[1]
-        grid_count = time_space.draw_fig(database_, parameter_first, parameter_second, whole_figure)
+        grid_count = time_space.draw_fig(database_, parameter_first,
+                                         parameter_second, whole_figure)
+        img_address += method_ + "-" + str(parameter_first) + "-" + str(parameter_second)
     if method_ == "space_time":
         parameter_first = args[0]
         parameter_second = args[1]
         grid_count = space_time.draw_f7(database_, parameter_first,
-                                         parameter_second, whole_figure)
+                                        parameter_second, whole_figure)
+        img_address += method_ + "-" + str(parameter_first) + "-" + str(parameter_second)
     extra_information.append(str(calc_ent(np.array(grid_count))))
     extra_information.append(str(np.var(grid_count)))
     extra_information.append(str(np.std(grid_count)))
@@ -81,10 +95,14 @@ def figure_to_html(dataset_, method_, args):
     extra_information.append(str(pd.Series(grid_count).skew()))
     extra_information.append(str(pd.Series(grid_count).kurt()))
     extra_information.append(str(len(grid_count)))
-    mpld3.show()
+    # mpld3.show()
     # return mpld3.fig_to_html(whole_figure), extra_information
+    img_address += ".png"
+    whole_figure.savefig(img_address)
+    return img_address, extra_information
 
-def test_figure_to_html():
+
+def test_figure_to_img():
     # html, info = figure_to_html("dataset2.csv", "3d_slice_merge", [1])
     # print(info)
 
@@ -105,5 +123,9 @@ def test_figure_to_html():
     # figure_to_html("dataset2.csv", "3d_slice_merge", [1])
 
     # figure_to_html("dataset2.csv", "time_space", [2, 2])
-    figure_to_html("dataset2.csv", "space_time", [3, 3])
-test_figure_to_html()
+    # figure_to_html("dataset2.csv", "space_time", [3, 3])
+    # img_address, extra_information = figure_to_img("dataset2.csv", "2d_kdtree", [2])
+    img_address = figure_to_img("dataset2.csv", "3d_equal_grid", [5])
+    print(img_address)
+
+test_figure_to_img()
