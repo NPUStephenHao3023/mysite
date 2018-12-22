@@ -3,21 +3,21 @@
  */
 //var myChart = echarts.init(document.getElementById("chart1"));
 $(function () {
-		nav();
-		$("#submit_data").click(function () {
-			myChart.clear();
-			make_chart1();
-		});
-		$("#submit_data1").click(function () {
-			myChart.clear();
-			make_chart2();
-		});
-		$("#submit_data5").click(function () {
-			myChart.clear();
-			make_chart6();
-		});
-	})
-	//导航条点击添加样式
+	nav();
+	$("#submit_data").click(function () {
+		myChart.clear();
+		make_chart1();
+	});
+	$("#submit_data1").click(function () {
+		myChart.clear();
+		make_chart2();
+	});
+	$("#submit_data5").click(function () {
+		myChart.clear();
+		make_chart6();
+	});
+})
+//导航条点击添加样式
 function nav() {
 
 	$(".nav>ul>li").hover(function () {
@@ -27,7 +27,7 @@ function nav() {
 		$(this).find(".li_ul").slideUp("slow");
 	})
 }
-function hiddenall(){
+function hiddenall() {
 	$("#method1").addClass("hide");
 	$("#method2").addClass("hide");
 	$("#method3").addClass("hide");
@@ -38,33 +38,79 @@ function hiddenall(){
 	$("#method7_1").addClass("hide");
 	$("#method7_2").addClass("hide");
 }
-function onchangeradio(id,method){
+// function change_checked_state(id) {
+// 	var $radios =  $('input:radio[name=method]');
+// 	$radios.filter('[value=method1]').prop('checked', false);
+// 	$id.prop('checked', true);
+// }
+function onchangeradio(id, method) {
 	hiddenall();
-	if(method==1){
+	// change_checked_state(id);
+	if (method == 1) {
 		$("#method1").removeClass("hide");
-	}else if(method==2){
+	} else if (method == 2) {
 		$("#method2").removeClass("hide");
-	}else if(method==3){
+	} else if (method == 3) {
 		$("#method3").removeClass("hide");
-	}else if(method==4){
+	} else if (method == 4) {
 		$("#method4").removeClass("hide");
-	}else if(method==5){
+	} else if (method == 5) {
 		$("#method5").removeClass("hide");
-	}else if(method==6){
+	} else if (method == 6) {
 		$("#method6_1").removeClass("hide");
 		$("#method6_2").removeClass("hide");
-	}else if(method==7){
+	} else if (method == 7) {
 		$("#method7_1").removeClass("hide");
 		$("#method7_2").removeClass("hide");
 	}
 }
+function getCookie(name) {
+	var cookieValue = null;
+	if (document.cookie && document.cookie !== '') {
+		var cookies = document.cookie.split(';');
+		for (var i = 0; i < cookies.length; i++) {
+			var cookie = jQuery.trim(cookies[i]);
+			// Does this cookie string begin with the name we want?
+			if (cookie.substring(0, name.length + 1) === (name + '=')) {
+				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				break;
+			}
+		}
+	}
+	return cookieValue;
+}
+function csrfSafeMethod(method) {
+	// these HTTP methods do not require CSRF protection
+	return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
 function sumbit_data() {
+	var csrftoken = getCookie('csrftoken');
+	var formData = {
+		'method': $('input[name=method]:checked').val(),
+		'method1': $('input[name=method1]').val(),
+		'method2': $('input[name=method2]').val(),
+		'method3': $('input[name=method3]').val(),
+		'method4': $('input[name=method4]').val(),
+		'method5': $('input[name=method5]').val(),
+		'method6_1': $('input[name=method6_1]').val(),
+		'method6_2': $('input[name=method6_2]').val(),
+		'method7_1': $('input[name=method7_1]').val(),
+		'method7_2': $('input[name=method7_2]').val(),
+		'dataset': $('input[name=dataset]:checked').val()
+	};
+	$.ajaxSetup({
+		beforeSend: function (xhr, settings) {
+			if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+				xhr.setRequestHeader("X-CSRFToken", csrftoken);
+			}
+		}
+	});
 	$.ajax({
 		//几个参数需要注意一下
 		type: "POST", //方法类型
 		dataType: "json", //预期服务器返回的数据类型
-		url: "demo_test.txt", //url
-		data: $('#form1').serialize(),
+		url: "select/", //url
+		data: formData,
 		success: function (result) {
 			handle(result);
 		},
@@ -75,25 +121,38 @@ function sumbit_data() {
 }
 
 function handle(result) {
+	var image_full_name = result["image_full_name"];
+	var extra_information = jQuery.parseJSON(result["extra_information"]);
+	img_address = "/static/rhythm/img/generated/" + image_full_name
+	$('#final_image').attr('src', img_address);
+	$('#information_entropy').text(extra_information["information_entropy"]);
+	$('#varience').text(extra_information["varience"]);
+	$('#standard_deviation').text(extra_information["standard_deviation"]);
+	$('#mean').text(extra_information["mean"]);
+	$('#max').text(extra_information["max"]);
+	$('#min').text(extra_information["min"]);
+	$('#snew').text(extra_information["snew"]);
+	$('#kurtosis').text(extra_information["kurtosis"]);	
+	$('#len').text(extra_information["len"]);
 	console.log(result); //打印服务端返回的数据(调试用)
-	alert(result.employee[0].firstName);
-	var isAutoSend = document.getElementsByName("method");
-	for (var i = 0; i < isAutoSend.length; i++) {
-		if (isAutoSend[i].checked == true) {
-			if(i==0){
-				make_chart1();
-			}else if(i==1){
-				make_chart2();
-			}else if(i==6){
-				make_chart6();
-			}
-		}
-	}
+	// alert(result.employee[0].firstName);
+	// var isAutoSend = document.getElementsByName("method");
+	// for (var i = 0; i < isAutoSend.length; i++) {
+	// 	if (isAutoSend[i].checked == true) {
+	// 		if (i == 0) {
+	// 			make_chart1();
+	// 		} else if (i == 1) {
+	// 			make_chart2();
+	// 		} else if (i == 6) {
+	// 			make_chart6();
+	// 		}
+	// 	}
+	// }
 
-//	alert(result.employee[0].firstName);
-	if (result.resultCode == 200) {
-		alert("SUCCESS");
-	};
+	// //	alert(result.employee[0].firstName);
+	// if (result.resultCode == 200) {
+	// 	alert("SUCCESS");
+	// };
 }
 
 function make_chart1() {
@@ -258,7 +317,7 @@ function make_chart6() {
 			}
 		}
 	});
-series.push({
+	series.push({
 		type: 'bar3D',
 		barMaxWidth: '0.1',
 		data: generateData(),
