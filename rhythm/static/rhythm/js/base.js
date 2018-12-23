@@ -2,6 +2,7 @@
  * Created by 30947 on 2018/7/20.
  */
 //var myChart = echarts.init(document.getElementById("chart1"));
+var submitted=false;//submitted变量用于保证加载过程中不能重复提交
 $(function () {
 	nav();
 	$("#submit_data").click(function () {
@@ -19,13 +20,25 @@ $(function () {
 })
 //导航条点击添加样式
 function nav() {
-
+	initdata();
 	$(".nav>ul>li").hover(function () {
 		$(this).find(".li_ul").stop(true, true).slideDown("slow");
 		stop();
 	}, function () {
 		$(this).find(".li_ul").slideUp("slow");
 	})
+}
+//将数据初始化成默认值
+function initdata(){
+	$('#information_entropy').text('. . .');
+	$('#varience').text('. . .');
+	$('#standard_deviation').text('. . .');
+	$('#mean').text('. . .');
+	$('#max').text('. . .');
+	$('#min').text('. . .');
+	$('#skew').text('. . .');
+	$('#kurtosis').text('. . .');	
+	$('#len').text('. . .');
 }
 function hiddenall() {
 	$("#method1").addClass("hide");
@@ -98,6 +111,31 @@ function sumbit_data() {
 		'method7_2': $('input[name=method7_2]').val(),
 		'dataset': $('input[name=dataset]:checked').val()
 	};
+	//如果正在加载则不能重复提交
+	if(submitted==true){
+		alert("正在加载请耐心等待！");
+		return;
+	}
+	//判断是否选择了方法和数据集
+	var flags= true;
+	if(formData["method"]==undefined && formData["dataset"]==undefined){
+		alert("请选择方法和数据集！");
+		flags=false;
+	}else if(formData["method"]==undefined){
+		alert("请选择想要运行的方法!");
+		flags=false;
+	}else if(formData["dataset"]==undefined){
+		alert("请选择数据集！");
+		flags=false;
+	}
+	if(flags==false){
+		return ;
+	}
+	
+//	console.log(formData);
+	//发送后submited=true，并更换加载图片，表示正在加载。
+	submitted=true;
+	$('#final_image').attr('src', '/static/rhythm/img/loading.gif');
 	$.ajaxSetup({
 		beforeSend: function (xhr, settings) {
 			if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -112,10 +150,14 @@ function sumbit_data() {
 		url: "select/", //url
 		data: formData,
 		success: function (result) {
+			//有返回值
+			submitted=false;
 			handle(result);
 		},
 		error: function () {
 			alert("异常！");
+			submitted=false;
+			$('#final_image').attr('src', '/static/rhythm/img/instruction.png');
 		}
 	});
 }
