@@ -1,12 +1,13 @@
 import os.path as pwd
-import matplotlib.pyplot as plt
-import mpld3
 import pandas as pd
 import numpy as np
 from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.backends.backend_tkagg import NavigationToolbar2TkAgg
 from mpl_toolkits.mplot3d import Axes3D
+# import matplotlib
+# matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
 from . import equal_grid
 from . import kdtree
@@ -16,6 +17,13 @@ from . import hebing
 from . import time_space
 from . import space_time
 
+# import equal_grid
+# import kdtree
+# import equal_3d
+# import kdtree_3
+# import hebing
+# import time_space
+# import space_time
 
 def calc_ent(x):
     """calculating the information entropy
@@ -100,44 +108,17 @@ def figure_to_img(dataset_, method_, args):
         img_name += method_ + "-" + str(parameter_first) + "-" + str(parameter_second)
     img_address += img_name + ".png"
     whole_figure.savefig(img_address)
+    plt.close()
+    # whole_figure.clf()
     extra_information = {
-        "information_entropy": str(calc_ent(np.array(grid_count))),
-        "varience": str(np.var(grid_count)),
-        "standard_deviation": str(np.std(grid_count)),
-        "mean": str(np.mean(grid_count)),
-        "min": str(np.min(grid_count)),
-        "max": str(np.max(grid_count)),
-        "skew": str(pd.Series(grid_count).skew()),
-        "kurtosis": str(pd.Series(grid_count).kurt()),
-        "len": str(len(grid_count)),
+        "information_entropy": str(round(calc_ent(np.array(grid_count)), 2)),
+        "varience": str(round(np.var(grid_count), 2)),
+        "standard_deviation": str(round(np.std(grid_count), 2)),
+        "mean": str(round(np.mean(grid_count), 2)),
+        "min": str(round(np.min(grid_count), 2)),
+        "max": str(round(np.max(grid_count), 2)),
+        "skew": str(round(pd.Series(grid_count).skew(), 2)),
+        "kurtosis": str(round(pd.Series(grid_count).kurt(), 2)),
+        "len": str(round(len(grid_count), 2)),
     }
     return img_name + ".png", extra_information
-
-
-def test_figure_to_img():
-    # html, info = figure_to_html("dataset2.csv", "3d_slice_merge", [1])
-    # print(info)
-
-    # pass
-    # figure_to_html("dataset2.csv", "2d_equal_grid", [5])
-    
-    # pass
-    # figure_to_html("dataset2.csv", "2d_kdtree", [2])
-    # figure_to_html("dataset2.csv", "2d_kdtree", [3])
-
-    # plot.show() in for statement -- in equal_3d.py, line 52
-    # figure_to_html("dataset2.csv", "3d_equal_grid", [2])
-
-    # plot.show() in for statement -- in kdtree_3.py, line 80
-    # figure_to_html("dataset2.csv", "3d_kdtree", [2])
-
-    # merge.csv not found
-    # figure_to_html("dataset2.csv", "3d_slice_merge", [1])
-
-    # figure_to_html("dataset2.csv", "time_space", [2, 2])
-    # figure_to_html("dataset2.csv", "space_time", [3, 3])
-    # img_address, extra_information = figure_to_img("dataset2.csv", "2d_kdtree", [2])
-    img_address = figure_to_img("dataset2.csv", "3d_equal_grid", [5])
-    print(img_address)
-
-# test_figure_to_img()

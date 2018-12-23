@@ -131,8 +131,8 @@ function handle(result) {
 	$('#mean').text(extra_information["mean"]);
 	$('#max').text(extra_information["max"]);
 	$('#min').text(extra_information["min"]);
-	$('#snew').text(extra_information["snew"]);
-	$('#kurtosis').text(extra_information["kurtosis"]);	
+	$('#skew').text(extra_information["skew"]);
+	$('#kurtosis').text(extra_information["kurtosis"]);
 	$('#len').text(extra_information["len"]);
 	console.log(result); //打印服务端返回的数据(调试用)
 	// alert(result.employee[0].firstName);

@@ -18,9 +18,11 @@ def equal_grid(ax,df,sp):
     '''
    
     ax.scatter(df[:,1],df[:,2],s=1)
-    ax.set_xlabel('经度')
-    ax.set_ylabel('维度')
-    ax.set_title('空间等网格划分示意图')
+    ax.set_xlabel('longitude')
+#     ax.set_xlabel('经度')
+    ax.set_ylabel('latitude')
+#     ax.set_ylabel('纬度')
+    ax.set_title('2d_equal_grid')
     x_min = min(df[:,1])
     x_max = max(df[:,1])   
     y_max = max(df[:,2])
@@ -60,6 +62,3 @@ def state_grid(df,sp):
             df3 = df2[df2[:,2]<=(y_min1+rec_wid)]
             grid_num.append(len(df3))
     return grid_num
-    
-    
-    

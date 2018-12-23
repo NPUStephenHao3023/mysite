@@ -99,12 +99,12 @@ def draw_fig(df,sp,ax):
     KDT = KDTree(data,mins=data.min(0),  maxs = data.max(0),i0=None)
     
     #ax.scatter(data[:, 0], data[:, 1],data[:,2],s=5)
-    ax.set_zlabel('时间/s')  
-    ax.set_ylabel('纬度')
-    ax.set_xlabel('经度')    
+    ax.set_zlabel('time/s')  
+    ax.set_ylabel('latitude')
+    ax.set_xlabel('longitude')    
     depth =  sp # 划分深度
     KDT.draw_rectangle(ax, depth)
-    ax.set_title('3dtree划分_depth:'+str(depth))
+    ax.set_title('3dtree_depth:'+str(depth))
     
     split_num = []
     for i in range(len(xaxis)):

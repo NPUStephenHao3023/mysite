@@ -33,10 +33,10 @@ def draw_fig(df,ax,sp):
                 cnum = i*sp *sp +j*sp +k
                 c = cnum%8
                 plot_linear_cube(ax,x, y, z, xl, yl, zl, color=col[c])           
-    ax.set_title('3D等尺度划分可视化')
-    ax.set_xlabel('经度')
-    ax.set_ylabel('纬度')
-    ax.set_zlabel('时间/s')
+    ax.set_title('3d_equal_grid')
+    ax.set_xlabel('longitude')
+    ax.set_ylabel('latitude')
+    ax.set_zlabel('time/s')
 
 
 def plot_linear_cube(ax,x, y, z, dx, dy, dz, color='red'):
