@@ -5,9 +5,11 @@
 
 #import psyco
 #psyco.full()
-import os.path as pwd
 import numpy as np
 import pandas as pd
+import json
+import os.path as pwd
+
 
 def kdtree( data, divide_depth=1 ):
     """
@@ -32,7 +34,7 @@ def kdtree( data, divide_depth=1 ):
     # create root of kd-tree
     idx = np.argsort(data[0,:], kind='mergesort')
     data[:,:] = data[:,idx]
-    splitval = data[0,ndata/2]
+    splitval = data[0,int(ndata/2)]
 
     left_hrect = hrect.copy()
     right_hrect = hrect.copy()
@@ -42,8 +44,8 @@ def kdtree( data, divide_depth=1 ):
     # idx, data, left_hrect, right_hrect, left_nodeptr, right_nodeptr
     tree = [(None, None, left_hrect, right_hrect, None, None)]
     # data, idx, depth, parent, leftbranch
-    stack = [(data[:,:ndata/2], idx[:ndata/2], 1, 0, True),
-             (data[:,ndata/2:], idx[ndata/2:], 1, 0, False)]
+    stack = [(data[:,:int(ndata/2)], idx[:int(ndata/2)], 1, 0, True),
+             (data[:,int(ndata/2):], idx[int(ndata/2):], 1, 0, False)]
 
     # recursively split data in halves using hyper-rectangles:
     while stack:
@@ -63,7 +65,7 @@ def kdtree( data, divide_depth=1 ):
         # insert node in kd-tree
 
         # leaf node?
-        if depth <= divide_depth:
+        if depth >= divide_depth:
         # if ndata <= leafsize:
             _didx = didx.copy()
             _data = data.copy()
@@ -78,9 +80,9 @@ def kdtree( data, divide_depth=1 ):
             data[:,:] = data[:,idx]
             didx = didx[idx]
             nodeptr = len(tree)
-            stack.append((data[:,:ndata/2], didx[:ndata/2], depth+1, nodeptr, True))
-            stack.append((data[:,ndata/2:], didx[ndata/2:], depth+1, nodeptr, False))
-            splitval = data[splitdim,ndata/2]
+            stack.append((data[:,:int(ndata/2)], didx[:int(ndata/2)], depth+1, nodeptr, True))
+            stack.append((data[:,int(ndata/2):], didx[int(ndata/2):], depth+1, nodeptr, False))
+            splitval = data[splitdim,int(ndata/2)]
             if leftbranch:
                 left_hrect = _left_hrect.copy()
                 right_hrect = _left_hrect.copy()
@@ -94,122 +96,140 @@ def kdtree( data, divide_depth=1 ):
 
     return tree
 
-def test_some_functions():
-    """
-    # data = np.array([[2, 1, 3, 4], [5, 6, 7, 8], [0, 1, 11, 12]])
-    # idx = np.argsort(data[0, :], axis=-1, kind='mergesort')
-    # print('argsort result is % s' % idx)
-    # print(data, data.shape)
-    # print('data.min(axis=0) is % s' % data.min(axis=0))
-    # print('data.min(axis=1) is % s' % data.min(axis=1))
-    # print('data.min(axis=-1) is % s' % data.min(axis=-1))
-    # print('data.min(axis=-2) is % s' % data.min(axis=-2))
-    # print('data.max(axis=0) is % s' % data.max(axis=0))
-    # print('data.max(axis=1) is % s' % data.max(axis=1))
-    # print('data.max(axis=-1) is % s' % data.max(axis=-1))
-    # # print(data.max(axis=2))
-    # data_set = [0, 1] if 1 else [1, 2]
-    # print(data_set)
-    # print(np.zeros((2, 2)))
-    # print(data[:, :1], data[:, 1:])
-    """
-    """
-    # i = pd.date_range('2018/4/9', periods=4, freq='1D20min')
-    # ts = pd.DataFrame({'A': [1,2,3,4]}, index=i)
-    # print(ts)
-    """
-    raw_data = {'name': ['Willard Morris', 'Al Jennings', 'Omar Mullins', 'Spencer McDaniel'],
-        'age': [20, 19, 22, 21],
-        'favorite_color': ['blue', 'red', 'yellow', "green"],
-        'grade': [88, 92, 95, 70],
-        'birth_date': ['2014/1/1 10:40:30', '2014/1/1 10:40:30', '2014/1/1 10:40:30', '2014/1/1 10:40:30']}
-    df = pd.DataFrame(raw_data, index = ['Willard Morris', 'Al Jennings', 'Omar Mullins', 'Spencer McDaniel'])
-    # print(pd.to_datetime('1300/01/01 10:40:30', format='%Y/%m/%d', errors='coerce'))
-    df['birth_date'] = pd.to_datetime(df['birth_date'])
-    start_date = '20140101 10'
-    end_date = '2014/01/01 14'
-    mask = (df['birth_date'] >= start_date) & (df['birth_date'] <= end_date)
-    # mask = (df['birth_date'] > start_date) & (df['birth_date'] <= end_date)
-    df_filter = df.loc[mask]
-    print(df_filter)
-
-# def convert_date(date_):
-    """
-    convert date format like 20140816 to format like 2014-08-16 
-    """
-
-def count_in_or_between_parts(date_, start_hour_, end_hour_):
-    """
-    count in or between divided parts in specified date and hour.
-    input:
-        date_: a date format, like 20140816 and so on.
-        hour_: a hour format, a integer between [0, 23]
-    output:
-        part_idx_gps: [(idx, gps)], idx and gps represents the index and position of some part
-        sum_matrix: n * n matrix, sum_matrix[i, i] represents the trip times in i part,
-                    and sum_matrix[i, j] represents the trip times between i and j part.  
-    """
+def get_hour_csv(date_, start_hour_, end_hour_):
+    # dataset_ = '20140824_train.txt'
     dataset_ = date_ + '_train.txt'
-    dirname_ = pwd.dirname(__file__)
-    dataset_path = dirname_ + "\\dataset\\" + dataset_
-    chunksize = 10 ** 6
-    data_array = []
-    for chunk in pd.read_csv(dataset_path, header=None, chunksize=chunksize):
-        chunk[4] = pd.to_datetime(chunk[4])
-        start_datetime = date_ + " " + str(start_hour_)
-        end_datetime = date_ + " " + str(end_hour_)
-        mask = (chunk[4] >= start_datetime) & (chunk[4] < end_datetime)
-        # TODO select rows from chunk
-        # data_array = 
-        if True not in mask[1]:
-            break
-        # data_array = np.array()
-
-# test_some_functions()
-# mask = [False, True]
-# if False not in mask:
-#     print(mask)
-def demo_count_in_or_between_parts():
-    dataset_ = '20140824_train.txt'
+    dataset_hour = date_ + '_train_' + start_hour_ + '_' + end_hour_ + '.csv'
     dirname_ = pwd.dirname(__file__)
     dataset_path = dirname_ + "\\dataset\\" + dataset_
     size = 10 ** 6
-    start_time = pd.to_datetime('20140824 7:0:0')
-    end_time = pd.to_datetime('20140824 8:0:0')
+    start_time = pd.to_datetime(date_ + ' ' + start_hour_ + ':0:0')
+    end_time = pd.to_datetime(date_ + ' ' + end_hour_ + ':0:0')
     hour_dataframe = pd.DataFrame()
     for chunk in pd.read_csv(dataset_path, chunksize=size):
         chunk.columns = ['taxi_id', 'latitude', 'longitude', 'passenger', 'time']
         chunk.time = chunk.time.apply(pd.to_datetime)
         mask = (chunk.time >= start_time) & (chunk.time < end_time)
         hour_dataframe = pd.concat([hour_dataframe, chunk.loc[mask]])
-    # data character in every taxi_id
-    up_off_pairs = []
+    hour_dataframe.to_csv(dirname_ + "\\dataset\\" + dataset_hour, mode = 'w', index=False)
+
+def get_od_pairs_csv(date_, start_hour_, end_hour_):
+    # dataset_ = '20140824_train_7_vscode.csv'
+    dataset_hour = date_ + '_train_' + start_hour_ + '_' + end_hour_ + '.csv'
+    dataset_hour_od_pairs = date_ + '_train_' + start_hour_ + '_' + end_hour_+ '_od_pairs.csv'
+    dirname_ = pwd.dirname(__file__)
+    dataset_path = dirname_ + "\\dataset\\" + dataset_hour
+    hour_dataframe = pd.read_csv(dataset_path)
+    column_names = ['origin_longitude', 'origin_latitude', 'destination_longitude', 'destination_latitude']
+    up_off_pairs_df = pd.DataFrame(columns=column_names, dtype=np.float64)
+    # print(up_off_pairs_df.dtypes)
     grouped = hour_dataframe.groupby('taxi_id', sort=False)
     for _, group in grouped:
         selected_group_length = len(group)
         group = group.sort_values(by=['time'])
         i = 0
         while i < selected_group_length - 1:
-            if ((group.iloc[[i]].passenger == 1).bool() & (group.iloc[[i + 1]].passenger != 0).bool()):
-                up_point_row = group.iloc[[i]]
-                up_off_point = [[up_point_row.longitude, up_point_row.latitude]]
+            if group.iloc[i]['passenger'] == np.int64(1) and group.iloc[i + 1]['passenger'] != np.int64(0):
+                up_point_row = group.iloc[i]
+                # print(up_point_row['longitude'])
+                single_pair_df = pd.DataFrame([[up_point_row['longitude'], up_point_row['latitude'], 0.0, 0.0]], columns=column_names)
                 j = i + 1
                 while j < selected_group_length:
-                    if (group.iloc[[j]].passenger == 0).bool():
-                        off_point_row = group.iloc[[j - 1]]
-                        up_off_point.append([off_point_row.longitude, off_point_row.latitude])
+                    if group.iloc[j]['passenger'] == np.int64(0):
+                        off_point_row = group.iloc[j - 1]
+                        single_pair_df.iat[0, 2] = off_point_row['longitude']
+                        single_pair_df.iat[0, 3] = off_point_row['latitude']
+                        # single_pair_df.set_value(0, 'destination_longitude', off_point_row['longitude'])
+                        # single_pair_df.set_value(0, 'destination_latitude', off_point_row['latitude'])
                         i = j + 1
                         break
                     else:
                         if j == selected_group_length - 1:
-                            up_off_point.append([group.iloc[[j]].longitude, group.iloc[[j]].latitude])
+                            single_pair_df.iat[0, 2] = group.iloc[j]['longitude']
+                            single_pair_df.iat[0, 3] = group.iloc[j]['latitude']
+                            # single_pair_df.set_value(0, 'destination_longitude', group.iloc[j]['longitude'])                            
+                            # single_pair_df.set_value(0, 'destination_latitude', group.iloc[j]['latitude'])                            
                             i = j
                             break
                         else:
                             j += 1
-                if len(up_off_point) == 2:
-                    up_off_pairs.append(up_off_point)
+                if single_pair_df.iloc[0]['destination_longitude'] != np.float64(0) and single_pair_df.iloc[0]['destination_latitude'] != np.float64(0):
+                    # print(single_pair_df)
+                    # print(single_pair_df.dtypes)
+                    up_off_pairs_df = pd.concat([up_off_pairs_df, single_pair_df])
+                    # print(up_off_pairs_df)
+                    # print(up_off_pairs_df.dtypes)
             else:
                 i += 1
+    up_off_pairs_df.to_csv(dirname_ + "\\dataset\\" + dataset_hour_od_pairs, mode = 'w', index=False)
 
-demo_count_in_or_between_parts()
+def part_index(leaf_tuples_list, longitude, latitude):
+    index_ = -1
+    for idx in range(len(leaf_tuples_list)):
+        nd_array = leaf_tuples_list[idx][1]
+        for i in range(nd_array.shape[1]):
+            if nd_array[0,i] == longitude and nd_array[1,i] == latitude:
+                index_ = idx
+                return index_
+    return index_
+
+def count_in_or_between_parts(date_, start_hour_, end_hour_):
+    """
+    count in or between divided parts in specified date and hour.
+    input:
+        date_: a date format, like 20140816 and so on.
+        start_hour_: a hour format, a integer between [0, 23]
+        end_hour_: a hour format, a integer between [1, 24]
+    output:
+        part_idx_gps: [(idx, gps)], idx and gps represents the index and position of some part
+        sum_matrix: n * n matrix, sum_matrix[i, i] represents the trip times in i part,
+                    and sum_matrix[i, j] represents the trip times between i and j part.  
+    """
+    dataset_hour_od_pairs = date_ + '_train_' + start_hour_ + '_' + end_hour_+ '_od_pairs.csv'
+    dataset_hour_idx_gps = date_ + '_train_' + start_hour_ + '_' + end_hour_ + '_idx_gps.json'
+    dataset_hour_sum_matrix = date_ + '_train_' + start_hour_ + '_' + end_hour_ + '_sum_matrix.json'
+    dirname_ = pwd.dirname(__file__)
+    dataset_path = dirname_ + "\\dataset\\" + dataset_hour_od_pairs
+    up_off_pairs_df = pd.read_csv(dataset_path)
+    origin_df = up_off_pairs_df[['origin_longitude', 'origin_latitude']].copy()
+    origin_df.columns = ['longitude', 'latitude']
+    destination_df = up_off_pairs_df[['destination_longitude', 'destination_latitude']].copy()
+    destination_df.columns = ['longitude', 'latitude']
+    points_df = pd.concat([origin_df, destination_df])
+    points_array = points_df.values
+    points_T_array = points_array.transpose()
+    tree_tuples_list = kdtree(points_T_array, divide_depth=8)
+    leaf_tuples_list = [item for item in tree_tuples_list if item[4] == -1 and item[5] == -1]
+    part_idx_gps = []
+    for idx in range(len(leaf_tuples_list)):
+        single_part = (idx, (leaf_tuples_list[idx][1][0,0], leaf_tuples_list[idx][1][1,0]))
+        part_idx_gps.append(single_part)
+    # part_idx_gps = json.dumps(dict(part_idx_gps))
+    with open(dirname_ + "\\dataset\\" + dataset_hour_idx_gps, 'w') as outfile:
+        json.dump(dict(part_idx_gps), outfile)
+    # print(part_idx_gps)
+    # print(len(part_idx_gps))
+    sum_matrix =  np.zeros((len(part_idx_gps), len(part_idx_gps)), dtype=np.int)
+    for i in range(len(up_off_pairs_df)):
+        idx_up = part_index(leaf_tuples_list, up_off_pairs_df.iloc[i]['origin_longitude'], up_off_pairs_df.iloc[i]['origin_latitude'])
+        idx_off = part_index(leaf_tuples_list, up_off_pairs_df.iloc[i]['destination_longitude'], up_off_pairs_df.iloc[i]['destination_latitude'])
+        if idx_up >= 0 and idx_off >= 0:
+            sum_matrix[idx_up, idx_off] += 1
+    # print(sum_matrix)
+    sum_matrix_list = sum_matrix.tolist()
+    with open(dirname_ + "\\dataset\\" + dataset_hour_sum_matrix, 'w') as output_:
+        json.dump(sum_matrix_list, output_)
+    # return part_idx_gps, sum_matrix
+
+def load_idx_gps_and_sum_matrix_json(date_, start_hour_, end_hour_):
+    dirname_ = pwd.dirname(__file__)
+    json_path = dirname_ + "\\dataset\\"
+    idx_gps_json_ = json_path + date_ + '_train_' + start_hour_ + '_' + end_hour_ + '_idx_gps.json'
+    sum_matrix_json_ = json_path + date_ + '_train_' + start_hour_ + '_' + end_hour_ + '_sum_matrix.json'
+    with open(idx_gps_json_) as input_:
+        idx_gps_ = json.load(input_)
+    with open(sum_matrix_json_) as infile:
+        sum_matrix_ = json.load(infile)
+    return idx_gps_, sum_matrix_
+
+# count_in_or_between_parts('20140824', '7', '8')
