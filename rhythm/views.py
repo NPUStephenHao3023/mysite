@@ -5,11 +5,12 @@ from django.utils import timezone
 
 import json
 
-from .models import Image
+from .models import Image, TripNetworkFile
 from .algorithm import re_gui21
+from .algorithm import re_kdtree
 # Create your views here.
 def index(request):
-    return render(request, 'rhythm/index.html')
+    return render(request, 'rhythm/index_test.html')
 
 def results(request, dataset_name, method_name, parameter):   
     context = {
@@ -19,10 +20,30 @@ def results(request, dataset_name, method_name, parameter):
     return render(request, 'rhythm/index.html', context)
 
 def select(request):
-    # get dataset_name
-    dataset_name = request.POST['dataset']
     # get method_full_name
-    method_name = request.POST['method']
+    post_ = request.POST
+    method_name = post_['method']
+    # first seven methods names
+    first_seven_methods = [
+        'method1',
+        'method2',
+        'method3',
+        'method4',
+        'method5',
+        'method6',
+        'method7'
+    ]
+    if method_name in first_seven_methods:
+        content = deal_with_first_seven_methods(post_, method_name)
+        return HttpResponse(content)
+    else:
+        if method_name == 'trip_times_network':
+            content = deal_with_trip_times_network(post_)
+            return HttpResponse(content)
+
+def deal_with_first_seven_methods(post, method_name):
+    # get dataset_name
+    dataset_name = post['dataset']
     if method_name == "method1":
         method_full_name = "2d_equal_grid"
     if method_name == "method2":
@@ -37,13 +58,13 @@ def select(request):
         method_full_name = "time_space"
     if method_name == "method7":
         method_full_name = "space_time"
-  # get parameter
+    # get parameter
     parameter = list()    
     if method_name != "method6" and method_name != "method7":
-        parameter.append(int(request.POST[method_name]))
+        parameter.append(int(post[method_name]))
     else:
-        parameter.append(int(request.POST[method_name + "_1"]))
-        parameter.append(int(request.POST[method_name + "_2"]))
+        parameter.append(int(post[method_name + "_1"]))
+        parameter.append(int(post[method_name + "_2"]))
     # get image and context
     img_full_name = dataset_name + "-" + method_full_name
     for parameter_ in parameter:
@@ -64,9 +85,42 @@ def select(request):
         "image_full_name": temp_image.image_full_name,
         "extra_information": temp_image.extra_information,
     }
-    return HttpResponse(json.dumps(context))
+    return json.dumps(context)
 
-def select1(request):
+def deal_with_trip_times_network(post_):
+    # date, hour, matrix_json, idx_gps_json in database
+    date_ = str(post_['trip_date']).replace('-', '')
+    start_hour_ = post_['trip_start_hour']
+    end_hour_ = post_['trip_end_hour']
+    # hour_name, od_pairs_name
+    idx_gps_and_sum_matrix, _ = TripNetworkFile.objects.get_or_create(
+        trip_date=date_,
+        start_hour=start_hour_,
+        end_hour=end_hour_
+    )
+    # print('333')
+    # if created_:
+    if idx_gps_and_sum_matrix.idx_gps == False or idx_gps_and_sum_matrix.sum_matrix == False:
+        # print('111hello, world!')
+        if idx_gps_and_sum_matrix.hour_full_name == False:
+            # print('222hello, world!')
+            re_kdtree.get_hour_csv(date_, start_hour_, end_hour_)
+            idx_gps_and_sum_matrix.hour_full_name = True
+        if idx_gps_and_sum_matrix.hour_od_pairs_full_name == False:
+            re_kdtree.get_od_pairs_csv(date_, start_hour_, end_hour_)
+            idx_gps_and_sum_matrix.hour_od_pairs_full_name = True
+        re_kdtree.count_in_or_between_parts(date_, start_hour_, end_hour_)
+        idx_gps_and_sum_matrix.idx_gps = True
+        idx_gps_and_sum_matrix.sum_matrix = True        
+    # re_kdtree load json file data: idx_gps, sum_matrix.
+    idx_gps_, sum_matrix_ = re_kdtree.load_idx_gps_and_sum_matrix_json(date_, start_hour_, end_hour_)
+    content = {
+        'idx_gps': idx_gps_,
+        'sum_matrix': sum_matrix_
+    }
+    return content
+
+def select_to_generate_images(request):
     # Image.objects.all().delete()
     # dataset = ['dataset1.csv', 'dataset2.csv']
     dataset = ['dataset1.csv']
