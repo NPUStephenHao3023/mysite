@@ -23,6 +23,10 @@ def results(request, dataset_name, method_name, parameter):
     return render(request, 'rhythm/index.html', context)
 
 
+def hello():
+    return "this is a testcase."
+
+
 def select(request):
     # get method_full_name
     post_ = request.POST
