@@ -22,8 +22,6 @@ def results(request, dataset_name, method_name, parameter):
     # return HttpResponse(method_name + str(parameter))
     return render(request, 'rhythm/index.html', context)
 
-def myfunction():
-    return 0
 
 def hello():
     return "this is a testcase."
