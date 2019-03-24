@@ -36,7 +36,7 @@ a:hover{
 }
 .images{
 	margin-top: 30px;
-	height: 450px;
+	height: 500px;
 }
 .text_right{
     text-align: right;
@@ -66,7 +66,7 @@ a:hover{
 .header_center h2{
 
    margin-top: 10px !important;
-    margin-bottom: 10px; !important;
+    margin-bottom: 10px !important;
     font-size: 18px !important;
 
 }
@@ -218,8 +218,32 @@ a:hover{
     margin-bottom: 25px;
     margin-left: 1%;
    padding-left: 20px;
- ;
 
+
+}
+.nav_charts_pie{
+	background-color: #030829;
+	width: 110%;
+    height: 60px;
+	margin-top: 50px;
+    margin-bottom: 25px;
+    margin-left: -1%;
+   padding-left: 20px;
+}
+.nav_charts_pie img{
+    height: 18px;
+    margin-top: 9px;
+}
+.nav_charts_pie input{
+    border: none;
+    background-color: transparent;
+    width: 80px;
+    height: 20px;
+   top:-5px;
+    margin-left: 10px;
+    position: relative;
+    text-indent: 1em;
+    outline: none;
 }
 .select_time img{
     height: 18px;
@@ -276,7 +300,7 @@ a:hover{
     color: #ffffff;
 }
 .text01_div p:nth-child(2){
-    font-size: 18px;
+    font-size: 28px;
     color: #ffff43;
     font-weight: 600;
 
@@ -289,6 +313,13 @@ a:hover{
 }
 .org{
     color: #ff4e4e !important;
+}
+#div_img_show{
+	margin-left: 2.5%;
+	margin-right: 2.5%;
+	width: 95%;
+	height: 95%;
+	margin-top: 1%;
 }
 .div_any{
     width: 98%;
@@ -310,7 +341,7 @@ a:hover{
 }
 .div_chart_item01{
 	width: 100%;
-    height: 525px;
+    height: 575px;
     box-shadow: -10px 0px 15px #034c6a inset, /*å·¦è¾¹é˜´å½±*/
     0px -10px 15px #034c6a inset, /*ä¸Šè¾¹é˜´å½±*/
     10px 0px 15px #034c6a inset, /*å³è¾¹é˜´å½±*/
@@ -320,6 +351,25 @@ a:hover{
     position: relative;
     margin-top: 25px;
 	text-align: center;
+}
+
+.div_pp_ul{
+	margin-top: 40px;
+	color: #FFFFFF;
+/*	border: solid thin #FFF;*/
+	float: left;
+	width: 100%;
+	height: 100px;
+}
+.div_pp_ul li{
+	width: 50%;
+	float: left;
+	height: :100%;
+	text-align: center;
+	margin-top: 30px;
+}
+.div_pp_ul select{
+	width: 30%;
 }
 .div_any02{
     width: 48%;
@@ -333,7 +383,7 @@ a:hover{
 .div_img{
 	background: #ffffff;
 	width: 100%;
-    height: 525px;
+    height: 600px;
     box-shadow: -10px 0px 15px #034c6a inset, /*å·¦è¾¹é˜´å½±*/
     0px -10px 15px #034c6a inset, /*ä¸Šè¾¹é˜´å½±*/
     10px 0px 15px #034c6a inset, /*å³è¾¹é˜´å½±*/
@@ -346,7 +396,7 @@ a:hover{
 }
 .div_any_child{
     width: 100%;
-    height: 320px;
+    height: 400px;
     box-shadow: -10px 0px 15px #034c6a inset, /*å·¦è¾¹é˜´å½±*/
     0px -10px 15px #034c6a inset, /*ä¸Šè¾¹é˜´å½±*/
     10px 0px 15px #034c6a inset, /*å³è¾¹é˜´å½±*/
@@ -369,6 +419,18 @@ a:hover{
     position: relative;
     margin-top: 30px;
 }
+.div_pie_parameter{
+    width: 100%;
+    height: 150px;
+    box-shadow: -10px 0px 15px #034c6a inset, /*å·¦è¾¹é˜´å½±*/
+    0px -10px 15px #034c6a inset, /*ä¸Šè¾¹é˜´å½±*/
+    10px 0px 15px #034c6a inset, /*å³è¾¹é˜´å½±*/
+    0px 10px 15px #034c6a inset;
+    border: 1px solid #034c6a;
+    box-sizing: border-box;
+    position: relative;
+    margin-top: 30px;
+}
 .div_any_child01{
     width: 48%;
 
@@ -378,6 +440,7 @@ a:hover{
     0px 10px 15px #034c6a inset;
     border: 1px solid #034c6a;
     box-sizing: border-box;
+
     position: relative;
     margin-right: 2%;
 
@@ -440,10 +503,10 @@ a:hover{
     width: 98%;
     margin-left: 1%;
     margin-bottom: 25px;
-    height: 520px;
+    height: 600px;
 }
 .div_chart{
-	width: 98%;
+	width:99%;
 	margin-left: 1%;
 	margin-top: 25px;
 	margin-bottom:25px;
@@ -492,13 +555,42 @@ a:hover{
     font-size: 14px;
 	text-align: center;
 }
+.bottom2{
+	border-radius: 5px;
+	background-color: #034c6a;
+	display: inline-block;
+    text-align: center;
+    height: 50px;
+    position: relative;
+    line-height: 50px;
+    box-sizing: border-box;
+	width:50%;
+}
+.bottom2:hover{
+	background: #081832;
+	box-shadow: -10px 0px 15px #034c6a inset, /*å·¦è¾¹é˜´å½±*/
+    0px -10px 15px #034c6a inset, /*ä¸Šè¾¹é˜´å½±*/
+    10px 0px 15px #034c6a inset, /*å³è¾¹é˜´å½±*/
+    0px 10px 15px #034c6a inset;
+	
+    box-sizing: border-box;
+}
+.bottom2 input{
+	border-color: transparent;
+	background-color: transparent;
+    color: #ffffff;
+	width: inherit;
+	height: inherit;
+    font-size: 14px;
+	text-align: center;
+}
 .table_p{
     height: 93%;
     margin-top: 7%;
     position: relative;
+}
 
-
-}.table_p01{
+.table_p01{
      height:auto !important;
      margin-top: 0!important;
      position: relative;
@@ -1043,6 +1135,7 @@ border-radius: 3px;
     height: 36px;
     line-height: 36px;
     background-color: #04425f;
+
     margin-bottom: 25px;
     margin-left: 1%;
     padding-left: 20px;
@@ -1061,6 +1154,33 @@ border-radius: 3px;
     top:1px;
 }
 .static_top span{
+    color: #25f3e6;
+}
+.static_top_pie{
+    width: 140px;
+    height: 36px;
+    line-height: 36px;
+    background-color: #04425f;
+
+    margin-bottom: 25px;
+	margin-top: 8px;
+    margin-left: 1%;
+    padding-left: 20px;
+    border-radius: 1px;
+    box-shadow: 0px 3px 3px #61d2f7;
+
+}
+.static_top_pie i{
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    position: relative;
+    background-image: url("../img/nav_7.png");
+    background-repeat: no-repeat;
+    margin-right: 6px;
+    top:1px;
+}
+.static_top_pie span{
     color: #25f3e6;
 }
 .stiatic_top_con{

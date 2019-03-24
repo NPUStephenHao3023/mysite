@@ -6,6 +6,18 @@ var submitted = false; //submitted变量用于保证加载过程中不能重复�
 var method_choice; //提交的方法
 $(function () {
 		nav();
+		$("#submit_data").click(function () {
+			myChart.clear();
+			make_chart1();
+		});
+		$("#submit_data1").click(function () {
+			myChart.clear();
+			make_chart2();
+		});
+		$("#submit_data5").click(function () {
+			myChart.clear();
+			make_chart6();
+		});
 	})
 	//导航条点击添加样式
 function nav() {
@@ -42,8 +54,7 @@ function hiddenall() {
 	$("#method6_2").addClass("hide");
 	$("#method7_1").addClass("hide");
 	$("#method7_2").addClass("hide");
-	$("#method8_1").addClass("hide");
-	$("#method8_2").addClass("hide");
+	$("#method8").addClass("hide");
 	$("#method9").addClass("hide");
 }
 // function change_checked_state(id) {
@@ -71,8 +82,7 @@ function onchangeradio(id, method) {
 		$("#method7_1").removeClass("hide");
 		$("#method7_2").removeClass("hide");
 	} else if (method == 8) {
-		$("#method8_1").removeClass("hide");
-		$("#method8_2").removeClass("hide");
+		$("#method8").removeClass("hide");
 	} else if (method == 9) {
 		$("#method9").removeClass("hide");
 	}
@@ -101,7 +111,6 @@ function csrfSafeMethod(method) {
 
 function sumbit_data() {
 	var csrftoken = getCookie('csrftoken');
-	//包装数据
 	var formData = {
 		'method': $('input[name=method]:checked').val(),
 		'method1': $('input[name=method1]').val(),
@@ -113,13 +122,10 @@ function sumbit_data() {
 		'method6_2': $('input[name=method6_2]').val(),
 		'method7_1': $('input[name=method7_1]').val(),
 		'method7_2': $('input[name=method7_2]').val(),
-		'method8_1': $('input[name=method8_1]').val(),
-		'method8_2': $("#method8_2  option:selected").val(),
+		'method8': $('input[name=method8]').val(),
 		'method9': $('input[name=method9]').val(),
-		'method10': $("#method10  option:selected").val(),
 		'dataset': $('input[name=dataset]:checked').val()
 	};
-	console.log(formData);
 	//如果正在加载则不能重复提交
 	if (submitted == true) {
 		alert("正在加载请耐心等待！");
@@ -141,13 +147,11 @@ function sumbit_data() {
 		return;
 	}
 
-	console.log(formData);
+	//	console.log(formData);
 	//发送后submited=true，并更换加载图片，表示正在加载。
 	submitted = true;
 	method_choice = formData["method"];
 	$('#final_image').attr('src', '/static/rhythm/img/loading.gif');
-	
-	//发送请求
 	$.ajaxSetup({
 		beforeSend: function (xhr, settings) {
 			if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -155,48 +159,25 @@ function sumbit_data() {
 			}
 		}
 	});
-	if (method_choice == "method8"||method_choice == "method9") {
-		$.ajax({
-			//几个参数需要注意一下
-			type: "POST", //方法类型
-			dataType: "json", //预期服务器返回的数据类型
-//			url: "select/", //url
-			//		url:"/static/rhythm/demo_test.txt",
-					url: "/static/rhythm/dataset.txt",
-			data: formData,
-			success: function (result) {
-				//有返回值
-				submitted = false;
-				handle(result);
-			},
-			error: function () {
-				alert("异常！");
-				submitted = false;
-				$('#final_image').attr('src', '/static/rhythm/img/instruction.png');
-			}
-		});
-	} else {
-		$.ajax({
-			//几个参数需要注意一下
-			type: "POST", //方法类型
-			dataType: "json", //预期服务器返回的数据类型
-			url: "select/", //url
-			//		url:"/static/rhythm/demo_test.txt",
-			//		url: "/static/rhythm/dataset.txt",
-			data: formData,
-			success: function (result) {
-				//有返回值
-				submitted = false;
-				handle(result);
-			},
-			error: function () {
-				alert("异常！");
-				submitted = false;
-				$('#final_image').attr('src', '/static/rhythm/img/instruction.png');
-			}
-		});
-	}
-
+	$.ajax({
+		//几个参数需要注意一下
+		type: "POST", //方法类型
+		dataType: "json", //预期服务器返回的数据类型
+		//		url: "select/", //url
+		//		url:"/static/rhythm/demo_test.txt",
+		url: "/static/rhythm/dataset.txt",
+		data: formData,
+		success: function (result) {
+			//有返回值
+			submitted = false;
+			handle(result);
+		},
+		error: function () {
+			alert("异常！");
+			submitted = false;
+			$('#final_image').attr('src', '/static/rhythm/img/instruction.png');
+		}
+	});
 }
 
 function handle(result) {
@@ -247,6 +228,15 @@ function runMethod8(result) {
 	var y = charts.y;
 	var maps = charts.maps;
 	var len = charts.length; //点的数量
+	//	var x = [300, 800, 550, 550];//经度
+	//	var y = [300, 300, 100, 500];//纬度
+	//	var maps = [
+	//		[0, 50, 50, 50],
+	//		[50, 0, 50, 50],
+	//		[0, 0, 0, 0],
+	//		[0, 0, 0, 0]
+	//	];//边
+
 
 	var xMax = 0;
 	var xMin = 200;
@@ -299,96 +289,45 @@ function runMethod8(result) {
 
 
 	$("#final_image").hide();
-	$("#div_img_show").addClass("div_method8")
 	var dom = document.getElementById("div_img_show");
-	
 	var myChart = echarts.init(dom);
-	myChart.clear();
 	option = {
-//		grid: {
-//			show: true,
-//			left: '4%',
-//			right: '4%',
-//			top: 40,
-//			bottom: 40,
-//			containLabel: true
-//		},
-		tooltip: {
-			trigger: 'item',
-			show: true,
-			
-		},
-		bmap: {
-        	center: [104.1, 30.68],
-			zoom: 13,
-			roam: true,
-			height:'90%'
-		},
-//		dataZoom: {
-//			filterMode: 'weakFilter',
-//			type: 'inside'
-//		},
-//		xAxis: {
-//			type: 'value',
-//			scale: true,
-//			name: '经度',
-//			nameLocation:'center',
-//			nameGap: 25
-//		},
-//		yAxis: {
-//			scale: true,
-//			type: 'value',
-//			name: '纬度',
-//			nameLocation: 'center',
-//			nameGap: 40
-//		},
-		//		animationEasingUpdate: 'quinticInOut',
+		tooltip: {},
+		animationDurationUpdate: 1500,
+		animationEasingUpdate: 'quinticInOut',
 		series: [{
 			type: 'graph',
 			layout: 'none', //使用x，y作为位置
 			legendHoverLink: true,
-			coordinateSystem: 'bmap',
 			roam: true, //可缩放和平移漫游
 			focusNodeAdjacency: true, //选取某节点时高亮相邻的边和节点
-			symbol: "circle", //节点形状
+			symbol: "circle", //节点形状,
+			label: { //节点显示的标识
+				normal: {
+					show: true,
+					formatter: '{b}:{c}'
+				}
+			},
+			itemStyle: {
+				color: function () {
+					var colorList = ['#EE1289', '#DC143C', '	#E066FF', '#FF1493', '#FF6347', '#FF0000', '#B23AEE', '#BA55D3', '#C71585', '#9B30FF', '#969696', '#8E388E', '#8B008B', '#7D9EC0', '#7A7A7A', '#7A67EE', '#696969', '#515151', '#404040', '#12121', '#191970', '#00CD66', '#0000EE', '#00CDCD', '#7D26CD', '#71C671', '#76EE00', '#87CEFA', '#698B22', '#7171C6', '#ADADAD', '#DEB887'];
+					return colorList[Math.floor(Math.random() * colorList.length)];
+				}
+			},
 			symbolSize: (value, params) => { //设置节点大小
 				//根据数据params中的data来判定数据大小
-				var tmp = params.data.value[2];
+				var tmp = params.data.value;
 				return (tmp - valueMin) / (valueMax - valueMin) * 20 + 40;
 			},
 			data: (function () {
 				var t = [];
 				for (var i = 1; i <= len; i++) {
 					var tmp = {
-						number: 'No' + i,
-						fax: value[i - 1],
 						name: 'No' + i,
-						value: [x[i - 1], y[i - 1], value[i - 1]],
-						itemStyle: {
-							color: (function () {
-								var colorList = ['#EE1289', '#DC143C', '	#E066FF', '#FF1493', '#FF6347', '#FF0000', '#B23AEE', '#BA55D3', '#C71585', '#9B30FF', '#969696', '#8E388E', '#8B008B', '#7D9EC0', '#7A7A7A', '#7A67EE', '#696969', '#515151', '#404040', '#12121', '#191970', '#00CD66', '#0000EE', '#00CDCD', '#7D26CD', '#71C671', '#76EE00', '#87CEFA', '#698B22', '#7171C6', '#ADADAD', '#DEB887'];
-								return colorList[Math.floor(Math.random() * colorList.length)];
-							})()
-
-						},
-						label: { //节点显示的标识
-							normal: {
-								show: true,
-								formatter: (function () {
-									return 'No' + i;
-								})()
-							}
-						},
-						tooltip: {
-							formatter: (function () {
-								return 'No' + i + ':' + value[i - 1]+',('+x[i]+','+y[i]+')';
-							})(),
-							textStyle: {
-								fontFamily: 'Verdana, sans-serif',
-								fontSize: 15,
-								fontWeight: 'bold'
-							}
-						}
+						x: (x[i - 1] - xMin) / (xMax - xMin) * 2000,
+						y: 1000 - (y[i - 1] - yMin) / (yMax - yMin) * 1000,
+						category: 2,
+						value: value[i - 1]
 					}
 					t.push(tmp);
 				}
@@ -397,16 +336,16 @@ function runMethod8(result) {
 			// links: [],
 			links: (function () {
 				var t = [];
-
+				
 				for (var i = 0; i < len; i++) {
 					for (var j = 0; j < len; j++) {
-						if (maps[i][j] != 0 && i != j && maps[i][j] > mapsMax * 0.3) {
+						if (maps[i][j] != 0&&i!=j&&maps[i][j]>mapsMax*0.3) {
 							var tmp = {
 								source: i,
 								target: j,
 								value: maps[i][j],
-								symbolSize: [0.1, 10],
-								symbol: ['none', 'arrow'],
+								symbolSize:[0.1,10],
+								symbol: ['circle','arrow'],
 								lineStyle: {
 									normal: {
 										width: 0,
@@ -414,8 +353,8 @@ function runMethod8(result) {
 										color: 'source',
 									},
 									emphasis: {
-										width: (function () {
-											return (maps[i][j] - mapsMin) / (mapsMax - mapsMin) * 2 + 2;
+										width: (function(){
+											return (maps[i][j]-mapsMin)/(mapsMax-mapsMin)*2+2;
 										})(),
 									}
 
