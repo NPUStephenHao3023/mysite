@@ -5,14 +5,14 @@ from django.utils import timezone
 
 import json
 
-from .models import Image, TripNetworkFile
+from .models import Image
 from .algorithm import re_gui21
 from .algorithm import re_kdtree
 # Create your views here.
 
 
 def index(request):
-    return render(request, 'rhythm/index_test.html')
+    return render(request, 'rhythm/index.html')
 
 
 def results(request, dataset_name, method_name, parameter):
@@ -40,10 +40,10 @@ def select(request):
     if method_name in first_seven_methods:
         content = deal_with_first_seven_methods(post_, method_name)
         return HttpResponse(content)
-    else:
-        if method_name == 'trip_times_network':
-            content = deal_with_trip_times_network(post_)
-            return HttpResponse(content)
+    # else:
+    #     if method_name == 'trip_times_network':
+    #         content = deal_with_trip_times_network(post_)
+    #         return HttpResponse(content)
 
 
 def deal_with_first_seven_methods(post, method_name):
@@ -92,41 +92,6 @@ def deal_with_first_seven_methods(post, method_name):
         "extra_information": temp_image.extra_information,
     }
     return json.dumps(context)
-
-
-def deal_with_trip_times_network(post_):
-    # date, hour, matrix_json, idx_gps_json in database
-    date_ = str(post_['trip_date']).replace('-', '')
-    start_hour_ = post_['trip_start_hour']
-    end_hour_ = post_['trip_end_hour']
-    # hour_name, od_pairs_name
-    idx_gps_and_sum_matrix, _ = TripNetworkFile.objects.get_or_create(
-        trip_date=date_,
-        start_hour=start_hour_,
-        end_hour=end_hour_
-    )
-    # print('333')
-    # if created_:
-    if idx_gps_and_sum_matrix.idx_gps == False or idx_gps_and_sum_matrix.sum_matrix == False:
-        # print('111hello, world!')
-        if idx_gps_and_sum_matrix.hour_full_name == False:
-            # print('222hello, world!')
-            re_kdtree.get_hour_csv(date_, start_hour_, end_hour_)
-            idx_gps_and_sum_matrix.hour_full_name = True
-        if idx_gps_and_sum_matrix.hour_od_pairs_full_name == False:
-            re_kdtree.get_od_pairs_csv(date_, start_hour_, end_hour_)
-            idx_gps_and_sum_matrix.hour_od_pairs_full_name = True
-        re_kdtree.count_in_or_between_parts(date_, start_hour_, end_hour_)
-        idx_gps_and_sum_matrix.idx_gps = True
-        idx_gps_and_sum_matrix.sum_matrix = True
-    # re_kdtree load json file data: idx_gps, sum_matrix.
-    idx_gps_, sum_matrix_ = re_kdtree.load_idx_gps_and_sum_matrix_json(
-        date_, start_hour_, end_hour_)
-    content = {
-        'idx_gps': idx_gps_,
-        'sum_matrix': sum_matrix_
-    }
-    return content
 
 
 def select_to_generate_images(request):
