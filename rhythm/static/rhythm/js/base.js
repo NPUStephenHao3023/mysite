@@ -259,14 +259,6 @@ function runMethod8(result,depth) {
 	for(i=0;i<len;i++){
 		value[i]=maps[i][i];
 	}
-//	console.log(x,y);
-//	return 0;
-//	var charts = result["charts"];
-//	//整理数据集
-//	var value = charts.value;
-//	var x = charts.x;
-//	var y = charts.y;
-//	var maps = charts.maps;
 	
 	var xMax = 0;
 	var xMin = 200;

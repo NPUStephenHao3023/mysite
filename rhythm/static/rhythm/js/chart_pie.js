@@ -123,9 +123,6 @@ function makeChart_pie(result) {
 			type: 'pie',
 			radius: '70%',
 			center: ['50%', '50%'],
-			legendHoverLink: true,
-			hoverAnimation: true,
-			selectedMode: 'multiple',
 			minAngle: 3,
 			avoidLabelOverlap: false,
 			itemStyle: {
@@ -168,96 +165,10 @@ function makeChart_pie(result) {
 	};
 
 	myChart.setOption(option);
-	window.addEventListener('resize', function () {
-		myChart.resize();
-	});
-}
-
-//绘制饼状图
-function chart1() {
-	var myChart = echarts.init($("#chart_1")[0]);
-
-	option = {
-		tooltip: {
-			trigger: 'item',
-			formatter: "{a} <br/>{b} : {c}% "
-		},
-		legend: {
-			orient: 'vertical',
-			x: 'right',
-			textStyle: {
-				color: '#ffffff',
-
-			},
-			data: ['公司企业', '商务住宅', '政府机构', '餐饮服务', '生活服务', '交通设施服务', '购物服务', '汽车服务']
-		},
-
-		calculable: false,
-		series: [{
-			name: '地点类型',
-			type: 'pie',
-			radius: '70%',
-			center: ['50%', '50%'],
-			legendHoverLink: true,
-			hoverAnimation: true,
-			selectedMode: 'multiple',
-			minAngle: 3,
-			avoidLabelOverlap: false,
-			itemStyle: {
-				normal: {
-					label: {
-						show: true,
-						textStyle: {
-							fontSize: '15'
-						},
-						formatter: "{b} : {c}%"
-					},
-					labelLine: {
-						show: false
-					}
-				},
-				emphasis: {
-					label: {
-						show: true,
-						position: 'center',
-						textStyle: {
-							fontSize: '20',
-							fontWeight: 'bold'
-						}
-					}
-				}
-			},
-			data: [{
-					value: 1,
-					name: '公司企业'
-				}, {
-					value: 14,
-					name: '商务住宅'
-				}, {
-					value: 8,
-					name: '政府机构'
-				}, {
-					value: 8,
-					name: '餐饮服务'
-				}, {
-					value: 47,
-					name: '生活服务'
-				}, {
-					value: 2,
-					name: '交通设施服务'
-				}, {
-					value: 2,
-					name: '购物服务'
-				}, {
-					value: 18,
-					name: '汽车服务'
-				},
-
-			]
-		}]
-	};
-
-	myChart.setOption(option);
+	myChart.on('click', function(param) {
+    	console.log(param);
+		alert(param.name+" "+param.value);
+});
 	window.addEventListener('resize', function () {
 		myChart.resize();
 	});
