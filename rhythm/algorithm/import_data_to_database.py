@@ -4,7 +4,7 @@ import ntpath
 import timeit
 
 
-def import_data_to_database():
+def import_taxi_gps_data_to_database():
     """
     input the original data which is of txt format to database.
     """
@@ -97,7 +97,7 @@ def import_data_to_database():
             print("PostgreSQL connection is closed")
 
 
-def import_data_to_database_v1():
+def import_taxi_gps_data_to_database_v1():
     sql_of_create_tables = ""
     sql_of_copies = ""
     sql_of_create_single_table = "CREATE TABLE public._{0}\
