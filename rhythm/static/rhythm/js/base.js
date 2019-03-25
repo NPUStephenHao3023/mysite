@@ -119,7 +119,6 @@ function sumbit_data() {
 		'method10': $("#method10  option:selected").val(),
 		'dataset': $('input[name=dataset]:checked').val()
 	};
-	console.log(formData);
 	//如果正在加载则不能重复提交
 	if (submitted == true) {
 		alert("正在加载请耐心等待！");
@@ -155,26 +154,9 @@ function sumbit_data() {
 			}
 		}
 	});
+	//如果方法为method8，则直接从json中获取，而不是访问服务器。
 	if (method_choice == "method8"||method_choice == "method9") {
-		$.ajax({
-			//几个参数需要注意一下
-			type: "POST", //方法类型
-			dataType: "json", //预期服务器返回的数据类型
-//			url: "select/", //url
-			//		url:"/static/rhythm/demo_test.txt",
-					url: "/static/rhythm/dataset.txt",
-			data: formData,
-			success: function (result) {
-				//有返回值
-				submitted = false;
-				handle(result);
-			},
-			error: function () {
-				alert("异常！");
-				submitted = false;
-				$('#final_image').attr('src', '/static/rhythm/img/instruction.png');
-			}
-		});
+		handle_method8(formData);
 	} else {
 		$.ajax({
 			//几个参数需要注意一下
@@ -198,8 +180,19 @@ function sumbit_data() {
 	}
 
 }
-
+function handle_method8(parameter) {
+	method_choice = "";
+	depth = parameter["method8_1"];
+	time = parameter["method8_2"];
+	url = "/static/rhythm/json/taxi_gps_one_hour_result_kdtree/2014-08-05_h" + time + "_dd" + depth+".json";
+	$.getJSON(url, function (result) {
+		console.log(result);
+		runMethod8(result,depth)
+		submitted = false;
+	});
+}
 function handle(result) {
+	
 	console.log(result); //打印服务端返回的数据(调试用)
 	//method8加载echarts，否则销毁echarts加载图片
 	if (method_choice == "method8") {
@@ -219,35 +212,62 @@ function handle(result) {
 		var image_full_name = result["image_full_name"];
 		img_address = "/static/rhythm/img/generated/" + image_full_name;
 		$('#final_image').attr('src', img_address);
+		
+		//显示参数
+		var extra_information = jQuery.parseJSON(result["extra_information"]);
+		console.log(extra_information);
+		$('#information_entropy').text(extra_information["information_entropy"]);
+		$('#varience').text(extra_information["varience"]);
+		$('#standard_deviation').text(extra_information["standard_deviation"]);
+		$('#mean').text(extra_information["mean"]);
+		$('#max').text(extra_information["max"]);
+		$('#min').text(extra_information["min"]);
+		$('#skew').text(extra_information["skew"]);
+		$('#kurtosis').text(extra_information["kurtosis"]);
+		$('#len').text(extra_information["len"]);
 	}
 	//	var image_full_name = result["image_full_name"];
 	//	var extra_information = jQuery.parseJSON(result["extra_information"]);
-	var extra_information = result["extra_information"];
-	//	img_address = "/static/rhythm/img/generated/" + image_full_name
-	//	$('#final_image').attr('src', img_address);
-	$('#information_entropy').text(extra_information["information_entropy"]);
-	$('#varience').text(extra_information["varience"]);
-	$('#standard_deviation').text(extra_information["standard_deviation"]);
-	$('#mean').text(extra_information["mean"]);
-	$('#max').text(extra_information["max"]);
-	$('#min').text(extra_information["min"]);
-	$('#skew').text(extra_information["skew"]);
-	$('#kurtosis').text(extra_information["kurtosis"]);
-	$('#len').text(extra_information["len"]);
+//	var extra_information = result["extra_information"];
+//	//	img_address = "/static/rhythm/img/generated/" + image_full_name
+//	//	$('#final_image').attr('src', img_address);
+//	$('#information_entropy').text(extra_information["information_entropy"]);
+//	$('#varience').text(extra_information["varience"]);
+//	$('#standard_deviation').text(extra_information["standard_deviation"]);
+//	$('#mean').text(extra_information["mean"]);
+//	$('#max').text(extra_information["max"]);
+//	$('#min').text(extra_information["min"]);
+//	$('#skew').text(extra_information["skew"]);
+//	$('#kurtosis').text(extra_information["kurtosis"]);
+//	$('#len').text(extra_information["len"]);
 
 
 }
 
-function runMethod8(result) {
-	var charts = result["charts"];
-	//整理数据集
-	//	var value = [50,60,70,80];//节点的值
-	var value = charts.value;
-	var x = charts.x;
-	var y = charts.y;
-	var maps = charts.maps;
-	var len = charts.length; //点的数量
-
+function runMethod8(result,depth) {
+	var len = Math.pow(2,depth); //点的数量
+	var x = new Array();//点的经度
+	for(i=0;i<len;i++){
+		x[i]=result["idx_gps"][i][1];
+	}
+	var y = new Array();//点的纬度
+	for(i=0;i<len;i++){
+		y[i]=result["idx_gps"][i][0];
+	}
+	var maps = result["sum_matrix"];
+	var value = new Array();
+	for(i=0;i<len;i++){
+		value[i]=maps[i][i];
+	}
+//	console.log(x,y);
+//	return 0;
+//	var charts = result["charts"];
+//	//整理数据集
+//	var value = charts.value;
+//	var x = charts.x;
+//	var y = charts.y;
+//	var maps = charts.maps;
+	
 	var xMax = 0;
 	var xMin = 200;
 	var yMax = 0;
@@ -304,15 +324,8 @@ function runMethod8(result) {
 	
 	var myChart = echarts.init(dom);
 	myChart.clear();
+	
 	option = {
-//		grid: {
-//			show: true,
-//			left: '4%',
-//			right: '4%',
-//			top: 40,
-//			bottom: 40,
-//			containLabel: true
-//		},
 		tooltip: {
 			trigger: 'item',
 			show: true,
@@ -324,25 +337,6 @@ function runMethod8(result) {
 			roam: true,
 			height:'90%'
 		},
-//		dataZoom: {
-//			filterMode: 'weakFilter',
-//			type: 'inside'
-//		},
-//		xAxis: {
-//			type: 'value',
-//			scale: true,
-//			name: '经度',
-//			nameLocation:'center',
-//			nameGap: 25
-//		},
-//		yAxis: {
-//			scale: true,
-//			type: 'value',
-//			name: '纬度',
-//			nameLocation: 'center',
-//			nameGap: 40
-//		},
-		//		animationEasingUpdate: 'quinticInOut',
 		series: [{
 			type: 'graph',
 			layout: 'none', //使用x，y作为位置
@@ -354,7 +348,11 @@ function runMethod8(result) {
 			symbolSize: (value, params) => { //设置节点大小
 				//根据数据params中的data来判定数据大小
 				var tmp = params.data.value[2];
-				return (tmp - valueMin) / (valueMax - valueMin) * 20 + 40;
+				if(depth>=5){
+					return (tmp - valueMin) / (valueMax - valueMin) * 20 + 20;
+				}else{
+					return (tmp - valueMin) / (valueMax - valueMin) * 30 + 30;
+				}
 			},
 			data: (function () {
 				var t = [];
@@ -375,7 +373,7 @@ function runMethod8(result) {
 							normal: {
 								show: true,
 								formatter: (function () {
-									return 'No' + i;
+									return maps[i-1][i-1]+"";
 								})()
 							}
 						},
@@ -400,7 +398,7 @@ function runMethod8(result) {
 
 				for (var i = 0; i < len; i++) {
 					for (var j = 0; j < len; j++) {
-						if (maps[i][j] != 0 && i != j && maps[i][j] > mapsMax * 0.3) {
+						if (maps[i][j] != 0 && i != j && maps[i][j] > mapsMax * 0.2) {
 							var tmp = {
 								source: i,
 								target: j,
@@ -409,8 +407,8 @@ function runMethod8(result) {
 								symbol: ['none', 'arrow'],
 								lineStyle: {
 									normal: {
-										width: 0,
-										curveness: 0.2,
+										width: 4,
+										curveness: 0.4,
 										color: 'source',
 									},
 									emphasis: {
@@ -422,7 +420,8 @@ function runMethod8(result) {
 								},
 								label: {
 									normal: {
-										show: false,
+										show: true
+										,
 										position: 'middle',
 										fontSize: 15,
 										formatter: ' {@value}'
@@ -440,6 +439,7 @@ function runMethod8(result) {
 			})()
 		}]
 	};
+	
 	myChart.setOption(option, true);
 
 }
