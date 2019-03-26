@@ -371,7 +371,7 @@ function runMethod8(result,depth) {
 						},
 						tooltip: {
 							formatter: (function () {
-								return 'No' + i + ':' + value[i - 1]+',('+x[i]+','+y[i]+')';
+								return 'No' + i + ':' + value[i - 1]+',('+x[i-1]+','+y[i-1]+')';
 							})(),
 							textStyle: {
 								fontFamily: 'Verdana, sans-serif',
