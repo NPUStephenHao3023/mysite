@@ -41,15 +41,9 @@ def select(request):
         content = deal_with_first_seven_methods(post_, method_name)
         return HttpResponse(content)
     # else:
-<<<<<<< HEAD
-        # if method_name == 'trip_times_network':
-        #     content = deal_with_trip_times_network(post_)
-        #     return HttpResponse(content)
-=======
     #     if method_name == 'trip_times_network':
     #         content = deal_with_trip_times_network(post_)
     #         return HttpResponse(content)
->>>>>>> 489c2d2d918ecd0f3198e40d647d09ac16cdd0f0
 
 
 def deal_with_first_seven_methods(post, method_name):
