@@ -92,7 +92,6 @@ function sumbit_data_pie() {
 	function handle(result) {
 		makeChart_pie(result);
 		console.log(result);
-//		alert('hello world ');
 	}
 }
 
@@ -115,6 +114,109 @@ function makeChart_pie(result) {
 
 			},
 			data: Name
+		},
+
+		calculable: false,
+		series: [{
+			name: '地点类型',
+			type: 'pie',
+			radius: '70%',
+			center: ['50%', '50%'],
+			minAngle: 3,
+			avoidLabelOverlap: false,
+			selectedMode: false,
+			itemStyle: {
+				normal: {
+					label: {
+						show: true,
+						textStyle: {
+							fontSize: '15'
+						},
+						formatter: "{b} : {c}%"
+					},
+					labelLine: {
+						show: false
+					}
+				},
+				emphasis: {
+					label: {
+						show: true,
+						position: 'center',
+						textStyle: {
+							fontSize: '20',
+							fontWeight: 'bold'
+						}
+					}
+				}
+			},
+			data: (function () {
+				var t = [];
+				for (var i = 0; i < len; i++) {
+					var tmp = {
+						value: val[i],
+						name: Name[i]
+					};
+					t.push(tmp);
+
+				}
+				return t;
+			})()
+		}]
+	};
+
+	myChart.setOption(option);
+	myChart.on('click', function (param) {
+		console.log(param);
+		//		alert(param.name+" "+param.value);
+		makeChart_pie02(param.name, param.value);
+	});
+	window.addEventListener('resize', function () {
+		myChart.resize();
+	});
+}
+
+function makeChart_pie02(name, value) {
+	//	var len = result["charts"]["length"];
+	//	var Name = result["charts"]["name"];
+	//	var val = result["charts"]["value"];
+	var len = 1
+	$('#chart_2').width($('#chart_2').width());
+	$('#chart_2').height($('#chart_2').height());
+	var myChart2 = echarts.init(document.getElementById("chart_2"));
+
+	option = {
+		title: {
+			text: '"'+name+'"POI细分热度统计',
+			x: 'center', // 水平安放位置，默认为左对齐，可选为：
+			y: 'top', // 垂直安放位置，默认为全图顶端，可选为：
+			//textAlign: null          // 水平对齐方式，默认根据x设置自动调整
+			backgroundColor: 'rgba(0,0,0,0)',
+			borderColor: '#ccc', // 标题边框颜色
+			borderWidth: 0, // 标题边框线宽，单位px，默认为0（无边框）
+			padding: 5, // 标题内边距，单位px，默认各方向内边距为5，
+			// 接受数组分别设定上右下左边距，同css
+			itemGap: 10, // 主副标题纵向间隔，单位px，默认为10，
+			textStyle: {
+				fontSize: 18,
+				fontWeight: 'bolder',
+				color: '#fff' // 主标题文字颜色
+			},
+			subtextStyle: {
+				color: '#aaa' // 副标题文字颜色
+			}
+		},
+		tooltip: {
+			trigger: 'item',
+			formatter: "{a} <br/>{b} : {c}% "
+		},
+		legend: {
+			orient: 'vertical',
+			x: 'right',
+			textStyle: {
+				color: '#ffffff',
+
+			},
+			data: [name]
 		},
 
 		calculable: false,
@@ -150,26 +252,22 @@ function makeChart_pie(result) {
 				}
 			},
 			data: (function () {
-					var t = [];
-					for (var i = 0; i < len; i++) {
-						var tmp = {
-							value: val[i],
-							name: Name[i]
-						};
-						t.push(tmp);
+				var t = [];
+				for (var i = 0; i < len; i++) {
+					var tmp = {
+						value: value,
+						name: name
+					};
+					t.push(tmp);
 
-					}
-					return t;
-				})()
+				}
+				return t;
+			})()
 		}]
 	};
 
-	myChart.setOption(option);
-	myChart.on('click', function(param) {
-    	console.log(param);
-		alert(param.name+" "+param.value);
-});
+	myChart2.setOption(option);
 	window.addEventListener('resize', function () {
-		myChart.resize();
+		myChart2.resize();
 	});
 }
