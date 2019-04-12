@@ -15,6 +15,10 @@ def index(request):
     return render(request, 'rhythm/index.html')
 
 
+def index_association(request):
+    return render(request, 'rhythm/index_association.html')
+
+
 def results(request, dataset_name, method_name, parameter):
     context = {
         'image_name': None,
@@ -41,9 +45,9 @@ def select(request):
         content = deal_with_first_seven_methods(post_, method_name)
         return HttpResponse(content)
     # else:
-        # if method_name == 'trip_times_network':
-        #     content = deal_with_trip_times_network(post_)
-        #     return HttpResponse(content)
+    #     if method_name == 'trip_times_network':
+    #         content = deal_with_trip_times_network(post_)
+    #         return HttpResponse(content)
 
 
 def deal_with_first_seven_methods(post, method_name):
