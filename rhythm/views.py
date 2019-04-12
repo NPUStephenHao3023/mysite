@@ -15,6 +15,10 @@ def index(request):
     return render(request, 'rhythm/index.html')
 
 
+def index_association(request):
+    return render(request, 'rhythm/index_association.html')
+
+
 def results(request, dataset_name, method_name, parameter):
     context = {
         'image_name': None,
