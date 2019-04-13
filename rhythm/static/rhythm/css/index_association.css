@@ -58,11 +58,11 @@ a:hover {
 .left {
     float: left;
 }
-.right {
-    float: right;
-}
 .none{
 	float: none;
+}
+.right {
+    float: right;
 }
 .clear {
     clear: both;
@@ -221,9 +221,6 @@ a:hover {
     overflow: auto;
     ;
 }
-.find_expend {
-    display: none;
-}
 .con1::before {
     content: "";
     display: block;
@@ -232,20 +229,23 @@ a:hover {
     height: 0;
 }
 .select_time {
-    width: 140px;
+    width: 250px;
     height: 36px;
     margin-bottom: 25px;
     margin-left: 1%;
     padding-left: 20px;
 }
+.margin_top_60{
+	margin-top:60px;
+}
 .nav_charts_pie {
 /*	background-color:#252e41;*/
-    background-color: #030829;
+/*    background-color: #030829;*/
     width: 110%;
     height: 60px;
     margin-top: 50px;
     margin-bottom: 25px;
-    margin-left: -1%;
+/*    margin-left: -1%;*/
     padding-left: 20px;
 }
 .nav_charts_pie img {
@@ -270,7 +270,7 @@ a:hover {
 .select_time input {
     border: none;
     background-color: transparent;
-    width: 80px;
+    width: 250px;
     height: 20px;
     top: -5px;
     margin-left: 10px;
@@ -489,7 +489,7 @@ a:hover {
     width: 98%;
     margin-left: 1%;
     margin-bottom: 25px;
-    height: 640px;
+    height: 600px;
 }
 .div_chart {
     width: 99%;
@@ -1057,7 +1057,7 @@ a:hover {
 }
 /*统计分析界面样式*/
 .static_top {
-    width: 180px;
+    width: 200px;
     height: 36px;
     line-height: 36px;
     background-color: #04425f;
