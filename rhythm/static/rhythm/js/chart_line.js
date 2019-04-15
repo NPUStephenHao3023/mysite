@@ -1,5 +1,6 @@
 /**
  * Created by 30947 on 2018/7/18.
+ * sumbit_data_line: poi整体概率统计 
  */
 $(function () {
 	//	chart1();
@@ -29,7 +30,7 @@ function csrfSafeMethod(method) {
 	return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
-function sumbit_data_line() {
+function submit_data_line() {
 	var csrftoken = getCookie('csrftoken');
 	//包装数据
 	var formData = {
@@ -97,7 +98,7 @@ function sumbit_data_line() {
 }
 
 function makeChart_line(data) {
-	var myChart = echarts.init($("#chart_1")[0]);
+	var myChart = echarts.init($("#chart_3")[0]);
 	var len = data.length;
 	var option = {
 		backgroundColor: "#fff",

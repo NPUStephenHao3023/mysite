@@ -42,9 +42,9 @@ function hiddenall() {
 	$("#method6_2").addClass("hide");
 	$("#method7_1").addClass("hide");
 	$("#method7_2").addClass("hide");
-	$("#method8_1").addClass("hide");
-	$("#method8_2").addClass("hide");
-	$("#method9").addClass("hide");
+	//	$("#method8_1").addClass("hide");
+	//	$("#method8_2").addClass("hide");
+	//	$("#method9").addClass("hide");
 }
 // function change_checked_state(id) {
 // 	var $radios =  $('input:radio[name=method]');
@@ -70,11 +70,6 @@ function onchangeradio(id, method) {
 	} else if (method == 7) {
 		$("#method7_1").removeClass("hide");
 		$("#method7_2").removeClass("hide");
-	} else if (method == 8) {
-		$("#method8_1").removeClass("hide");
-		$("#method8_2").removeClass("hide");
-	} else if (method == 9) {
-		$("#method9").removeClass("hide");
 	}
 }
 
@@ -116,7 +111,7 @@ function sumbit_data() {
 		'method8_1': $('input[name=method8_1]').val(),
 		'method8_2': $("#method8_2  option:selected").val(),
 		'method9': $('input[name=method9]').val(),
-		'method10': $("#method10  option:selected").val(),
+		//		'method10': $("#method10  option:selected").val(),
 		'dataset': $('input[name=dataset]:checked').val()
 	};
 	//如果正在加载则不能重复提交
@@ -154,32 +149,30 @@ function sumbit_data() {
 			}
 		}
 	});
-	//如果方法为method8，则直接从json中获取，而不是访问服务器。
-	if (method_choice == "method8" || method_choice == "method9") {
-		handle_method8(formData);
-	} else {
-		$.ajax({
-			//几个参数需要注意一下
-			type: "POST", //方法类型
-			dataType: "json", //预期服务器返回的数据类型
-			url: "select/", //url
-			//		url:"/static/rhythm/demo_test.txt",
-			//		url: "/static/rhythm/dataset.txt",
-			data: formData,
-			success: function (result) {
-				//有返回值
-				submitted = false;
-				handle(result);
-			},
-			error: function () {
-				alert("异常！");
-				submitted = false;
-				$('#final_image').attr('src', '/static/rhythm/img/instruction.png');
-			}
-		});
-	}
+  
+	//访问服务器。
+	$.ajax({
+		//几个参数需要注意一下
+		type: "POST", //方法类型
+		dataType: "json", //预期服务器返回的数据类型
+		url: "select/", //url
+		//		url:"/static/rhythm/demo_test.txt",
+		//		url: "/static/rhythm/dataset.txt",
+		data: formData,
+		success: function (result) {
+			//有返回值
+			submitted = false;
+			handle(result);
+		},
+		error: function () {
+			alert("异常！");
+			submitted = false;
+			$('#final_image').attr('src', '/static/rhythm/img/instruction.png');
+		}
+	});
 
 }
+
 function handle_method8(parameter) {
 	method_choice = "";
 	depth = parameter["method8_1"];
@@ -188,69 +181,68 @@ function handle_method8(parameter) {
 	$.getJSON(url, function (result) {
 		console.log(result);
 		runMethod8(result, depth)
-		submitted = false;
+			//		submitted = false;
+
 	});
 }
+
 function handle(result) {
 
 	console.log(result); //打印服务端返回的数据(调试用)
 	//method8加载echarts，否则销毁echarts加载图片
-	if (method_choice == "method8") {
-		method_choice = "";
-		runMethod8(result);
-	} else {
-		method_choice = "";
-		//销毁echarts，重新加入图片
-		var compareChart = echarts.getInstanceByDom(document.getElementById("div_img_show"));
-		if (compareChart == undefined) {
-			console.log("nothing");
-		} else {
-			echarts.dispose(compareChart);
-			$("#div_img_show").prepend("<img id='final_image' class='images' >");
-		}
-		$('#final_image').attr('src', '/static/rhythm/img/instruction.png');
-		var image_full_name = result["image_full_name"];
-		img_address = "/static/rhythm/img/generated/" + image_full_name;
-		$('#final_image').attr('src', img_address);
 
-		//显示参数
-		var extra_information = jQuery.parseJSON(result["extra_information"]);
-		console.log(extra_information);
-		$('#information_entropy').text(extra_information["information_entropy"]);
-		$('#varience').text(extra_information["varience"]);
-		$('#standard_deviation').text(extra_information["standard_deviation"]);
-		$('#mean').text(extra_information["mean"]);
-		$('#max').text(extra_information["max"]);
-		$('#min').text(extra_information["min"]);
-		$('#skew').text(extra_information["skew"]);
-		$('#kurtosis').text(extra_information["kurtosis"]);
-		$('#len').text(extra_information["len"]);
-	}
-	//	var image_full_name = result["image_full_name"];
-	//	var extra_information = jQuery.parseJSON(result["extra_information"]);
-	//	var extra_information = result["extra_information"];
-	//	//	img_address = "/static/rhythm/img/generated/" + image_full_name
-	//	//	$('#final_image').attr('src', img_address);
-	//	$('#information_entropy').text(extra_information["information_entropy"]);
-	//	$('#varience').text(extra_information["varience"]);
-	//	$('#standard_deviation').text(extra_information["standard_deviation"]);
-	//	$('#mean').text(extra_information["mean"]);
-	//	$('#max').text(extra_information["max"]);
-	//	$('#min').text(extra_information["min"]);
-	//	$('#skew').text(extra_information["skew"]);
-	//	$('#kurtosis').text(extra_information["kurtosis"]);
-	//	$('#len').text(extra_information["len"]);
+	method_choice = "";
+	//销毁echarts，重新加入图片
+//	var compareChart = echarts.getInstanceByDom(document.getElementById("div_img_show"));
+//	if (compareChart == undefined) {
+//		console.log("nothing");
+//	} else {
+//		echarts.dispose(compareChart);
+//		$("#div_img_show").prepend("<img id='final_image' class='images' >");
+//	}
+	$('#final_image').attr('src', '/static/rhythm/img/instruction.png');
+	var image_full_name = result["image_full_name"];
+	img_address = "/static/rhythm/img/generated/" + image_full_name;
+	$('#final_image').attr('src', img_address);
+
+	//显示参数
+	var extra_information = jQuery.parseJSON(result["extra_information"]);
+	console.log(extra_information);
+	$('#information_entropy').text(extra_information["information_entropy"]);
+	$('#varience').text(extra_information["varience"]);
+	$('#standard_deviation').text(extra_information["standard_deviation"]);
+	$('#mean').text(extra_information["mean"]);
+	$('#max').text(extra_information["max"]);
+	$('#min').text(extra_information["min"]);
+	$('#skew').text(extra_information["skew"]);
+	$('#kurtosis').text(extra_information["kurtosis"]);
+	$('#len').text(extra_information["len"]);
+//}
+//	var image_full_name = result["image_full_name"];
+//	var extra_information = jQuery.parseJSON(result["extra_information"]);
+//	var extra_information = result["extra_information"];
+//	//	img_address = "/static/rhythm/img/generated/" + image_full_name
+//	//	$('#final_image').attr('src', img_address);
+//	$('#information_entropy').text(extra_information["information_entropy"]);
+//	$('#varience').text(extra_information["varience"]);
+//	$('#standard_deviation').text(extra_information["standard_deviation"]);
+//	$('#mean').text(extra_information["mean"]);
+//	$('#max').text(extra_information["max"]);
+//	$('#min').text(extra_information["min"]);
+//	$('#skew').text(extra_information["skew"]);
+//	$('#kurtosis').text(extra_information["kurtosis"]);
+//	$('#len').text(extra_information["len"]);
 
 
 }
 
 function runMethod8(result, depth) {
 	var len = Math.pow(2, depth); //点的数量
-	var x = new Array();//点的经度
+	var x = new Array(); //点的经度
 	for (i = 0; i < len; i++) {
 		x[i] = result["idx_gps"][i][1];
 	}
-	var y = new Array();//点的纬度
+	var y = new Array(); //点的纬度
 	for (i = 0; i < len; i++) {
 		y[i] = result["idx_gps"][i][0];
 	}
@@ -310,9 +302,11 @@ function runMethod8(result, depth) {
 	}
 
 
-	$("#final_image").hide();
-	$("#div_img_show").addClass("div_method8")
-	var dom = document.getElementById("div_img_show");
+
+//	$("#final_image").hide();
+//	$("#chart_1").addClass("div_method8")
+	var dom = document.getElementById("chart_1");
+
 
 	var myChart = echarts.init(dom);
 	myChart.clear();
@@ -412,8 +406,7 @@ function runMethod8(result, depth) {
 								},
 								label: {
 									normal: {
-										show: true
-										,
+										show: true,
 										position: 'middle',
 										fontSize: 15,
 										formatter: ' {@value}'
@@ -434,4 +427,99 @@ function runMethod8(result, depth) {
 
 	myChart.setOption(option, true);
 
+}
+
+function sumbit_data_02(method) {
+	var csrftoken = getCookie('csrftoken');
+	//包装数据
+
+	var formData = {
+		'method': method,
+		'method1': $('input[name=method1]').val(),
+		'method2': $('input[name=method2]').val(),
+		'method3': $('input[name=method3]').val(),
+		'method4': $('input[name=method4]').val(),
+		'method5': $('input[name=method5]').val(),
+		'method6_1': $('input[name=method6_1]').val(),
+		'method6_2': $('input[name=method6_2]').val(),
+		'method7_1': $('input[name=method7_1]').val(),
+		'method7_2': $('input[name=method7_2]').val(),
+		'method8_1': $('input[name=method8_1]').val(),
+		'method8_2': $("#method8_2  option:selected").val(),
+		'method9_1': $('input[name=method9_1]').val(),
+		'method9_2': $("#method9_2  option:selected").val(),
+		'method10': $("#method10  option:selected").val(),
+		'dataset': $('input[name=dataset]:checked').val()
+	};
+	
+	//暂时给method9随机赋值
+	if(formData['method']=='method9'){
+		formData['method']='method2';
+		formData['method2']=formData['method9_1'];
+		formData['dataset']='dataset1.csv'
+	}
+	console.log(formData);
+	//发送后submited=true，并更换加载图片，表示正在加载。
+
+	method_choice = formData["method"];
+//	$('#image_chart3').attr('src', '/static/rhythm/img/loading.gif');
+
+	//发送请求
+	$.ajaxSetup({
+		beforeSend: function (xhr, settings) {
+			if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+				xhr.setRequestHeader("X-CSRFToken", csrftoken);
+			}
+		}
+	});
+	//如果方法为method8，则直接从json中获取，而不是访问服务器。
+	if (method_choice == "method8") {
+		handle_method8(formData);
+	} else {
+		$.ajax({
+			//几个参数需要注意一下
+			type: "POST", //方法类型
+			dataType: "json", //预期服务器返回的数据类型
+			url: "select/", //url
+			//		url:"/static/rhythm/demo_test.txt",
+			//		url: "/static/rhythm/dataset.txt",
+			data: formData,
+			success: function (result) {
+				//有返回值
+				submitted = false;
+				handle_method9(result);
+			},
+			error: function () {
+				alert("异常！");
+				//				submitted = false;
+				$('#image_chart3').attr('src', '/static/rhythm/img/instruction.png');
+			}
+		});
+	}
+
+}
+
+function handle_method9(result){
+	console.log(result); //打印服务端返回的数据(调试用)
+	//method8加载echarts，否则销毁echarts加载图片
+
+	method_choice = "";
+
+	$('#image_chart3').attr('src', '/static/rhythm/img/instruction.png');
+	var image_full_name = result["image_full_name"];
+	img_address = "/static/rhythm/img/generated/" + image_full_name;
+	$('#image_chart3').attr('src', img_address);
+
+	//显示参数
+	var extra_information = jQuery.parseJSON(result["extra_information"]);
+	console.log(extra_information);
+	$('#information_entropy').text(extra_information["information_entropy"]);
+	$('#varience').text(extra_information["varience"]);
+	$('#standard_deviation').text(extra_information["standard_deviation"]);
+	$('#mean').text(extra_information["mean"]);
+	$('#max').text(extra_information["max"]);
+	$('#min').text(extra_information["min"]);
+	$('#skew').text(extra_information["skew"]);
+	$('#kurtosis').text(extra_information["kurtosis"]);
+	$('#len').text(extra_information["len"]);
 }

@@ -29,7 +29,7 @@ function csrfSafeMethod(method) {
 	return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
-function sumbit_data_lines() {
+function submit_data_lines() {
 	var csrftoken = getCookie('csrftoken');
 	//包装数据
 	var formData = {
