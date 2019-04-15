@@ -5,9 +5,9 @@
 var submitted = false; //submitted变量用于保证加载过程中不能重复提交
 var method_choice; //提交的方法
 $(function () {
-		nav();
-	})
-	//导航条点击添加样式
+	nav();
+})
+//导航条点击添加样式
 function nav() {
 	initdata();
 	//	dom = document.getElementById("div_img_show");
@@ -145,7 +145,7 @@ function sumbit_data() {
 	submitted = true;
 	method_choice = formData["method"];
 	$('#final_image').attr('src', '/static/rhythm/img/loading.gif');
-	
+
 	//发送请求
 	$.ajaxSetup({
 		beforeSend: function (xhr, settings) {
@@ -155,7 +155,7 @@ function sumbit_data() {
 		}
 	});
 	//如果方法为method8，则直接从json中获取，而不是访问服务器。
-	if (method_choice == "method8"||method_choice == "method9") {
+	if (method_choice == "method8" || method_choice == "method9") {
 		handle_method8(formData);
 	} else {
 		$.ajax({
@@ -184,15 +184,15 @@ function handle_method8(parameter) {
 	method_choice = "";
 	depth = parameter["method8_1"];
 	time = parameter["method8_2"];
-	url = "/static/rhythm/json/taxi_gps_one_hour_result_kdtree/2014-08-05_h" + time + "_dd" + depth+".json";
+	url = "/static/rhythm/json/taxi_gps_one_hour_result_kdtree/2014-08-05_h" + time + "_dd" + depth + ".json";
 	$.getJSON(url, function (result) {
 		console.log(result);
-		runMethod8(result,depth)
+		runMethod8(result, depth)
 		submitted = false;
 	});
 }
 function handle(result) {
-	
+
 	console.log(result); //打印服务端返回的数据(调试用)
 	//method8加载echarts，否则销毁echarts加载图片
 	if (method_choice == "method8") {
@@ -212,7 +212,7 @@ function handle(result) {
 		var image_full_name = result["image_full_name"];
 		img_address = "/static/rhythm/img/generated/" + image_full_name;
 		$('#final_image').attr('src', img_address);
-		
+
 		//显示参数
 		var extra_information = jQuery.parseJSON(result["extra_information"]);
 		console.log(extra_information);
@@ -228,38 +228,38 @@ function handle(result) {
 	}
 	//	var image_full_name = result["image_full_name"];
 	//	var extra_information = jQuery.parseJSON(result["extra_information"]);
-//	var extra_information = result["extra_information"];
-//	//	img_address = "/static/rhythm/img/generated/" + image_full_name
-//	//	$('#final_image').attr('src', img_address);
-//	$('#information_entropy').text(extra_information["information_entropy"]);
-//	$('#varience').text(extra_information["varience"]);
-//	$('#standard_deviation').text(extra_information["standard_deviation"]);
-//	$('#mean').text(extra_information["mean"]);
-//	$('#max').text(extra_information["max"]);
-//	$('#min').text(extra_information["min"]);
-//	$('#skew').text(extra_information["skew"]);
-//	$('#kurtosis').text(extra_information["kurtosis"]);
-//	$('#len').text(extra_information["len"]);
+	//	var extra_information = result["extra_information"];
+	//	//	img_address = "/static/rhythm/img/generated/" + image_full_name
+	//	//	$('#final_image').attr('src', img_address);
+	//	$('#information_entropy').text(extra_information["information_entropy"]);
+	//	$('#varience').text(extra_information["varience"]);
+	//	$('#standard_deviation').text(extra_information["standard_deviation"]);
+	//	$('#mean').text(extra_information["mean"]);
+	//	$('#max').text(extra_information["max"]);
+	//	$('#min').text(extra_information["min"]);
+	//	$('#skew').text(extra_information["skew"]);
+	//	$('#kurtosis').text(extra_information["kurtosis"]);
+	//	$('#len').text(extra_information["len"]);
 
 
 }
 
-function runMethod8(result,depth) {
-	var len = Math.pow(2,depth); //点的数量
+function runMethod8(result, depth) {
+	var len = Math.pow(2, depth); //点的数量
 	var x = new Array();//点的经度
-	for(i=0;i<len;i++){
-		x[i]=result["idx_gps"][i][1];
+	for (i = 0; i < len; i++) {
+		x[i] = result["idx_gps"][i][1];
 	}
 	var y = new Array();//点的纬度
-	for(i=0;i<len;i++){
-		y[i]=result["idx_gps"][i][0];
+	for (i = 0; i < len; i++) {
+		y[i] = result["idx_gps"][i][0];
 	}
 	var maps = result["sum_matrix"];
 	var value = new Array();
-	for(i=0;i<len;i++){
-		value[i]=maps[i][i];
+	for (i = 0; i < len; i++) {
+		value[i] = maps[i][i];
 	}
-	
+
 	var xMax = 0;
 	var xMin = 200;
 	var yMax = 0;
@@ -313,21 +313,21 @@ function runMethod8(result,depth) {
 	$("#final_image").hide();
 	$("#div_img_show").addClass("div_method8")
 	var dom = document.getElementById("div_img_show");
-	
+
 	var myChart = echarts.init(dom);
 	myChart.clear();
-	
+
 	option = {
 		tooltip: {
 			trigger: 'item',
 			show: true,
-			
+
 		},
 		bmap: {
-        	center: [104.1, 30.68],
+			center: [104.1, 30.68],
 			zoom: 13,
 			roam: true,
-			height:'90%'
+			height: '90%'
 		},
 		series: [{
 			type: 'graph',
@@ -340,9 +340,9 @@ function runMethod8(result,depth) {
 			symbolSize: (value, params) => { //设置节点大小
 				//根据数据params中的data来判定数据大小
 				var tmp = params.data.value[2];
-				if(depth>=5){
+				if (depth >= 5) {
 					return (tmp - valueMin) / (valueMax - valueMin) * 20 + 20;
-				}else{
+				} else {
 					return (tmp - valueMin) / (valueMax - valueMin) * 30 + 30;
 				}
 			},
@@ -365,13 +365,13 @@ function runMethod8(result,depth) {
 							normal: {
 								show: true,
 								formatter: (function () {
-									return maps[i-1][i-1]+"";
+									return maps[i - 1][i - 1] + "";
 								})()
 							}
 						},
 						tooltip: {
 							formatter: (function () {
-								return 'No' + i + ':' + value[i - 1]+',('+x[i-1]+','+y[i-1]+')';
+								return 'No' + i + ':' + value[i - 1] + ',(' + x[i - 1] + ',' + y[i - 1] + ')';
 							})(),
 							textStyle: {
 								fontFamily: 'Verdana, sans-serif',
@@ -431,7 +431,7 @@ function runMethod8(result,depth) {
 			})()
 		}]
 	};
-	
+
 	myChart.setOption(option, true);
 
 }
