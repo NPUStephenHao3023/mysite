@@ -5,9 +5,9 @@
 var submitted = false; //submitted变量用于保证加载过程中不能重复提交
 var method_choice; //提交的方法
 $(function () {
-		nav();
-	})
-	//导航条点击添加样式
+	nav();
+})
+//导航条点击添加样式
 function nav() {
 	initdata();
 	//	dom = document.getElementById("div_img_show");
@@ -149,6 +149,7 @@ function sumbit_data() {
 			}
 		}
 	});
+  
 	//访问服务器。
 	$.ajax({
 		//几个参数需要注意一下
@@ -181,6 +182,7 @@ function handle_method8(parameter) {
 		console.log(result);
 		runMethod8(result, depth)
 			//		submitted = false;
+
 	});
 }
 
@@ -300,9 +302,11 @@ function runMethod8(result, depth) {
 	}
 
 
+
 //	$("#final_image").hide();
 //	$("#chart_1").addClass("div_method8")
 	var dom = document.getElementById("chart_1");
+
 
 	var myChart = echarts.init(dom);
 	myChart.clear();
