@@ -58,18 +58,18 @@ a:hover {
 .left {
     float: left;
 }
-.right {
-    float: right;
-}
 .none{
 	float: none;
+}
+.right {
+    float: right;
 }
 .clear {
     clear: both;
 }
 .images {
     margin-top: 30px;
-    height: 600px;
+    height: 500px;
 }
 .text_right {
     text-align: right;
@@ -221,9 +221,6 @@ a:hover {
     overflow: auto;
     ;
 }
-.find_expend {
-    display: none;
-}
 .con1::before {
     content: "";
     display: block;
@@ -232,20 +229,23 @@ a:hover {
     height: 0;
 }
 .select_time {
-    width: 140px;
+    width: 250px;
     height: 36px;
     margin-bottom: 25px;
     margin-left: 1%;
     padding-left: 20px;
 }
+.margin_top_60{
+	margin-top:60px;
+}
 .nav_charts_pie {
 /*	background-color:#252e41;*/
-    background-color: #030829;
+/*    background-color: #030829;*/
     width: 110%;
     height: 60px;
     margin-top: 50px;
     margin-bottom: 25px;
-    margin-left: -1%;
+/*    margin-left: -1%;*/
     padding-left: 20px;
 }
 .nav_charts_pie img {
@@ -270,7 +270,7 @@ a:hover {
 .select_time input {
     border: none;
     background-color: transparent;
-    width: 80px;
+    width: 250px;
     height: 20px;
     top: -5px;
     margin-left: 10px;
@@ -392,7 +392,7 @@ a:hover {
 .div_img {
     background: #ffffff;
     width: 100%;
-    height: 680px;
+    height: 600px;
     box-shadow: -10px 0px 15px #034c6a inset, /*å·¦è¾¹é˜´å½±*/  0px -10px 15px #034c6a inset, /*ä¸Šè¾¹é˜´å½±*/  10px 0px 15px #034c6a inset, /*å³è¾¹é˜´å½±*/  0px 10px 15px #034c6a inset;
     border: 1px solid #034c6a;
     box-sizing: border-box;
@@ -402,7 +402,7 @@ a:hover {
 }
 .div_any_child {
     width: 100%;
-    height: 480px;
+    height: 400px;
     box-shadow: -10px 0px 15px #034c6a inset, /*å·¦è¾¹é˜´å½±*/  0px -10px 15px #034c6a inset, /*ä¸Šè¾¹é˜´å½±*/  10px 0px 15px #034c6a inset, /*å³è¾¹é˜´å½±*/  0px 10px 15px #034c6a inset;
     border: 1px solid #034c6a;
     box-sizing: border-box;
@@ -488,8 +488,8 @@ a:hover {
 .div_table {
     width: 98%;
     margin-left: 1%;
-/*    margin-bottom: 25px;*/
-/*    height: 700px;*/
+    margin-bottom: 25px;
+    height: 600px;
 }
 .div_chart {
     width: 99%;
@@ -1057,7 +1057,7 @@ a:hover {
 }
 /*统计分析界面样式*/
 .static_top {
-    width: 180px;
+    width: 200px;
     height: 36px;
     line-height: 36px;
     background-color: #04425f;
