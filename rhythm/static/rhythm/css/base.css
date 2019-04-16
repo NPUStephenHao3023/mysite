@@ -69,7 +69,7 @@ a:hover {
 }
 .images {
     margin-top: 30px;
-    height: 500px;
+    height: 600px;
 }
 .text_right {
     text-align: right;
@@ -392,7 +392,7 @@ a:hover {
 .div_img {
     background: #ffffff;
     width: 100%;
-    height: 600px;
+    height: 680px;
     box-shadow: -10px 0px 15px #034c6a inset, /*å·¦è¾¹é˜´å½±*/  0px -10px 15px #034c6a inset, /*ä¸Šè¾¹é˜´å½±*/  10px 0px 15px #034c6a inset, /*å³è¾¹é˜´å½±*/  0px 10px 15px #034c6a inset;
     border: 1px solid #034c6a;
     box-sizing: border-box;
@@ -402,7 +402,7 @@ a:hover {
 }
 .div_any_child {
     width: 100%;
-    height: 400px;
+    height: 480px;
     box-shadow: -10px 0px 15px #034c6a inset, /*å·¦è¾¹é˜´å½±*/  0px -10px 15px #034c6a inset, /*ä¸Šè¾¹é˜´å½±*/  10px 0px 15px #034c6a inset, /*å³è¾¹é˜´å½±*/  0px 10px 15px #034c6a inset;
     border: 1px solid #034c6a;
     box-sizing: border-box;
@@ -488,8 +488,8 @@ a:hover {
 .div_table {
     width: 98%;
     margin-left: 1%;
-    margin-bottom: 25px;
-    height: 640px;
+/*    margin-bottom: 25px;*/
+/*    height: 700px;*/
 }
 .div_chart {
     width: 99%;

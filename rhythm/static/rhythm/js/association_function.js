@@ -10,11 +10,20 @@ function submit_data_chart8_9(method) {
 
 	var formData = {
 		'method': method,
-		'method2': 0,
+		'method1': "",
+		'method2': "",
+		'method3': "",
+		'method4': "",
+		'method5': "",
+		'method6_1': "",
+		'method6_2': "",
+		'method7_1': "",
+		'method7_2': "",
 		'method8_1': $('input[name=method8_1]').val(),
 		'method8_2': $("#method8_2  option:selected").val(),
 		'method9_1': $('input[name=method9_1]').val(),
 		'method9_2': $("#method9_2  option:selected").val(),
+		'method10': $("#method10  option:selected").val(),
 		'dataset': $('input[name=dataset]:checked').val()
 	};
 	
@@ -43,11 +52,11 @@ function submit_data_chart8_9(method) {
 	if (method_choice == "method8") {
 		handle_method8(formData);
 	} else {
-		$.ajax({
+		$.ajax({ 
 			//几个参数需要注意一下
 			type: "POST", //方法类型
 			dataType: "json", //预期服务器返回的数据类型
-			url: "select/", //url
+			url: "/rhythm/select/", //url
 			//		url:"/static/rhythm/demo_test.txt",
 			//		url: "/static/rhythm/dataset.txt",
 			data: formData,
