@@ -6,7 +6,8 @@ app_name = 'rhythm'
 urlpatterns = [
     path('', views.index, name='index'),
     path('index_association/', views.index_association, name='index_association'),
-    path('index_association/select/', views.select, name='select'),
+    path('index_to_generate_image/', views.index_to_generate_image, name='index_to_generate_image'),
     path('select/', views.select, name='select'),
+    path('select_to_generate_image/', views.select_to_generate_image, name='select_to_generate_image'),
     path('<str:dataset_name>/<str:method_full_name>/<int:parameter>/', views.results, name='results'),
 ]
