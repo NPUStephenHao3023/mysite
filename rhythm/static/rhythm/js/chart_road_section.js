@@ -50,7 +50,7 @@ function submit_data_lines() {
 		time = formData['method11'];
 
 		//暂时数据写死
-		time = '6_7';
+//		time = '6_7';
 
 		url = "/static/rhythm/json/taxi_track_one_hour_poi_road/20140803_taxi_track_" + time + "_poi_road" + ".json";
 		$.getJSON(url, function (result) {
@@ -81,7 +81,7 @@ function handle_road_list(data) {
 }
 
 function makeChart_roadsection(data) {
-//	console.log(data);
+	console.log(data,'data');
 
 	var road_list = handle_road_list(data['road_line_poi_list']);
 	//length:路段数
@@ -212,7 +212,7 @@ function makeChart_roadsection(data) {
 				var t = [];
 				for (var i = 0; i < length; i++) {
 					var tmp = {
-						name: "No: " + (i + 1),
+						name: data['road_line_poi_list'][i]['road_name']+' '+data['road_line_poi_list'][i]['road_length'].toFixed(2),
 						coords: road_list[i],
 						number: i,
 						lineStyle: {

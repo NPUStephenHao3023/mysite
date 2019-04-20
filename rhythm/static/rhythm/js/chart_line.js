@@ -47,7 +47,7 @@ function submit_data_line() {
 		time = formData['method10'];
 		
 		//暂时数据写死
-		time = '6_7';
+//		time = '6_7';
 		
 		url = "/static/rhythm/json/taxi_track_one_hour_poi_road/20140803_taxi_track_" + time + "_poi_road" + ".json";
 		$.getJSON(url, function (result) {
