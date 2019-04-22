@@ -93,11 +93,21 @@ function makeChart_roadsection(data) {
 	var option = null;
 	app.title = '北京公交路线 - 百度地图';
 
+
+	
 	var option = {
 		tooltip: {
 			show: true,
 			trigger: 'item',
-			formatter: '{b}'
+//			formatter: '{b}'
+			formatter: function (params, ticket, callback) {
+				console.log(params);
+//				var poi = params[0].data.poi;
+//				var value = params[0].value;
+//				var name = params[0].name;
+//				return value + "<br/> POI:" + poi;
+				return params.data.name;
+			}
 		},
 		bmap: {
 			center: [104.07, 30.68],
@@ -212,7 +222,7 @@ function makeChart_roadsection(data) {
 				var t = [];
 				for (var i = 0; i < length; i++) {
 					var tmp = {
-						name: data['road_line_poi_list'][i]['road_name']+' '+data['road_line_poi_list'][i]['road_length'].toFixed(2),
+						name: '名称:'+data['road_line_poi_list'][i]['road_name']+'\n长度:'+data['road_line_poi_list'][i]['road_length'].toFixed(2)+' m',
 						coords: road_list[i],
 						number: i,
 						lineStyle: {
@@ -284,6 +294,13 @@ function submit_data_roadsection_2(index,data) {
 	var poi_probability = handle_data(data["road_line_poi_list"][index]["poi_vector"]);
 	console.log(poi_probability);
 	
+	//生成一段序列
+	var ls = [];
+	var lg = data['poi_types'].length;
+	for(var i=0;i<lg;i++){
+		ls.push(i+1);
+	}
+	
 	var myChart = echarts.init($("#chart_lines_2")[0]);
 	var len = poi_types.length;
 	var option = {
@@ -298,16 +315,19 @@ function submit_data_roadsection_2(index,data) {
 				var poi = params[0].data.poi;
 				var value = params[0].value;
 				var name = params[0].name;
-				return value + "<br/> POI:" + poi;
+				return  '序号:' + name+ "<br/>名称:" + poi+ '<br/>出现频率:' + value;
 			}
 		},
 		xAxis:{
-			data: poi_types
+			data: ls,
+			name: '编号'
 		},
 		yAxis: {
 			splitLine: {
-				show: false
-			}
+				show: false,
+				
+			},
+			name: '频率'
 		},
 		dataZoom: [{
 			startValue: 1

@@ -79,6 +79,15 @@ function makeChart_line(data) {
 //	return ;
 	var myChart = echarts.init($("#chart_3")[0]);
 	var len = poi_types.length;
+	
+	//生成一段序列
+	var ls = [];
+	var lg = data['poi_types'].length;
+	for(var i=0;i<lg;i++){
+		ls.push(i+1);
+	}
+	
+	
 	var option = {
 		backgroundColor: "#fff",
 		title: {
@@ -91,7 +100,7 @@ function makeChart_line(data) {
 				var poi = params[0].data.poi;
 				var value = params[0].value;
 				var name = params[0].name;
-				return value + "<br/> POI:" + poi;
+				return  '序号:' + name+ "<br/>名称:" + poi+ '<br/>出现频率:' + value;
 			}
 		},
 //		xAxis: {
@@ -100,56 +109,21 @@ function makeChart_line(data) {
 //			})
 //		},
 		xAxis:{
-			data: poi_types
+			data: ls,
+			name: '编号'
 		},
 		yAxis: {
 			splitLine: {
-				show: false
-			}
+				show: false,
+				
+			},
+			name: '频率'
 		},
 		dataZoom: [{
 			startValue: 1
 		}, {
 			type: 'inside'
 		}],
-		visualMap: {
-			type: "piecewise",
-			top: 10,
-			right: 10,
-			pieces: [{
-				gt: 0,
-				lte: 0.2,
-				label: "0 - 0.2",
-				color: '#096'
-			}, {
-				gt: 0.2,
-				lte: 0.4,
-				label: "0.2 - 0.4",
-				color: '#ffde33'
-			}, {
-				gt: 0.4,
-				lte: 0.6,
-				label: "0.4 - 0.6",
-				color: '#ff9933'
-			}, {
-				gt: 0.6,
-				lte: 0.8,
-				label: "0.6 - 0.8",
-				color: '#cc0033'
-			}, {
-				gt: 0.8,
-				lte: 1.0,
-				label: "0.8 - 1.0",
-				color: '#660099'
-			}, {
-				gt: 1.0,
-				label: "> 1.0",
-				color: '#7e0023'
-			}],
-			outOfRange: {
-				color: '#999'
-			}
-		},
 		series: {
 			name: 'Beijing AQI',
 			type: 'line',
