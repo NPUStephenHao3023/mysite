@@ -95,7 +95,10 @@ def count_poi_numbers_vector_using_rtree():
     sql_of_select_track_destination = "SELECT track_id,\
                                               destination_latitude,\
                                               destination_longitude\
-                                       FROM _20140803_taxi_track"
+                                       FROM _20140803_taxi_track\
+                                       ORDER BY track_id\
+                                       LIMIT 230000\
+                                       OFFSET 230000"
     # sql_of_select_specified_poi = "SELECT \
     #                                     level_1_category,\
     #                                     level_2_category,\
@@ -155,10 +158,11 @@ def count_poi_numbers_vector_using_rtree():
                             poi_vector[index_of_level_1] += 1
             # end_loop = timeit.default_timer()
             # print("time_loop: ", end_loop - start_loop)
-            sql_of_insert_poi_vector = sql_of_insert_poi_vector.format(
+            sql_of_temp_insert_poi_vector = sql_of_insert_poi_vector.format(
                 poi_vector, track_record[0])
             # print(poi_vector)
-            cursor.execute(sql_of_insert_poi_vector)
+            print(sql_of_temp_insert_poi_vector)
+            cursor.execute(sql_of_temp_insert_poi_vector)
             connection.commit()
     except (psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL: ", error)
@@ -194,11 +198,11 @@ def count_poi_numbers_vector():
                                             FROM _poi_part_info\
                                             WHERE is_in_circle(500, {}, {}, latitude, longitude) = true"
             sql_of_insert_poi_vector = "UPDATE _20140803_taxi_track SET poi_numbers_vector = ARRAY{} WHERE track_id = {}"
-            sql_of_select_poi_in_radius = sql_of_select_poi_in_radius.format(
+            sql_of_temp_select_poi_in_radius = sql_of_select_poi_in_radius.format(
                 track_record[1], track_record[2])
             start_sql_of_select_poi_in_radius = timeit.default_timer()
             cursor.execute(
-                sql_of_select_poi_in_radius)
+                sql_of_temp_select_poi_in_radius)
             end_sql_of_select_poi_in_radius = timeit.default_timer()
             print("time_sql_of_select_poi_in_radius: ",
                   end_sql_of_select_poi_in_radius - start_sql_of_select_poi_in_radius)
@@ -219,10 +223,10 @@ def count_poi_numbers_vector():
                             poi_vector[index_of_level_1] += 1
             end_loop = timeit.default_timer()
             print("time_loop: ", end_loop - start_loop)
-            sql_of_insert_poi_vector = sql_of_insert_poi_vector.format(
+            sql_of_temp_insert_poi_vector = sql_of_insert_poi_vector.format(
                 poi_vector, track_record[0])
             start_sql_of_insert_poi_vector = timeit.default_timer()
-            cursor.execute(sql_of_insert_poi_vector)
+            cursor.execute(sql_of_temp_insert_poi_vector)
             end_sql_of_insert_poi_vector = timeit.default_timer()
             print("time_sql_of_insert_poi_vector: ",
                   end_sql_of_insert_poi_vector - start_sql_of_insert_poi_vector)
@@ -230,7 +234,7 @@ def count_poi_numbers_vector():
             connection.commit()
             end_commit = timeit.default_timer()
             print("time_commit: ", end_commit - start_commit)
-            print(sql_of_insert_poi_vector)
+            print(sql_of_temp_insert_poi_vector)
             # break
     except (psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL: ", error)
