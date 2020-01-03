@@ -3,11 +3,11 @@
  */
 $(function () {
 	//	chart1();
+	
 	var new_element = document.createElement("script");
 	new_element.setAttribute("type", "text/javascript");
 	new_element.setAttribute("src", "/static/rhythm/js/coordinate_transformation.js"); // 在这里引入了a.js
 	document.body.appendChild(new_element);
-
 })
 var method_choice;
 var submitted = false;
@@ -47,12 +47,12 @@ function submit_data_lines() {
 
 	if (method_choice == 'method11') {
 		method_choice = "";
-		time = formData['method11'];
+		 var time = formData['method11'];
 
 		//暂时数据写死
 //		time = '6_7';
 
-		url = "/static/rhythm/json/taxi_track_one_hour_poi_road/20140803_taxi_track_" + time + "_poi_road" + ".json";
+		var url = "/static/rhythm/json/taxi_track_one_hour_poi_road/20140803_taxi_track_" + time + "_poi_road" + ".json";
 		$.getJSON(url, function (result) {
 			console.log(result);
 			makeChart_roadsection(result);
@@ -254,7 +254,8 @@ function makeChart_roadsection(data) {
 		}]
 	};
 	console.log(option.series[0].data);
-	myChart.setOption(option);
+    myChart.setOption(option)
+
 
 	myChart.off('click');
 	myChart.on('click', function (param) {
