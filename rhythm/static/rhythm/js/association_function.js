@@ -63,7 +63,7 @@ function handle_method9(parameter) {
 	$.getJSON(url, function (result) {
 		console.log(result);
 		runMethod9(result, depth)
-			//		submitted = false;
+		//		submitted = false;
 	});
 }
 
@@ -74,14 +74,14 @@ function runMethod9(result, depth) {
 	var dom = document.getElementById("chart_2");
 	var myChart = echarts.init(dom);
 	var option = {
-		title:{
+		title: {
 			text: '分时段目的地划分图',
 			left: 'center'
 		},
 		backgroundColor: '#ffffff',
-		grid:{
+		grid: {
 			show: true
-//			borderColor: '#EE2C2C'
+			//			borderColor: '#EE2C2C'
 		},
 		xAxis: {
 			name: 'longitude',
@@ -90,9 +90,9 @@ function runMethod9(result, depth) {
 			max: 104.6097,
 			min: 103.2731,
 			nameGap: 40,
-//			max: Right+0.01,
-//			min: Left-0.01,
-			splitLine:{
+			//			max: Right+0.01,
+			//			min: Left-0.01,
+			splitLine: {
 				show: false
 			}
 		},
@@ -103,9 +103,9 @@ function runMethod9(result, depth) {
 			min: 30.2906,
 			max: 31.0325,
 			nameGap: 40,
-//			min: Bottom-0.01,
-//			max: Top+0.01,
-			splitLine:{
+			//			min: Bottom-0.01,
+			//			max: Top+0.01,
+			splitLine: {
 				show: false
 			}
 
@@ -160,51 +160,51 @@ function runMethod9(result, depth) {
 function handle_data_method9(kdtree, depth) {
 	var lines = [];
 	var length = kdtree.length;
-	console.log(kdtree,'here');
-//	console.log(length);
-	for(var i = 0 ;i < length;i++){
-		
+	console.log(kdtree, 'here');
+	//	console.log(length);
+	for (var i = 0; i < length; i++) {
+
 		var node = kdtree[i];
 		var left = node["hrect"][0][1];
 		var right = node["hrect"][1][1];
 		var top = node["hrect"][1][0];
 		var bottom = node["hrect"][0][0];
-//		if(i==0){
-//			Left = left;
-//			Right = right;
-//			Top = top;
-//			Bottom = bottom;
-//			
-//		}else{
-//			Left = (Left<left?Left:left);
-//			Right = (Right>right?Right:right);
-//			Top =(Top>top?Top:top);
-//			Bottom = (Bottom<bottom?Bottom:bottom);
-//		}
-//		console.log(left,bottom , right ,top);
-		var tmp1={
+		//		if(i==0){
+		//			Left = left;
+		//			Right = right;
+		//			Top = top;
+		//			Bottom = bottom;
+		//			
+		//		}else{
+		//			Left = (Left<left?Left:left);
+		//			Right = (Right>right?Right:right);
+		//			Top =(Top>top?Top:top);
+		//			Bottom = (Bottom<bottom?Bottom:bottom);
+		//		}
+		//		console.log(left,bottom , right ,top);
+		var tmp1 = {
 			coords: [
-					[left, bottom],
-					[left, top]
-				]
+				[left, bottom],
+				[left, top]
+			]
 		};
-		var tmp2={
+		var tmp2 = {
 			coords: [
-					[left, top],
-					[right, top]
-				]
+				[left, top],
+				[right, top]
+			]
 		};
-		var tmp3={
+		var tmp3 = {
 			coords: [
-					[right, top],
-					[right , bottom]
-				]
+				[right, top],
+				[right, bottom]
+			]
 		};
-		var tmp4={
+		var tmp4 = {
 			coords: [
-					[right, bottom],
-					[left, bottom]
-				]
+				[right, bottom],
+				[left, bottom]
+			]
 		};
 		lines.push(tmp1);
 		lines.push(tmp2);
@@ -212,15 +212,15 @@ function handle_data_method9(kdtree, depth) {
 		lines.push(tmp4);
 	}
 	return lines;
-	
-	
+
+
 	//图的经纬度范围
-//	var left = 30.290685;
-//	var right = 31.032475;
-//	var top = 104.609696;
-//	var bottom = 103.273147;
-//	dfs_method9(0, 0, left, right, top, bottom);
-	
+	//	var left = 30.290685;
+	//	var right = 31.032475;
+	//	var top = 104.609696;
+	//	var bottom = 103.273147;
+	//	dfs_method9(0, 0, left, right, top, bottom);
+
 	console.log(lines)
 	return lines;
 
@@ -276,7 +276,7 @@ function handle_method8(parameter) {
 	$.getJSON(url, function (result) {
 		console.log(result);
 		runMethod8(result, depth)
-			//		submitted = false;
+		//		submitted = false;
 	});
 }
 
