@@ -59,6 +59,7 @@ def upload_csv(request):
             'error': "该文件不是CSV格式."
         }
         return dumps(result)
+        # return HttpResponse(result["error"])
     # if file is too large, return
     file_size = csv_file.size/(10**6)
     if file_size > 40.0:
@@ -67,11 +68,12 @@ def upload_csv(request):
             'error': "文件的大小不能超过40MB."
         }
         return dumps(result)
+        # return HttpResponse(result["error"])
     current_dir = os.path.dirname(os.path.abspath(__file__))
     # new_row = DataFrame(chunk)
-    file_path = '{}\\division_methods\\dataset\\upload_original.csv'.format(
+    file_path = '{}\\DivisionMethods\\dataset\\upload_original.csv'.format(
         current_dir)
-    with open(file_path, 'w') as f:
+    with open(file_path, 'w+') as f:
         for chunk in csv_file.chunks():
             f.write(chunk.decode("utf-8"))
     retn_result = process_upload_original.process_original_csv()
@@ -85,6 +87,7 @@ def upload_csv(request):
         'error': ""
     }
     return dumps(result)
+    # return HttpResponse(result["error"])
 
 
 def deal_with_first_seven_methods(post, method_name):
@@ -112,7 +115,7 @@ def deal_with_first_seven_methods(post, method_name):
     # delete previous images
     delete_previous_imgs.delete_pngs()
     # generate img
-    img_addr, extra = interface_to_methods.interface_to_generate_img(
+    _, extra = interface_to_methods.interface_to_generate_img(
         "upload_processed", method_full_name, parameter, False)
     # return img info
     context = {
