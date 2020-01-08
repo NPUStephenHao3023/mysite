@@ -5,7 +5,8 @@ Created on Fri Oct 12 11:23:13 2018
 @author: admin
 """
 
-
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 

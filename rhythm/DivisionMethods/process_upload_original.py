@@ -73,4 +73,4 @@ def process_original_csv():
         return 1
 
 
-# print(process_original_csv())
+print(process_original_csv())

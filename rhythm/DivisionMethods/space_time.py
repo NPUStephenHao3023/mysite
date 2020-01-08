@@ -10,7 +10,8 @@ Created on Sun Oct 21 10:18:48 2018
 '''
 先空间再时间的切分
 '''
-
+import matplotlib
+matplotlib.use('Agg')
 
 a = []
 b = []
