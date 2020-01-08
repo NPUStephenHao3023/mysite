@@ -1,10 +1,10 @@
 import os.path
 import pandas as pd
 import numpy as np
-from PIL import Image
+# from PIL import Image
 from mpl_toolkits.mplot3d import Axes3D
-# import matplotlib
-# matplotlib.use('Agg')
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from pathlib import Path
 
@@ -121,7 +121,7 @@ def figure_to_img(dataset_, method_, args, test_or_not):
     img_address += img_name + ".png"
     whole_figure.savefig(img_address)
     plt.close()
-    whole_figure.clf()
+    # whole_figure.clf()
     # print(grid_count)
     if len(grid_count) != 0:
         extra_information = {
