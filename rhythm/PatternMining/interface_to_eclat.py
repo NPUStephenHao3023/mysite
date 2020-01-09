@@ -45,7 +45,7 @@ def frequent_itemset_mining(min_support):
     if len(itemsets) == 0:
         # 'Found 0 frequent itemset, please try again with a lower minimum support value!'
         return 1, itemsets
-    write_result(result)
+    # write_result(result)
     return 0, itemsets
 
 
@@ -57,7 +57,7 @@ def rules(FreqItems, confidence):
         if (items_len > 1):
             all_perms = list(permutations(items, items_len))
             for lst in all_perms:
-                for conseq_len in range(1, items_len + 1):
+                for conseq_len in range(1, items_len):
                     antecedent = lst[:items_len - conseq_len]
                     consequent = lst[-conseq_len:]
                     if antecedent in FreqItems and consequent in FreqItems:

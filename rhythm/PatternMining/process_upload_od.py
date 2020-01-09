@@ -3,7 +3,6 @@ from timeit import default_timer
 from traceback import format_exc
 from datetime import datetime
 from pandas import read_csv, to_datetime, DataFrame
-from numpy import int64
 
 
 def grid_number(point, latitude_pair, longitude_pair, height, width):
