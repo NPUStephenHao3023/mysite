@@ -12,6 +12,7 @@
 <!-- <link rel="stylesheet" href="css/base.css"> -->
 <link rel="icon" href="{% static 'rhythm/img/connected-car.jpg' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'rhythm/css/index_association.css' %}">
+<!--<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>-->
 </head>
 
 <body>
@@ -233,35 +234,37 @@
       </div>
     </div>
   </div>
-  
-  <!--POI分布热力图--> 
-  <!--
-<div class="left div_chart_item">
-  <div class="div_chart_item01">
-    <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">数据统计热力图 </div>
-    <div id="map_div"> </div>
-  </div>
 </div>
---> 
-</div>
-<script type="text/javascript" src="http://echarts.baidu.com/dist/echarts.js"></script> 
-<!--	<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>--> 
-<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script> 
-<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script> 
-<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script> 
-<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script> 
-<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script> 
-<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script> 
-<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script> 
+<!--
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>	
+-->
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/echarts.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/echarts-gl.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/ecStat.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/dataTool.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/china.js' %}"></script>
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/world.js' %}"></script>
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/bmap.min.js' %}"></script>
+
+	
 <script type="text/javascript" src="{% static 'rhythm/js/jquery/jQuery-2.2.0.min.js' %}"></script> 
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=5ieMMexWmzB9jivTq6oCRX9j&callback"></script> 
+<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+	
 <script type="text/javascript" src="{% static 'rhythm/js/base.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/chart_pie.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/chart_road_section.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/association_function.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/chart_line.js' %}"></script> 
-<!--<script type="text/javascript" src="{% static 'rhythm/js/map.js' %}"></script> --> 
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=5ieMMexWmzB9jivTq6oCRX9j&callback"></script> 
-<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+
+
 </body>
 
 </html>

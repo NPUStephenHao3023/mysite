@@ -50,16 +50,16 @@ def upload_csv(request):
             # 'error': "Please upload file first."
             'error': "请先上传文件."
         }
-        return dumps(result)
-        # return HttpResponse(result["error"])
+        return HttpResponse(dumps(result, ensure_ascii=False))
+        # return HttpResponse(result['error'])
     csv_file = request.FILES["csv_file"]
     if not csv_file.name.endswith('.csv'):
         result = {
             # 'error': "File is not CSV type"
             'error': "该文件不是CSV格式."
         }
-        return dumps(result)
-        # return HttpResponse(result["error"])
+        return HttpResponse(dumps(result, ensure_ascii=False))
+        # return HttpResponse(result['error'])
     # if file is too large, return
     file_size = csv_file.size/(10**6)
     if file_size > 40.0:
@@ -67,8 +67,8 @@ def upload_csv(request):
             # 'error': "Uploaded file is too big ({:.2%} MB).".format(file_size)
             'error': "文件的大小不能超过40MB."
         }
-        return dumps(result)
-        # return HttpResponse(result["error"])
+        return HttpResponse(dumps(result, ensure_ascii=False))
+        # return HttpResponse(result['error'])
     current_dir = os.path.dirname(os.path.abspath(__file__))
     # new_row = DataFrame(chunk)
     file_path = '{}\\DivisionMethods\\dataset\\upload_original.csv'.format(
@@ -81,13 +81,13 @@ def upload_csv(request):
         result = {
             'error': "上传的文件不符合规定格式."
         }
-        return dumps(result)
-        # return HttpResponse(result["error"])
+        return HttpResponse(dumps(result, ensure_ascii=False))
+        # return HttpResponse(result['error'])
     result = {
         'error': ""
     }
-    return dumps(result)
-    # return HttpResponse(result["error"])
+    return HttpResponse(dumps(result, ensure_ascii=False))
+    # return HttpResponse(result['error'])
 
 
 def deal_with_first_seven_methods(post, method_name):
