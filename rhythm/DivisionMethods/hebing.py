@@ -9,6 +9,7 @@ matplotlib.use('Agg')
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import os.path
 
 
 def xifen(df, xs=50, ys=50, zs=30):
@@ -53,14 +54,16 @@ def xifen(df, xs=50, ys=50, zs=30):
                 dt4 = dt3[dt3[:, 0] >= (minz + zl*k)]
                 dt5 = dt4[dt4[:, 0] < (minz + zl*(k+1))]
                 st[row, 10] = len(dt5)
-    pd.DataFrame(st).to_csv('st.csv', index=None, header=None)
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    pd.DataFrame(st).to_csv(current_dir+'\\st.csv', index=None, header=None)
 
 
 def hebing2(df):
     '''
     合并           
     '''
-    st1 = np.array(pd.read_csv('st.csv', header=None))
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    st1 = np.array(pd.read_csv(current_dir+'\\st.csv', header=None))
     h01 = np.zeros(len(st1))
     st1 = np.c_[st1, h01]  # 12列是合并状态
     merge = np.zeros((500, 500))  # 合并的立体 预计1w个
@@ -131,18 +134,20 @@ def hebing2(df):
             v_num += st2[j, 10]
             merge[i, j] = id0
         st2 = st1[st1[:, 12] == 0]
-
-    pd.DataFrame(merge).to_csv('merge.csv', index=None, header=None)
-    pd.DataFrame(st1).to_csv('st1.csv', index=None, header=None)
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    pd.DataFrame(merge).to_csv(
+        current_dir+'\\merge.csv', index=None, header=None)
+    pd.DataFrame(st1).to_csv(current_dir+'\\st1.csv', index=None, header=None)
 
 
 def state_num():
     '''
     统计每个数据块内点的个数
     '''
-    merge = np.array(pd.read_csv('merge.csv', header=None))
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    merge = np.array(pd.read_csv(current_dir+'\\merge.csv', header=None))
     merge1 = merge[merge[:, 0] != 0]
-    st1 = np.array(pd.read_csv('st1.csv', header=None))
+    st1 = np.array(pd.read_csv(current_dir+'\\st1.csv', header=None))
     order_num = []
     for i in range(len(merge1)):
         gridid = merge1[i, :]
@@ -190,8 +195,9 @@ def draw_fig(df, sp, fig):
     #maxz = max(df[:,0])
     minz = min(df[:, 0])
     cl = ['r', 'g', 'b', 'c', 'm', 'y', 'k', 'w']
-    merge3 = np.array(pd.read_csv('merge.csv', header=None))
-    st = np.array(pd.read_csv('st1.csv', header=None))
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    merge3 = np.array(pd.read_csv(current_dir+'\\merge.csv', header=None))
+    st = np.array(pd.read_csv(current_dir+'\\st1.csv', header=None))
     st[:, :4] = st[:, :4]  # *1000000
     st[:, 4:6] = (st[:, 4:6] - minz)
     c0 = 0
