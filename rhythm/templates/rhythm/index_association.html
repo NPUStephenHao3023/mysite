@@ -1,7 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <title>大数据集成可视化平台</title>
@@ -35,6 +34,123 @@
 </header>
 <!--内容部分-->
 <div class="con left"> 
+  
+  <!--解释-->
+  <div class="select_time none">
+    <div class="static_top left"> <i></i><span>频繁模式挖掘展示图</span> </div>
+  </div>
+  <!--频繁模式挖掘展示图-->
+  <div class="div_chart"> 
+    <!--  <div class="margin_div_chart_item left div_chart_item">-->
+    <div class="div_chart_item01">
+      <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">频繁模式挖掘展示图 </div>
+      <p id="chart_1" class="p_chart">
+<!--
+      <div class="table_showdata table_p">
+        <ul>
+          <li>
+            <table >
+              <thead>
+                <tr>
+                  <th>date_time</th>
+                  <th>o_longitude</th>
+                  <th>o_latitude</th>
+                  <th>d_longitude</th>
+                  <th>d_latitude</th>
+                  <th>weather</th>
+                </tr>
+              </thead>
+              <tbody id="">
+              </tbody>
+            </table>
+          </li>
+          <li>
+            <table >
+              <thead>
+                <tr>
+                  <th>date_time</th>
+                  <th>o_longitude</th>
+                  <th>o_latitude</th>
+                  <th>d_longitude</th>
+                  <th>d_latitude</th>
+                  <th>weather</th>
+                </tr>
+              </thead>
+              <tbody id="">
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </div>
+-->
+            <img id="image_freq" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}">
+      </p>
+    </div>
+    <form id="form5">
+      <div class="div_pie_parameter">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">参数设置</div>
+        <ul class="div_pp_ul">
+          <li>数据文件：
+            <input type="file"  id="csv_input_freq" name="csv_input_freq" onchange="importf_frequent_minning(this)" accept=".csv"/>
+            支持度：
+            <input type="number" name="suppport_degree_freq" id="support_degree_freq" min="0.02" max="0.99" step="0.05" value="0.02" form="form5"/>
+            置信度：
+            <input type="number" name="confidence_level_freq" id="confidence_level_freq" min="0.3" max=					"0.99" step="0.05" value="0.3" form="form5"/>
+          </li>
+          <li>
+            <div class="bottom2">
+              <input type="button" value="运行" onClick="submit_frequent_minning(this)">
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="div_table_box_showdata">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">数据展示</div>
+        <div class="table_showdata table_p">
+          <table >
+            <thead>
+              <tr>
+                <th>date_time</th>
+                <th>o_longitude</th>
+                <th>o_latitude</th>
+                <th>d_longitude</th>
+                <th>d_latitude</th>
+                <th>weather</th>
+              </tr>
+            </thead>
+            <tbody id="tbody_frequent_minning">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!--
+      <div class="div_table_box_showdata">
+        <div class="div_any_child_toolbar_showdata">
+          <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">数据展示</div>
+          <div class="table_showdata table_p">
+            <table >
+              <thead>
+                <tr>
+                  <th>data_time</th>
+                  <th>longitude</th>
+                  <th>latitude</th>
+                  <th>data_time</th>
+                  <th>longitude</th>
+                  <th>latitude</th>
+                  <th>data_time</th>
+                  <th>longitude</th>
+                  <th>latitude</th>
+                </tr>
+              </thead>
+              <tbody id="demo">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+-->
+    </form>
+  </div>
   
   <!--解释-->
   <div class="select_time none">
@@ -243,28 +359,24 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>	
--->
-<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/echarts.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/echarts-gl.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/ecStat.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/dataTool.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/china.js' %}"></script>
-<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/world.js' %}"></script>
-<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/bmap.min.js' %}"></script>
-
-	
+--> 
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/echarts.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/echarts-gl.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/ecStat.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/dataTool.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/china.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/world.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/bmap.min.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/jquery/jQuery-2.2.0.min.js' %}"></script> 
-
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=5ieMMexWmzB9jivTq6oCRX9j&callback"></script> 
-<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
-	
+<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/base.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/chart_pie.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/chart_road_section.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/association_function.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/chart_line.js' %}"></script> 
-
-
+<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/data_minning.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/xlsx.core.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/ajaxfileupload.js' %}"></script>
 </body>
-
 </html>
