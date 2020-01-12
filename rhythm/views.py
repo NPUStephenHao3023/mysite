@@ -8,7 +8,8 @@ from pandas import DataFrame
 import os.path
 from hashlib import md5
 from time import time
-from .DivisionMethods import interface_to_methods, process_upload_original, delete_previous_imgs
+from .DivisionMethods import interface_to_methods, process_upload_original
+from .PatternMining import process_upload_od, process_upload_sequence, interface_to_eclat, interface_to_ps
 
 # Create your views here.
 
@@ -53,7 +54,53 @@ def select(request):
     ]
     if method_name in first_seven_methods:
         content = deal_with_first_seven_methods(post_, method_name, token)
-        return HttpResponse(content)
+    else:
+        content = {
+            "extra_information": '',
+        }
+    return HttpResponse(dumps(content))
+
+
+def frequent_mining(request):
+    post = request.POST
+    token = post['token']
+    min_sup = post['sup']
+    min_conf = post['conf']
+    rtn, itemset = interface_to_eclat.frequent_itemset_mining(min_sup, token)
+    if rtn == 1:
+        context = {
+            'is_itemset_empty': True
+        }
+    else:
+        cnt, rule = interface_to_eclat.rules(itemset[1], min_conf)
+        context = {
+            'is_itemset_empty': False,
+            'itemset_count': len(itemset[0]),
+            'freq_rules_count': cnt,
+            'freq_rules': rule
+        }
+    return HttpResponse(dumps(context))
+
+
+def sequential_mining(request):
+    post = request.POST
+    token = post['token']
+    min_sup = post['sup']
+    min_conf = post['conf']
+    seq_num, seqs = interface_to_ps.sequence_mining(min_sup, token)
+    if seq_num == 0:
+        context = {
+            'is_seq_empty': True
+        }
+    else:
+        cnt, rule = interface_to_ps.rules(seqs, min_conf)
+        context = {
+            'is_seq_empty': False,
+            'seq_count': seq_num,
+            'seq_rules_count': cnt,
+            'seq_rules': rule
+        }
+    return HttpResponse(dumps(context))
 
 
 def upload_csv(request):
@@ -74,7 +121,6 @@ def upload_csv(request):
             'error': "该文件不是CSV格式."
         }
         return HttpResponse(dumps(result, ensure_ascii=False))
-        # return HttpResponse(result['error'])
     # if file is too large, return
     file_size = csv_file.size/(10**6)
     if file_size > 40.0:
@@ -83,11 +129,10 @@ def upload_csv(request):
             'error': "文件的大小不能超过40MB."
         }
         return HttpResponse(dumps(result, ensure_ascii=False))
-        # return HttpResponse(result['error'])
     token = generate_token()
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = '{}\\DivisionMethods\\dataset\\upload_original-{}.csv'.format(
-        current_dir, token)
+    file_path = '{}\\DivisionMethods\\dataset\\upload_original.csv'.format(
+        current_dir)
     with open(file_path, 'w+') as f:
         for chunk in csv_file.chunks():
             f.write(chunk.decode("utf-8"))
@@ -98,13 +143,108 @@ def upload_csv(request):
             'error': "上传的文件不符合规定格式."
         }
         return HttpResponse(dumps(result, ensure_ascii=False))
-        # return HttpResponse(result['error'])
     result = {
         'error': "",
         'token': token
     }
     return HttpResponse(dumps(result, ensure_ascii=False))
-    # return HttpResponse(result['error'])
+
+
+def upload_od(request):
+    if "GET" == request.method:
+        return HttpResponseRedirect(reverse("rhythm:index_association"))
+    # if not GET, then proceed
+    if "od_file" not in request.FILES:
+        result = {
+            # 'error': "Please upload file first."
+            'error': "请先上传文件."
+        }
+        return HttpResponse(dumps(result, ensure_ascii=False))
+    csv_file = request.FILES["od_file"]
+    if not csv_file.name.endswith('.csv'):
+        result = {
+            # 'error': "File is not CSV type"
+            'error': "该文件不是CSV格式."
+        }
+        return HttpResponse(dumps(result, ensure_ascii=False))
+    # if file is too large, return
+    file_size = csv_file.size/(10**6)
+    if file_size > 40.0:
+        result = {
+            # 'error': "Uploaded file is too big ({:.2%} MB).".format(file_size)
+            'error': "文件的大小不能超过40MB."
+        }
+        return HttpResponse(dumps(result, ensure_ascii=False))
+    token = generate_token()
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = '{}\\DivisionMethods\\dataset\\upload_od_original-{}.csv'.format(
+        current_dir, token)
+    with open(file_path, 'w+') as f:
+        for chunk in csv_file.chunks():
+            f.write(chunk.decode("utf-8"))
+    retn_result, data_range = process_upload_od.process_original_od(
+        token, 10, 10)
+    # retn_result = 0
+    if retn_result == 1:
+        result = {
+            'error': "上传的文件不符合规定格式."
+        }
+        return HttpResponse(dumps(result, ensure_ascii=False))
+    result = {
+        'error': "",
+        'od_token': token,
+        'od_data_range': data_range
+    }
+    return HttpResponse(dumps(result, ensure_ascii=False))
+
+
+def upload_sequence(request):
+    if "GET" == request.method:
+        return HttpResponseRedirect(reverse("rhythm:index_association"))
+    # if not GET, then proceed
+    if "traj_file" not in request.FILES:
+        result = {
+            # 'error': "Please upload file first."
+            'error': "请先上传文件."
+        }
+        return HttpResponse(dumps(result, ensure_ascii=False))
+    csv_file = request.FILES["traj_file"]
+    if not csv_file.name.endswith('.csv'):
+        result = {
+            # 'error': "File is not CSV type"
+            'error': "该文件不是CSV格式."
+        }
+        return HttpResponse(dumps(result, ensure_ascii=False))
+    # if file is too large, return
+    file_size = csv_file.size/(10**6)
+    if file_size > 40.0:
+        result = {
+            # 'error': "Uploaded file is too big ({:.2%} MB).".format(file_size)
+            'error': "文件的大小不能超过40MB."
+        }
+        return HttpResponse(dumps(result, ensure_ascii=False))
+    token = generate_token()
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = '{}\\DivisionMethods\\dataset\\upload_sequence_original-{}.csv'.format(
+        current_dir, token)
+    with open(file_path, 'w+') as f:
+        for chunk in csv_file.chunks():
+            f.write(chunk.decode("utf-8"))
+    retn_result, data_range, rules = process_upload_sequence.process_original_traj(
+        token, False)
+    # retn_result = 0
+    if retn_result == 1:
+        result = {
+            'error': "上传的文件不符合规定格式."
+        }
+        return HttpResponse(dumps(result, ensure_ascii=False))
+    result = {
+        'error': "",
+        'seq_data_range': data_range,
+        'seq_encoding': rules,
+        'seq_token': token
+    }
+    return HttpResponse(dumps(result, ensure_ascii=False))
 
 
 def deal_with_first_seven_methods(post, method_name, token):
@@ -137,7 +277,7 @@ def deal_with_first_seven_methods(post, method_name, token):
         # "image_full_name": img_addr,
         "extra_information": extra,
     }
-    return dumps(context)
+    return context
 
 
 def generate_token():

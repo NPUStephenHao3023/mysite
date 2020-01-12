@@ -5,11 +5,11 @@ from prefixspan import PrefixSpan
 from csv import reader
 
 
-def sequence_mining(min_support):
+def sequence_mining(min_support, token):
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    data_path = "{}\\dataset\\upload_sequence_processed.txt".format(
+    data_path = "{}\\dataset\\upload_sequence_processed-{}.txt".format(
         # data_path = "{}\\dataset\\upload_processed.txt".format(
-        current_dir)
+        current_dir, token)
     db = []
     with open(data_path, 'r') as f:
         file = reader(f, delimiter=' ', quotechar='\r')
@@ -19,8 +19,8 @@ def sequence_mining(min_support):
     row_count = len(db)
     ps = PrefixSpan(db)
     all_sequence = ps.frequent(row_count*min_support)
-    all_sequence_len = len(all_sequence)
-    return all_sequence_len, all_sequence
+    all_sequence_num = len(all_sequence)
+    return all_sequence_num, all_sequence
 
 
 def rules(all_sequence, min_conf):

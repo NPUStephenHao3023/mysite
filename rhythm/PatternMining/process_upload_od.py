@@ -5,23 +5,27 @@ from datetime import datetime
 from pandas import read_csv, to_datetime, DataFrame
 
 
-def grid_number(point, latitude_pair, longitude_pair, height, width):
+def grid_number(is_o, point, latitude_pair, longitude_pair, height, width):
     row_height = (latitude_pair[1] - latitude_pair[0]) / height
     coln_width = (longitude_pair[1] - longitude_pair[0]) / width
     row_count = (point[0] - latitude_pair[0]) // row_height
     coln_count = (point[1] - longitude_pair[0]) // coln_width
-    rtn_num = int(row_count * width + coln_count + 51)
+    if is_o:
+        rtn_num = int(row_count * width + coln_count + 51)
+    else:
+        rtn_num = int(row_count * width + coln_count + 51 + height * width)
     # print(type(rtn_num))
     return rtn_num
 
 
-def process_original_od(height, width):
+def process_original_od(token, height, width):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     current_date = datetime.now().strftime("%Y-%m-%d")
     current_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
         start = default_timer()
-        df = read_csv(current_dir + "\\dataset\\" + "upload_original.csv")
+        df = read_csv(current_dir + "\\dataset\\" +
+                      "upload_od_original-{}.csv".format(token))
         # specified 4 headers
         keys = df.keys()
         if("o_latitude" not in keys or "o_longitude" not in keys or
@@ -54,15 +58,16 @@ def process_original_od(height, width):
         min_lon = longitude.min()
         max_lon = longitude.max()
         df['o_num'] = df.apply(lambda row: grid_number(
-            (row['o_latitude'], row['o_longitude']),
+            (True, row['o_latitude'], row['o_longitude']),
             (min_lat, max_lat), (min_lon, max_lon),
             height, width), axis=1)
         df['d_num'] = df.apply(lambda row: grid_number(
-            (row['d_latitude'], row['d_longitude']),
+            (False, row['d_latitude'], row['d_longitude']),
             (min_lat, max_lat), (min_lon, max_lon),
             height, width), axis=1)
         # save to csv
-        file_path = '{}\\dataset\\upload_processed.txt'.format(current_dir)
+        file_path = '{}\\dataset\\upload_od_processed-{}.txt'.format(
+            current_dir, token)
         # with open(file_path, 'a') as f:
         df.to_csv(file_path, sep=' ', columns=[
                   'hour', 'day_of_week', 'weather', 'o_num', 'd_num'], header=False, index=False)
@@ -71,15 +76,16 @@ def process_original_od(height, width):
             'day_of_week': list(df['day_of_week'].unique() - 24),
             'weather': list(df['weather'].unique() - 31),
             'o_num': list(df['o_num'].unique() - 51),
-            'd_num': list(df['d_num'].unique() - 51),
+            'd_num': list(df['d_num'].unique() - 51 - height * width),
         }
         stop = default_timer()
         run_time = stop - start
         results = {
-            'date_time': [current_date_time],
-            'run_time': [run_time]
+            'date_time': current_date_time,
+            'run_time': run_time,
+            'token': token
         }
-        new_row = DataFrame(results)
+        new_row = DataFrame(results, index=[0])
         file_path = '{}\\try_process_upload_od\\try_{}.csv'.format(
             current_dir, current_date)
         with open(file_path, 'a') as f:
@@ -89,7 +95,8 @@ def process_original_od(height, width):
         # print(format_exc())
         results = {
             'date_time': current_date_time,
-            'exception_info': format_exc()
+            'exception_info': format_exc(),
+            'token': token
         }
         # print(results)
         new_row = DataFrame(results, index=[0])

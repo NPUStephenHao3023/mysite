@@ -5,7 +5,8 @@ from datetime import datetime
 from csv import writer
 from pyproj import Proj, transform
 from pandas import read_csv, to_datetime, DataFrame
-from MapMatch import MyTool, mapmatch
+from .MapMatch import MyTool, mapmatch
+# from MapMatch import MyTool, mapmatch
 
 
 def match_rule(result, G_copy):
@@ -92,14 +93,14 @@ def equal_grid_result(df, height, width, file_path):
 # TODO change input and output file, also  try and exception record should add the file info.
 
 
-def process_original_traj(grid_or_not=True, height=10, width=10):
+def process_original_traj(token, grid_or_not=True, height=10, width=10):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     current_date = datetime.now().strftime("%Y-%m-%d")
     current_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
         start = default_timer()
         df = read_csv(current_dir + "\\dataset\\" +
-                      "upload_sequence_original.csv")
+                      "upload_sequence_original-{}.csv".format(token))
         # specified 4 headers
         keys = df.keys()
         if("traj_num" not in keys or "latitude" not in keys or
@@ -118,8 +119,8 @@ def process_original_traj(grid_or_not=True, height=10, width=10):
         df = df.sample(n=1024)
         # sort by timestamp
         df = df.sort_values(by=['traj_num', 'date_time'])
-        file_path = '{}\\dataset\\upload_sequence_processed.txt'.format(
-            current_dir)
+        file_path = '{}\\dataset\\upload_sequence_processed-{}.txt'.format(
+            current_dir, token)
         if grid_or_not == True:
             data_range, rules = equal_grid_result(df, height, width, file_path)
         else:
@@ -127,10 +128,11 @@ def process_original_traj(grid_or_not=True, height=10, width=10):
         stop = default_timer()
         run_time = stop - start
         results = {
-            'date_time': [current_date_time],
-            'run_time': [run_time]
+            'date_time': current_date_time,
+            'run_time': run_time,
+            'token': token
         }
-        new_row = DataFrame(results)
+        new_row = DataFrame(results, index=[0])
         file_path = '{}\\try_process_upload_sequence\\try_{}.csv'.format(
             current_dir, current_date)
         with open(file_path, 'a') as f:
@@ -140,7 +142,8 @@ def process_original_traj(grid_or_not=True, height=10, width=10):
         # print(format_exc())
         results = {
             'date_time': current_date_time,
-            'exception_info': format_exc()
+            'exception_info': format_exc(),
+            'token': token
         }
         # print(results)
         new_row = DataFrame(results, index=[0])
