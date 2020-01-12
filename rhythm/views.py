@@ -76,6 +76,7 @@ def frequent_mining(request):
         context = {
             'is_itemset_empty': False,
             'itemset_count': len(itemset[0]),
+            'itemsets': itemset[0],
             'freq_rules_count': cnt,
             'freq_rules': rule
         }
@@ -97,6 +98,7 @@ def sequential_mining(request):
         context = {
             'is_seq_empty': False,
             'seq_count': seq_num,
+            'seqs': seqs,
             'seq_rules_count': cnt,
             'seq_rules': rule
         }
@@ -198,7 +200,7 @@ def upload_od(request):
     return HttpResponse(dumps(result, ensure_ascii=False))
 
 
-def upload_sequence(request):
+def upload_traj(request):
     if "GET" == request.method:
         return HttpResponseRedirect(reverse("rhythm:index_association"))
     # if not GET, then proceed
