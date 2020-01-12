@@ -2,8 +2,8 @@ import os.path
 from csv import reader, writer
 from itertools import permutations
 #-----------------------------#
-from eclat import eclat
-# from .eclat import eclat
+# from eclat import eclat
+from .eclat import eclat
 #-----------------------#
 
 
