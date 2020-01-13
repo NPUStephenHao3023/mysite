@@ -52,8 +52,8 @@ def process_original_csv(token):
         run_time = stop - start
         results = {
             'date_time': current_date_time,
-            'run_time': run_time,
-            'token': token
+            'token': token,
+            'run_time': run_time
         }
         new_row = DataFrame(results, index=[0])
         file_path = '{}\\try_process_upload_original\\try_{}.csv'.format(
@@ -65,8 +65,8 @@ def process_original_csv(token):
         # print(format_exc())
         results = {
             'date_time': current_date_time,
-            'exception_info': format_exc(),
-            'token': token
+            'token': token,
+            'exception_info': format_exc()
         }
         # print(results)
         new_row = DataFrame(results, index=[0])

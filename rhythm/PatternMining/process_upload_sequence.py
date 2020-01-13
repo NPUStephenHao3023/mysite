@@ -49,7 +49,7 @@ def map_match_result(traj_df, file_path):
             if road_path != []:
                 result.append(road_path)
     data_range = {
-        'traj_num_range': list(match_df['id'].unique()),
+        'traj_num_range': str(list(match_df['id'].unique())),
     }
     rules = match_rule(result, G_copy)
     with open(file_path, 'w+') as file:
@@ -84,8 +84,8 @@ def equal_grid_result(df, height, width, file_path):
         for _, group in df.groupby(['traj_num']):
             file_data.writerow(group['p_num'].tolist())
     data_range = {
-        'traj_num_range': list(df['traj_num'].unique()),
-        'grid_num_range': list(df['p_num'].unique() - 51),
+        'traj_num_range': str(list(df['traj_num'].unique())),
+        'grid_num_range': str(list(df['p_num'].unique() - 51)),
     }
     rules = {}
     return data_range, rules
@@ -129,8 +129,8 @@ def process_original_traj(token, grid_or_not=True, height=10, width=10):
         run_time = stop - start
         results = {
             'date_time': current_date_time,
-            'run_time': run_time,
-            'token': token
+            'token': token,
+            'run_time': run_time
         }
         new_row = DataFrame(results, index=[0])
         file_path = '{}\\try_process_upload_sequence\\try_{}.csv'.format(
@@ -142,8 +142,8 @@ def process_original_traj(token, grid_or_not=True, height=10, width=10):
         # print(format_exc())
         results = {
             'date_time': current_date_time,
-            'exception_info': format_exc(),
-            'token': token
+            'token': token,
+            'exception_info': format_exc()
         }
         # print(results)
         new_row = DataFrame(results, index=[0])

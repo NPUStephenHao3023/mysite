@@ -1,3 +1,6 @@
+
+
+
 /*改：浅：##334056，深：#252e41*/
 * {
     margin: 0;
@@ -1136,4 +1139,68 @@ a:hover {
     color: #FFFFff !important;
     border-bottom: 3px solid #4b8df8 !important;
     box-sizing: border-box;
+}
+
+.div_table_box_showdata {
+    width: 100%;
+	height: auto;
+/*    height: 150px;*/
+    box-shadow: -10px 0px 15px #034c6a inset, /*å·¦è¾¹é˜´å½±*/  0px -10px 15px #034c6a inset, /*ä¸Šè¾¹é˜´å½±*/  10px 0px 15px #034c6a inset, /*å³è¾¹é˜´å½±*/  0px 10px 15px #034c6a inset;
+    border: 1px solid #034c6a;
+    box-sizing: border-box;
+    position: relative;
+    margin-top: 30px;
+}
+.div_any_child_toolbar_showdata {
+    float: none;
+    width: 100%;
+/*    height: auto;*/
+    box-shadow: -10px 0px 15px #034c6a inset, /*å·¦è¾¹é˜´å½±*/  0px -10px 15px #034c6a inset, /*ä¸Šè¾¹é˜´å½±*/  10px 0px 15px #034c6a inset, /*å³è¾¹é˜´å½±*/  0px 10px 15px #034c6a inset;
+    border: 1px solid #034c6a;
+    box-sizing: border-box;
+    position: relative;
+/*    margin-top: 30px;*/
+}
+.table_showdata {
+	margin-top: 30px;
+	overflow-y: scroll;
+	height: 200px;
+	margin-bottom:30px;
+/*	font: 20;*/
+}
+.table_p_freq {
+    height: 93%;
+    margin-top: 2%;
+/*    position: relative;*/
+}
+.table_p_freq table {
+	float: left;
+    width: 45%;
+	margin-left: 2.5%;
+	margin-right: 2.5%;
+    height: 100%;
+    border-collapse: collapse;
+/*    position: absolute;*/
+    text-align: center;
+}
+.table_p_freq table thead th {
+    color: #61d2f7;
+    font-size: 14px;
+    font-weight: 600;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.table_p_freq table tbody {
+    color: #ffffff;
+    font-size: 13px;
+}
+.table_p_freq table tbody tr:nth-child(2n+1) {
+    background-color: #072951;
+    box-shadow: -10px 0px 15px #034c6a inset,  10px 0px 15px #034c6a inset;
+}
+.hide {
+    visibility: hidden;
+}
+.display{
+	display: none;
 }

@@ -64,8 +64,8 @@ def select(request):
 def frequent_mining(request):
     post = request.POST
     token = post['token']
-    min_sup = post['sup']
-    min_conf = post['conf']
+    min_sup = float(post['sup'])
+    min_conf = float(post['conf'])
     rtn, itemset = interface_to_eclat.frequent_itemset_mining(min_sup, token)
     if rtn == 1:
         context = {
@@ -86,8 +86,8 @@ def frequent_mining(request):
 def sequential_mining(request):
     post = request.POST
     token = post['token']
-    min_sup = post['sup']
-    min_conf = post['conf']
+    min_sup = float(post['sup'])
+    min_conf = float(post['conf'])
     seq_num, seqs = interface_to_ps.sequence_mining(min_sup, token)
     if seq_num == 0:
         context = {
@@ -133,8 +133,8 @@ def upload_csv(request):
         return HttpResponse(dumps(result, ensure_ascii=False))
     token = generate_token()
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = '{}\\DivisionMethods\\dataset\\upload_original.csv'.format(
-        current_dir)
+    file_path = '{}\\DivisionMethods\\dataset\\upload_original-{}.csv'.format(
+        current_dir, token)
     with open(file_path, 'w+') as f:
         for chunk in csv_file.chunks():
             f.write(chunk.decode("utf-8"))
@@ -179,7 +179,7 @@ def upload_od(request):
         return HttpResponse(dumps(result, ensure_ascii=False))
     token = generate_token()
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = '{}\\DivisionMethods\\dataset\\upload_od_original-{}.csv'.format(
+    file_path = '{}\\PatternMining\\dataset\\upload_od_original-{}.csv'.format(
         current_dir, token)
     with open(file_path, 'w+') as f:
         for chunk in csv_file.chunks():
@@ -198,6 +198,7 @@ def upload_od(request):
         'od_data_range': data_range
     }
     return HttpResponse(dumps(result, ensure_ascii=False))
+    # return HttpResponse(result)
 
 
 def upload_traj(request):
@@ -227,7 +228,7 @@ def upload_traj(request):
         return HttpResponse(dumps(result, ensure_ascii=False))
     token = generate_token()
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = '{}\\DivisionMethods\\dataset\\upload_sequence_original-{}.csv'.format(
+    file_path = '{}\\PatternMining\\dataset\\upload_sequence_original-{}.csv'.format(
         current_dir, token)
     with open(file_path, 'w+') as f:
         for chunk in csv_file.chunks():

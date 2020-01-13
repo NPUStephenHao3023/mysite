@@ -5,6 +5,7 @@
 var submitted = false; //submitted变量用于保证加载过程中不能重复提交
 var method_choice; //提交的方法
 var file_submitted = false;//判断是否已经提交了文件
+var token = "";//使用token将同一客户端上传文件和请求的图片相对应
 $(function () {
 	nav();
 })
@@ -90,6 +91,7 @@ function sumbit_data() {
 		'method6_2': $('input[name=method6_2]').val(),
 		'method7_1': $('input[name=method7_1]').val(),
 		'method7_2': $('input[name=method7_2]').val(),
+		"token": token
 	};
 	//如果正在加载则不能重复提交
 	if (submitted == true) {
@@ -227,7 +229,7 @@ function getImageUrl(formData){
 		methodname = "space_time";
 		turl = methodname + "-" + formData["method7_1"] + "-" + formData["method7_2"];
 	}
-	url = "upload_processed-" + turl + ".png";
+	url = "upload_processed-"+token+"-" + turl + ".png";
 	return url;
 }
 
@@ -244,10 +246,90 @@ function importf(obj) {//导入
 	if(!obj.files) {
 		return;
 	}
+	//提交文件
+	submit_file(obj);
 	
+
+	
+}
+function check_file() {
+	var obj = $("input[name='csv_file']").val();
+	// 判断文件是否为空 
+	if (obj == "") {
+		alert("请选择上传的目标文件");
+		return false;
+	}
+	
+	//判断文件类型,要求是csv文件
+	var fileName1 = obj.substring(obj.lastIndexOf(".") + 1).toLowerCase();
+	if (fileName1 != "csv") {
+		alert("请选择csv文件!");
+		return false;
+	}
+	//判断文件大小
+	var size1 = $("input[name='csv_file']")[0].files[0].size;
+	if(size1 > 41943040){
+		alert("上传文件不能大于40M!");
+		return false;
+	}
+}
+function submit_file(obj){	
+	var csrftoken = getCookie('csrftoken');
+	$.ajaxSetup({
+		beforeSend: function (xhr, settings) {
+			if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+				xhr.setRequestHeader("X-CSRFToken", csrftoken);
+			}
+		}
+	});
+	//访问服务器。
+
+	var type = "csv_file";
+	var formData = new FormData(); //这里需要实例化一个FormData来进行文件上传
+	formData.append(type, $("#csv_input")[0].files[0]);
+	$.ajax({
+		type: "post",
+		url: "upload_csv",
+		data: formData,
+		processData: false,
+		contentType: false,
+		success: function (result) {
+			console.log(result);
+			var res = JSON.parse(result).error;
+			if( res == ""){
+				alert("数据上传成功")
+				file_submitted = true;
+				token = JSON.parse(result).token;
+				show_table(obj);
+			}else{
+				alert("上传失败 "+ res);
+				file_submitted = false;
+				token = "";
+			}
+			
+		},
+		error: function (result) {
+			console.log(result);
+//			alert("异常！");
+			alert("上传失败");
+			file_submitted = false;
+			token = "";
+		}
+	});
+
+}
+
+//在表格显示上传文件内容
+function show_table(obj){
+		
 	var f = obj.files[0];
 	var reader = new FileReader();
 	reader.onload = function(e) {
+//		console.log(file_submitted);
+		
+//		if(file_submitted == false){
+//			return;
+//		}
 		// console.log(e.target.result);
 		if(rABS) {
 			wb = XLSX.read(btoa(fixdata(e.target.result)), {//手动转化
@@ -280,15 +362,15 @@ function importf(obj) {//导入
 //		}
 //		thead.appendTo($("#demo"))
 //		$(`<thead><tr><th colspan=${keyAry.length}>${keyAry[0]}</th></tr></thead>`).appendTo($("#demo"));
-		for (var i=0;i<data.length;i++ ){
+		for (var i=0;i<data.length;i=i+3 ){
 			if(i+2>=data.length ){
 				break;
 			}
 			var tr = $("<tr></tr>");
 			for(var j = i;j<i+3;j++ ){
-				tr.append("<td>"+ data[i+j][keyAry[0]] + "</td>");
-				tr.append("<td>"+ data[i+j][keyAry[1]] + "</td>");
-				tr.append("<td>"+ data[i+j][keyAry[2]] + "</td>");
+				tr.append("<td>"+ data[j][keyAry[0]] + "</td>");
+				tr.append("<td>"+ data[j][keyAry[1]] + "</td>");
+				tr.append("<td>"+ data[j][keyAry[2]] + "</td>");
 			}
 			tr.appendTo($("#demo"));
 		}
@@ -315,66 +397,6 @@ function importf(obj) {//导入
 	} else {
 		reader.readAsBinaryString(f);
 	}
-	submit_file(obj)
-}
-function check_file() {
-	var obj = $("input[name='csv_file']").val();
-	// 判断文件是否为空 
-	if (obj == "") {
-		alert("请选择上传的目标文件");
-		return false;
-	}
-	
-	//判断文件类型,要求是csv文件
-	var fileName1 = obj.substring(obj.lastIndexOf(".") + 1).toLowerCase();
-	if (fileName1 != "csv") {
-		alert("请选择csv文件!");
-		return false;
-	}
-	//判断文件大小
-	var size1 = $("input[name='csv_file']")[0].files[0].size;
-	if(size1 > 41943040){
-		alert("上传文件不能大于40M!");
-		return false;
-	}
-}
-function submit_file(){	
-	var csrftoken = getCookie('csrftoken');
-	$.ajaxSetup({
-		beforeSend: function (xhr, settings) {
-			if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-				xhr.setRequestHeader("X-CSRFToken", csrftoken);
-			}
-		}
-	});
-	//访问服务器。
-
-	var type = "csv_file";
-	var formData = new FormData(); //这里需要实例化一个FormData来进行文件上传
-	formData.append(type, $("#csv_input")[0].files[0]);
-	$.ajax({
-		type: "post",
-		url: "upload_csv",
-		data: formData,
-		processData: false,
-		contentType: false,
-		success: function (result) {
-			var res = result["error"];
-			if( res == null){
-				alert("数据上传成功")
-				file_submitted = true;
-			}else{
-				alert("上传失败",res);
-			}
-			
-			console.log(result)
-		},
-		error: function (result) {
-			console.log('here',result);
-			alert("异常！");
-		}
-	});
-
 }
 function fixdata(data) { //文件流转BinaryStrings
 	var o = "",

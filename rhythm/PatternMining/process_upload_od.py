@@ -57,12 +57,12 @@ def process_original_od(token, height, width):
         max_lat = latitude.max()
         min_lon = longitude.min()
         max_lon = longitude.max()
-        df['o_num'] = df.apply(lambda row: grid_number(
-            (True, row['o_latitude'], row['o_longitude']),
+        df['o_num'] = df.apply(lambda row: grid_number(True,
+            (row['o_latitude'], row['o_longitude']),
             (min_lat, max_lat), (min_lon, max_lon),
             height, width), axis=1)
-        df['d_num'] = df.apply(lambda row: grid_number(
-            (False, row['d_latitude'], row['d_longitude']),
+        df['d_num'] = df.apply(lambda row: grid_number(False,
+            (row['d_latitude'], row['d_longitude']),
             (min_lat, max_lat), (min_lon, max_lon),
             height, width), axis=1)
         # save to csv
@@ -72,18 +72,18 @@ def process_original_od(token, height, width):
         df.to_csv(file_path, sep=' ', columns=[
                   'hour', 'day_of_week', 'weather', 'o_num', 'd_num'], header=False, index=False)
         data_range = {
-            'hour': list(df['hour'].unique()),
-            'day_of_week': list(df['day_of_week'].unique() - 24),
-            'weather': list(df['weather'].unique() - 31),
-            'o_num': list(df['o_num'].unique() - 51),
-            'd_num': list(df['d_num'].unique() - 51 - height * width),
+            'hour': str(list(df['hour'].unique())),
+            'day_of_week': str(list(df['day_of_week'].unique() - 24)),
+            'weather': str(list(df['weather'].unique() - 31)),
+            'o_num': str(list(df['o_num'].unique() - 51)),
+            'd_num': str(list(df['d_num'].unique() - 51 - height * width)),
         }
         stop = default_timer()
         run_time = stop - start
         results = {
             'date_time': current_date_time,
-            'run_time': run_time,
-            'token': token
+            'token': token,
+            'run_time': run_time
         }
         new_row = DataFrame(results, index=[0])
         file_path = '{}\\try_process_upload_od\\try_{}.csv'.format(
@@ -95,8 +95,8 @@ def process_original_od(token, height, width):
         # print(format_exc())
         results = {
             'date_time': current_date_time,
-            'exception_info': format_exc(),
-            'token': token
+            'token': token,
+            'exception_info': format_exc()
         }
         # print(results)
         new_row = DataFrame(results, index=[0])
