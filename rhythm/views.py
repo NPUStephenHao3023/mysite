@@ -64,8 +64,8 @@ def select(request):
 def frequent_mining(request):
     post = request.POST
     token = post['token']
-    min_sup = post['sup']
-    min_conf = post['conf']
+    min_sup = float(post['sup'])
+    min_conf = float(post['conf'])
     rtn, itemset = interface_to_eclat.frequent_itemset_mining(min_sup, token)
     if rtn == 1:
         context = {
@@ -86,8 +86,8 @@ def frequent_mining(request):
 def sequential_mining(request):
     post = request.POST
     token = post['token']
-    min_sup = post['sup']
-    min_conf = post['conf']
+    min_sup = float(post['sup'])
+    min_conf = float(post['conf'])
     seq_num, seqs = interface_to_ps.sequence_mining(min_sup, token)
     if seq_num == 0:
         context = {
