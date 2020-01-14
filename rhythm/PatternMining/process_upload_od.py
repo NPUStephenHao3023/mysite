@@ -22,11 +22,11 @@ def generate_grid_position(height, width, latitude_pair, longitude_pair):
     points = {}
     row_height = (latitude_pair[1] - latitude_pair[0]) / height
     coln_width = (longitude_pair[1] - longitude_pair[0]) / width
-    for i in height:
-        for j in width:
+    for i in range(height):
+        for j in range(width):
             lat = latitude_pair[0] + i * row_height
             lon = longitude_pair[0] + j * coln_width
-            points['{}'.format(i * height + j * width)] = (lat, lon)
+            points['{}'.format(i * width + j)] = (lat, lon)
     return points
 
 
@@ -94,7 +94,7 @@ def process_original_od(token, height, width):
                   'time', 'day_of_week', 'weather', 'o_num', 'd_num', 'o_poi', 'd_poi'],
                   header=False, index=False)
         data_range = {
-            'time': str(list(df['hour'].unique() - 2)),
+            'time': str(list(df['time'].unique() - 2)),
             'day_of_week': str(list(df['day_of_week'].unique())),
             'weather': str(list(df['weather'].unique() - 4)),
             'o_poi': str(list(df['o_poi'].unique() - 6)),
