@@ -88,6 +88,10 @@ def sequential_mining(request):
     token = post['token']
     min_sup = float(post['sup'])
     min_conf = float(post['conf'])
+    time = int(post['time'])
+    weather = int(post['weather'])
+    data_range, rules = process_upload_sequence.process_original_traj(
+        token, time, weather, False)
     seq_num, seqs = interface_to_ps.sequence_mining(min_sup, token)
     if seq_num == 0:
         context = {
@@ -100,7 +104,9 @@ def sequential_mining(request):
             'seq_count': seq_num,
             'seqs': seqs,
             'seq_rules_count': cnt,
-            'seq_rules': rule
+            'seq_rules': rule,
+            'seq_data_range': data_range,
+            'seq_encoding': rules,
         }
     return HttpResponse(dumps(context))
 
@@ -184,7 +190,7 @@ def upload_od(request):
     with open(file_path, 'w+') as f:
         for chunk in csv_file.chunks():
             f.write(chunk.decode("utf-8"))
-    retn_result, data_range = process_upload_od.process_original_od(
+    retn_result, data_range, point_pairs = process_upload_od.process_original_od(
         token, 10, 10)
     # retn_result = 0
     if retn_result == 1:
@@ -195,7 +201,8 @@ def upload_od(request):
     result = {
         'error': "",
         'od_token': token,
-        'od_data_range': data_range
+        'od_data_range': data_range,
+        'point_pairs': point_pairs
     }
     return HttpResponse(dumps(result, ensure_ascii=False))
     # return HttpResponse(result)
@@ -233,8 +240,7 @@ def upload_traj(request):
     with open(file_path, 'w+') as f:
         for chunk in csv_file.chunks():
             f.write(chunk.decode("utf-8"))
-    retn_result, data_range, rules = process_upload_sequence.process_original_traj(
-        token, False)
+    retn_result = process_upload_sequence.process_upload_traj(token)
     # retn_result = 0
     if retn_result == 1:
         result = {
@@ -243,8 +249,6 @@ def upload_traj(request):
         return HttpResponse(dumps(result, ensure_ascii=False))
     result = {
         'error': "",
-        'seq_data_range': data_range,
-        'seq_encoding': rules,
         'seq_token': token
     }
     return HttpResponse(dumps(result, ensure_ascii=False))
