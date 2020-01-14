@@ -90,10 +90,31 @@ def equal_grid_result(df, height, width, file_path):
     rules = {}
     return data_range, rules
 
-# TODO change input and output file, also  try and exception record should add the file info.
+
+def process_original_traj(token, time, weather, grid_or_not=True, height=10, width=10):
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    df = read_csv(current_dir + "\\dataset\\" +
+                  "upload_sequence_original-{}.csv".format(token))
+    # sampling
+    # df = df.sample(n=1024)
+    df = df.loc[(df['time'] == time) & (df['weather'] == weather)][[
+        'date_time', 'traj_num', 'longitude', 'latitude']]
+    # sort by timestamp
+    df = df.sort_values(by=['traj_num', 'date_time'])
+    file_path = '{}\\dataset\\upload_sequence_processed-{}.txt'.format(
+        current_dir, token)
+    # traj_df =
+    if grid_or_not == True:
+        data_range, rules = equal_grid_result(
+            df, height, width, file_path)
+    else:
+        data_range, rules = map_match_result(df, file_path)
+    return data_range, rules
+
+# TODO change input and output file, also  try and exception record should add the file token info.
 
 
-def process_original_traj(token, grid_or_not=True, height=10, width=10):
+def process_upload_traj(token):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     current_date = datetime.now().strftime("%Y-%m-%d")
     current_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -103,28 +124,19 @@ def process_original_traj(token, grid_or_not=True, height=10, width=10):
                       "upload_sequence_original-{}.csv".format(token))
         # specified 4 headers
         keys = df.keys()
-        if("traj_num" not in keys or "latitude" not in keys or
+        if("time" not in keys or "weather" not in keys or
+            "traj_num" not in keys or "latitude" not in keys or
                 "longitude" not in keys or "date_time" not in keys):
             # return 1
             raise KeyError(
-                "Lack of one or all specified keys, please check traj_num, date_time, latitude, longitude")
+                "Lack of one or all specified keys, please check column names.")
         df = df[~df.isnull().any(axis=1)]
         # specified shape without null value
         row_count, column_count = df.shape
-        if(row_count < 1024 or column_count != 4):
+        if(row_count < 1024 or column_count != 6):
             # return 1
             raise IndexError(
-                "Number of records without null value is less than 1024 or columns count is not 4.")
-        # sampling
-        df = df.sample(n=1024)
-        # sort by timestamp
-        df = df.sort_values(by=['traj_num', 'date_time'])
-        file_path = '{}\\dataset\\upload_sequence_processed-{}.txt'.format(
-            current_dir, token)
-        if grid_or_not == True:
-            data_range, rules = equal_grid_result(df, height, width, file_path)
-        else:
-            data_range, rules = map_match_result(df, file_path)
+                "Number of records without null value is less than 1024 or columns count is not 6.")
         stop = default_timer()
         run_time = stop - start
         results = {
@@ -137,7 +149,7 @@ def process_original_traj(token, grid_or_not=True, height=10, width=10):
             current_dir, current_date)
         with open(file_path, 'a') as f:
             new_row.to_csv(f, header=False, index=False)
-        return 0, data_range, rules
+        return 0
     except:
         # print(format_exc())
         results = {
@@ -151,9 +163,7 @@ def process_original_traj(token, grid_or_not=True, height=10, width=10):
             current_dir, current_date)
         with open(file_path, 'a') as f:
             new_row.to_csv(f, header=False, index=False)
-        data_range = {}
-        rules = {}
-        return 1, data_range, rules
+        return 1
 
 
 # print(process_original_traj(grid_or_not=True, height=10, width=10))
