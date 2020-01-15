@@ -1185,22 +1185,27 @@ a:hover {
 }
 .table_p_freq table thead th {
     color: #61d2f7;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 600;
     padding-top: 5px;
     padding-bottom: 5px;
 }
 .table_p_freq table tbody {
     color: #ffffff;
-    font-size: 13px;
+    font-size: 17px;
 }
 .table_p_freq table tbody tr:nth-child(2n+1) {
     background-color: #072951;
     box-shadow: -10px 0px 15px #034c6a inset,  10px 0px 15px #034c6a inset;
+/*	height: 25px;*/
+	margin-top: 5px;
 }
 .hide {
     visibility: hidden;
 }
 .display{
 	display: none;
+}
+.show_a{
+	color: orange;
 }

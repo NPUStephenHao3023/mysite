@@ -345,7 +345,6 @@ function runMethod8(result, depth) {
 		}
 	}
 
-
 	//	$("#final_image").hide();
 	//	$("#chart_1").addClass("div_method8")
 	var dom = document.getElementById("chart_1");
