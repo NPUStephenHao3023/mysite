@@ -4,6 +4,7 @@ from traceback import format_exc
 from datetime import datetime
 from csv import writer
 from pyproj import Proj, transform
+from json import dump
 from pandas import read_csv, to_datetime, DataFrame
 from .MapMatch import MyTool, mapmatch
 # from MapMatch import MyTool, mapmatch
@@ -56,6 +57,9 @@ def map_match_result(traj_df, file_path):
         file_data = writer(file, delimiter=' ', quotechar='\r')
         for row in result:
             file_data.writerow(row)
+    # print("*"*99)
+    # with open('rules.json', 'w+', encoding='utf-8') as f:
+    #     dump(rules, f, ensure_ascii=False)
     return data_range, rules
 
 
@@ -97,10 +101,13 @@ def process_original_traj(token, time, weather, grid_or_not=True, height=10, wid
                   "upload_sequence_original-{}.csv".format(token))
     # sampling
     # df = df.sample(n=1024)
-    df = df.loc[(df['time'] == time) & (df['weather'] == weather)][[
-        'date_time', 'traj_num', 'longitude', 'latitude']]
+    # print(df)
+    # df = df.loc[(df['time'] == time) & (df['weather'] == weather)][[
+    #     'date_time', 'traj_num', 'longitude', 'latitude']]
+    df = df[['date_time', 'traj_num', 'longitude', 'latitude']]
     # sort by timestamp
     df = df.sort_values(by=['traj_num', 'date_time'])
+    # print(df)
     file_path = '{}\\dataset\\upload_sequence_processed-{}.txt'.format(
         current_dir, token)
     # traj_df =
@@ -178,3 +185,5 @@ def process_upload_traj(token):
 #             current_dir)
 # # # print(df)
 # print(map_match_result(df, file_path))
+# print(process_original_traj('399d7fecd43243b1244b9fef2c1ed6af', 1, 0, False))
+# print(process_original_traj('', 1, 0, False))

@@ -5,17 +5,18 @@ var token = ""; //使用token将同一客户端上传文件和请求的图片相
 var point_pairs; //保存划分区域的坐标信息。
 var nrules = 0; //保存挖掘到符合条件的频繁模式的数量
 var Rules; //保存挖掘到符合条件的频繁模式
-$(function () {
-	nav();
-})
-
-function nav() {
-	hide_freq_table();
-}
-
-function hide_freq_table() {
-	$("#table_p_freq").addClass("display");
-}
+//$(function () {
+//	alert("freq");
+//	nav();
+//})
+//
+//function nav() {
+//	hide_freq_table();
+//}
+//
+//function hide_freq_table() {
+//	$("#table_p_freq").addClass("display");
+//}
 
 
 //请求频繁模式挖掘
@@ -263,7 +264,7 @@ var wb; //读取完成的数据
 var rABS = false; //是否将文件读取为二进制字符串
 function importf_frequent_minning(obj) {
 	console.log(obj.val);
-	var flag = check_file();
+	var flag = check_freq_file();
 	if (flag == false) {
 		return;
 	}
@@ -279,15 +280,17 @@ function importf_frequent_minning(obj) {
 
 }
 
-function check_file() {
+function check_freq_file() {
+	
 	var obj = $("input[name='csv_input_freq']").val();
+	console.log(obj);
 	// 判断文件是否为空 
 	if (obj == "") {
 		alert("请选择上传的目标文件");
 		return false;
 	}
 
-	console.log(obj);
+//	console.log(obj);
 	//判断文件类型,要求是csv文件
 	var fileName1 = obj.substring(obj.lastIndexOf(".") + 1).toLowerCase();
 	if (fileName1 != "csv") {

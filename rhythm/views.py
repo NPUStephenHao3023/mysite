@@ -90,8 +90,9 @@ def sequential_mining(request):
     min_conf = float(post['conf'])
     time = int(post['time'])
     weather = int(post['weather'])
-    data_range, rules = process_upload_sequence.process_original_traj(
-        token, time, weather, False)
+    # data_range, rules = process_upload_sequence.process_original_traj(
+    #     token, time, weather, False)
+    # print("#"*99)
     seq_num, seqs = interface_to_ps.sequence_mining(min_sup, token)
     if seq_num == 0:
         context = {
@@ -105,8 +106,8 @@ def sequential_mining(request):
             'seqs': seqs,
             'seq_rules_count': cnt,
             'seq_rules': rule,
-            'seq_data_range': data_range,
-            'seq_encoding': rules,
+            # 'seq_data_range': data_range,
+            # 'seq_encoding': rules,
         }
     return HttpResponse(dumps(context))
 
