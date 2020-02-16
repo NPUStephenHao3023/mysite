@@ -5,8 +5,8 @@ from datetime import datetime
 from csv import writer
 from pyproj import Proj, transform
 from pandas import read_csv, to_datetime, DataFrame
-from .MapMatch import MyTool, mapmatch
-# from MapMatch import MyTool, mapmatch
+# from .MapMatch import MyTool, mapmatch
+from MapMatch import MyTool, mapmatch
 
 
 def match_rule(result, G_copy):
@@ -97,8 +97,10 @@ def process_original_traj(token, time, weather, grid_or_not=True, height=10, wid
                   "upload_sequence_original-{}.csv".format(token))
     # sampling
     # df = df.sample(n=1024)
-    df = df.loc[(df['time'] == time) & (df['weather'] == weather)][[
-        'date_time', 'traj_num', 'longitude', 'latitude']]
+    # df = df.loc[(df['time'] == time) & (df['weather'] == weather)][[
+    #     'date_time', 'traj_num', 'longitude', 'latitude']]
+    df = df[['date_time', 'traj_num', 'longitude', 'latitude']]
+    # print(df)
     # sort by timestamp
     df = df.sort_values(by=['traj_num', 'date_time'])
     file_path = '{}\\dataset\\upload_sequence_processed-{}.txt'.format(
@@ -178,3 +180,5 @@ def process_upload_traj(token):
 #             current_dir)
 # # # print(df)
 # print(map_match_result(df, file_path))
+
+print(process_original_traj('', 1, 0, grid_or_not=False, height=10, width=10))

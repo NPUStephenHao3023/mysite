@@ -13,9 +13,13 @@ def sequence_mining(min_support, token):
     db = []
     with open(data_path, 'r') as f:
         file = reader(f, delimiter=' ', quotechar='\r')
+        i = 0
         for row in file:
-            db.append(row)
+            if i % 2 == 0:
+                db.append([int(i) for i in row])
+            i += 1
     # db = array(read_csv(data_path, sep=' ', header=None))
+    # print(db)
     row_count = len(db)
     ps = PrefixSpan(db)
     all_sequence = ps.frequent(row_count*min_support)
@@ -43,6 +47,6 @@ def rules(all_sequence, min_conf):
     return cnt, Rules
 
 
-# length, all_seq = sequence_mining(0.1)
+# length, all_seq = sequence_mining(0.1, '')
 # print(length, all_seq)
 # print(rules(all_seq, 0.1))
