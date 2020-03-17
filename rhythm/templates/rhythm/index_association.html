@@ -101,35 +101,19 @@
                   <option value="夜晚">夜晚</option>
                 </select>
                 选择星期：
-                <select name="method_freq_week" id="method_freq_week"  form="form5" style="width:60px; margin-right: 50px;">
+                <select name="method_freq_week" id="method_freq_week"  form="form5" style="width:70px; margin-right: 50px;">
                   <option value="全部">全部</option>
                   <option value="工作日">工作日</option>
                   <option value="休息日">休息日</option>
                 </select>
                 选择天气：
-                <select name="method_freq_weather" id="method_freq_weather"  form="form5" style="width:80px; margin-right: 50px;">
+                <select name="method_freq_weather" id="method_freq_weather"  form="form5" style="width:70px; margin-right: 50px;">
                   <option value="全部">全部</option>
                   <option value="晴天">晴天</option>
                   <option value="阴雨天">阴雨天</option>
                 </select>
-                <!--
-				  数据文件：
-                <input type="file"  id="csv_input_freq" name="csv_input_freq" onchange="importf_frequent_minning(this)" accept=".csv"/>
-                支持度：
-                <input type="number" name="suppport_degree_freq" id="support_degree_freq" min="0.02" max="0.99" step="0.05" value="0.02" form="form5"/>
-                置信度：
-                <input type="number" name="confidence_level_freq" id="confidence_level_freq" min="0.3" max="0.99" step="0.05" value="0.3" form="form5"/>
---> 
               </li>
             </ul>
-            <!--
-			  数据文件：
-            <input type="file"  id="csv_input_freq" name="csv_input_freq" onchange="importf_frequent_minning(this)" accept=".csv"/>
-            支持度：
-            <input type="number" name="suppport_degree_freq" id="support_degree_freq" min="0.02" max="0.99" step="0.05" value="0.02" form="form5"/>
-            置信度：
-            <input type="number" name="confidence_level_freq" id="confidence_level_freq" min="0.3" max="0.99" step="0.05" value="0.3" form="form5"/>
---> 
           </li>
           <li>
             <div class="bottom2">
@@ -164,32 +148,103 @@
           </table>
         </div>
       </div>
-      <!--
+    </form>
+  </div>
+  
+  <!--解释-->
+  <div class="select_time none">
+    <div class="static_top left"> <i></i><span>序列模式挖掘展示图</span> </div>
+  </div>
+  <!--序列模式挖掘展示图-->
+  <div class="div_chart"> 
+    <!--  <div class="margin_div_chart_item left div_chart_item">-->
+    <div class="div_chart_item01">
+      <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">序列模式挖掘展示图 </div>
+      <p id="chart_seq" class="p_chart"> <img id="image_freq" class="images" src="{% static 'rhythm/img/instruction_fre.png' %}"> </p>
+      <div class="table_showdata table_p_freq" id="table_p_seq">
+        <table class="table_showdata_freq" id="seq_table1" style="width: 95%;">
+          <thead>
+<!--
+            <tr>
+              <th colspan="5">前键</th>
+            </tr>
+-->
+            <tr>
+              <th>前键序列</th>
+              <th>后键序列</th>
+              <th>置信度</th>
+              <th>图示</th>
+            </tr>
+          </thead>
+          <tbody id="tbody_seq_1">
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <form id="form6">
+      <div class="div_pie_parameter">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">参数设置</div>
+        <ul class="div_pp_ul">
+          <li>
+            <ul style="float:none; width: 100%; margin-top:0px;">
+              <li style="float:none; width: 100%; margin-top:0px;"> 数据文件：
+                <input type="file"  id="csv_input_seq" name="csv_input_seq" onchange="importf_sequential_minning(this)" accept=".csv"/>
+                支持度：
+                <input type="number" name="suppport_degree_seq" id="support_degree_seq" min="0.02" max="0.99" step="0.05" value="0.02" form="form6"/>
+                置信度：
+                <input type="number" name="confidence_level_seq" id="confidence_level_seq" min="0.1" max="0.99" step="0.05" value="0.1" form="form6"/>
+              </li>
+              <li style="float:none; width: 100%; margin-top:5px;"> 选择时间：
+                <select name="method_seq_time" id="method_seq_time"  form="form6" style="width:60px; margin-right: 50px;">
+                  <option value="0">白天</option>
+                  <option value="1">夜晚</option>
+                  <option value="2">全部</option>
+                </select>
+                选择星期：
+                <select name="method_seq_week" id="method_seq_week"  form="form6" style="width:70px; margin-right: 50px;">
+                  <option value="0">工作日</option>
+                  <option value="1">休息日</option>
+                  <option value="2">全部</option>
+                </select>
+                选择天气：
+                <select name="method_seq_weather" id="method_seq_weather"  form="form5" style="width:70px; margin-right: 50px;">
+                  <option value="1">阴雨天</option>
+                  <option value="2">全部</option>
+                  <option value="0">晴天</option>
+                </select>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <div class="bottom2">
+              <input type="button" value="运行" onClick="submit_sequential_minning()">
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="div_chart_item01">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">序列模式可视化 </div>
+        <p id="chart_seq_show" class="p_chart" style="width: 70% ;margin: auto; margin-top: 10px;"><img id="image_chart_freq" class="images" src="{% static 'rhythm/img/instruction_fre.png' %}"></p>
+      </div>
       <div class="div_table_box_showdata">
-        <div class="div_any_child_toolbar_showdata">
-          <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">数据展示</div>
-          <div class="table_showdata table_p">
-            <table >
-              <thead>
-                <tr>
-                  <th>data_time</th>
-                  <th>longitude</th>
-                  <th>latitude</th>
-                  <th>data_time</th>
-                  <th>longitude</th>
-                  <th>latitude</th>
-                  <th>data_time</th>
-                  <th>longitude</th>
-                  <th>latitude</th>
-                </tr>
-              </thead>
-              <tbody id="demo">
-              </tbody>
-            </table>
-          </div>
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">数据展示</div>
+        <div class="table_showdata table_p">
+          <table >
+            <thead>
+              <tr>
+                <th>traj_num</th>
+                <th>longitude</th>
+                <th>latitude</th>
+                <th>date_time</th>
+                <th>weather</th>
+                <th>time</th>
+              </tr>
+            </thead>
+            <tbody id="tbody_sequential_minning">
+            </tbody>
+          </table>
         </div>
       </div>
--->
     </form>
   </div>
   
@@ -416,7 +471,8 @@
 <script type="text/javascript" src="{% static 'rhythm/js/chart_road_section.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/association_function.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/chart_line.js' %}"></script> 
-<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/data_minning.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/data_mining.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/data_seq_mining.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/running_ontime/xlsx.core.min.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/running_ontime/ajaxfileupload.js' %}"></script>
 </body>

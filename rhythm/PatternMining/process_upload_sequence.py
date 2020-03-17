@@ -4,6 +4,7 @@ from traceback import format_exc
 from datetime import datetime
 from csv import writer
 from pyproj import Proj, transform
+from json import dump
 from pandas import read_csv, to_datetime, DataFrame
 # from .MapMatch import MyTool, mapmatch
 from MapMatch import MyTool, mapmatch
@@ -56,6 +57,9 @@ def map_match_result(traj_df, file_path):
         file_data = writer(file, delimiter=' ', quotechar='\r')
         for row in result:
             file_data.writerow(row)
+    # print("*"*99)
+    # with open('rules.json', 'w+', encoding='utf-8') as f:
+    #     dump(rules, f, ensure_ascii=False)
     return data_range, rules
 
 
@@ -103,6 +107,7 @@ def process_original_traj(token, time, weather, grid_or_not=True, height=10, wid
     # print(df)
     # sort by timestamp
     df = df.sort_values(by=['traj_num', 'date_time'])
+    # print(df)
     file_path = '{}\\dataset\\upload_sequence_processed-{}.txt'.format(
         current_dir, token)
     # traj_df =
