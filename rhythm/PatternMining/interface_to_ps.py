@@ -50,7 +50,7 @@ def rules(all_sequence, min_conf):
     return cnt, Rules
 
 
-# length, all_seq = sequence_mining(0.1)
+# length, all_seq = sequence_mining(0.1, '')
 # print(length, all_seq)
 # print(rules(all_seq, 0.1))
 # sequence_mining(0.5, 'bcd61d371c171b653be83bcae869a2f8')
