@@ -22,6 +22,10 @@ def index_association(request):
     return render(request, 'rhythm/index_association.html')
 
 
+def index_others(request):
+    return render(request, 'rhythm/index_others.html')
+
+
 def index_test(request):
     # tuple_dict = request.META.items()  # 将字典转换成可遍历的元组。
 

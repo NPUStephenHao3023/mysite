@@ -6,8 +6,8 @@ from csv import writer
 from pyproj import Proj, transform
 from json import dump
 from pandas import read_csv, to_datetime, DataFrame
-# from .MapMatch import MyTool, mapmatch
-from MapMatch import MyTool, mapmatch
+from .MapMatch import MyTool, mapmatch
+# from MapMatch import MyTool, mapmatch
 
 
 def match_rule(result, G_copy):
@@ -186,4 +186,4 @@ def process_upload_traj(token):
 # # # print(df)
 # print(map_match_result(df, file_path))
 
-print(process_original_traj('', 1, 0, grid_or_not=False, height=10, width=10))
+# print(process_original_traj('', 1, 0, grid_or_not=False, height=10, width=10))
