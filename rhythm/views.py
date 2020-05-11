@@ -94,8 +94,9 @@ def sequential_mining(request):
     min_conf = float(post['conf'])
     time = int(post['time'])
     weather = int(post['weather'])
-    # data_range, rules = process_upload_sequence.process_original_traj(
-    #     token, time, weather, False)
+    dayofweek = int(post['dayofweek'])
+    _ = process_upload_sequence.process_original_traj(
+        token, time, weather, dayofweek, False)
     # print("#"*99)
     seq_num, seqs = interface_to_ps.sequence_mining(min_sup, token)
     if seq_num == 0:

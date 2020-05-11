@@ -27,11 +27,12 @@ function submit_sequential_minning() {
 	var formData = {
 		'sup': '0.1',
 		'conf': '0.1',
-		'token': '',
+		'token': token,
 		//		'sup': $('input[name=suppport_degree_seq]').val(),
 		//		'conf': $('input[name=confidence_level_seq]').val(),
 		'time': $('#method_seq_time option:selected').val(),
 		'weather': $('#method_seq_weather option:selected').val(),
+		'dayofweek': $("#method_seq_week option:selected").val()
 		//		"token": token
 	};
 	//如果正在加载则不能重复提交
@@ -70,8 +71,8 @@ function submit_sequential_minning() {
 			//有返回值
 			console.log(result);
 			//						console.log(result["is_seq_empty"]);
+			submitted = false;
 			if (result["is_seq_empty"] == false) {
-				submitted = false;
 				$.getJSON('/static/rhythm/json/seq_encoding.json', function (seq_encoding) {
 					console.log(seq_encoding);
 					handle_seq(result, formData, seq_encoding);
@@ -98,25 +99,25 @@ function handle_seq(result, formDat, seq_encoding) {
 	var length = seq_rules.length;
 
 	$("#tbody_seq_1").empty();
-//	$("#tbody_seq_2").empty();
+	//	$("#tbody_seq_2").empty();
 	nrules = 0;
 	Rules = [];
 	for (var i = 0; i < length; i++) {
-//		console.log("here");
+		//		console.log("here");
 		var frontkey = seq_rules[i][0];
 		var backkey = seq_rules[i][1];
 		var count = seq_rules[i][2];
 		var conf = seq_rules[i][3];
 
-		var front = handle_seq_data(frontkey,seq_encoding);
-		var back = handle_seq_data(backkey,seq_encoding);
-		if(front.flag == false || back.flag == false){
+		var front = handle_seq_data(frontkey, seq_encoding);
+		var back = handle_seq_data(backkey, seq_encoding);
+		if (front.flag == false || back.flag == false) {
 			continue;
 		}
-//		console.log(front,back,i)
-		var trf =$("<tr></tr>");
-		
-		
+		//		console.log(front,back,i)
+		var trf = $("<tr></tr>");
+
+
 		var trules = {
 			"front_names": front.road_names,
 			"front_coords": front.road_coords,
@@ -132,27 +133,27 @@ function handle_seq(result, formDat, seq_encoding) {
 		//前键序列
 		var front_name = front.road_names;
 		var fstr = "<td>";
-		for(var j=0;j<front.count;j++){
-			fstr = fstr+front_name[j]+"  ";
+		for (var j = 0; j < front.count; j++) {
+			fstr = fstr + front_name[j] + "  ";
 		}
-		fstr+="</td>";
+		fstr += "</td>";
 		trf.append(fstr);
 		//后键序列
 		var back_name = back.road_names;
 		var bstr = "<td>";
-		for(var j=0;j<back.count;j++){
-			bstr = bstr+back_name[j]+"  ";
+		for (var j = 0; j < back.count; j++) {
+			bstr = bstr + back_name[j] + "  ";
 		}
-		bstr+="</td>";
+		bstr += "</td>";
 		trf.append(bstr);
-//		console.log(fstr);
+		//		console.log(fstr);
 		trf.append("<td>" + conf.toFixed(2) + "</td>");
 		trf.append("<td><a onClick='show_seq_image(" + (nrules - 1) + ")' class='show_a'>Click</a></td>")
 		trf.appendTo($("#tbody_seq_1"));
 	}
 }
 
-function handle_seq_data(seqset,seq_encoding) {
+function handle_seq_data(seqset, seq_encoding) {
 	var l = seqset.length;
 	var road_names = [];
 	var road_coords = [];
@@ -163,20 +164,20 @@ function handle_seq_data(seqset,seq_encoding) {
 		var code = seqset[i];
 		if (seq_encoding.hasOwnProperty(seqset[i].toString())) {
 			var tmp = seq_encoding[seqset[i].toString()]
-			if(tmp["road_name"] instanceof Array){
+			if (tmp["road_name"] instanceof Array) {
 				road_names[count] = tmp["road_name"][0];
-			}else{
-//				console.log(tmp["road_name"]);
+			} else {
+				//				console.log(tmp["road_name"]);
 				road_names[count] = tmp["road_name"];
 			}
 			road_coords[count] = tmp.road_coords;
 			road_length[count] = tmp.road_length;
 			count++;
-		}else{
+		} else {
 			continue;
 		}
 	}
-	if(count==0){
+	if (count == 0) {
 		return {
 			"flag": false
 		}
@@ -185,7 +186,7 @@ function handle_seq_data(seqset,seq_encoding) {
 		"flag": true,
 		"road_names": road_names,
 		"road_coords": road_coords,
-		"road_length":road_length,
+		"road_length": road_length,
 		"count": count
 	};
 }
@@ -365,23 +366,23 @@ function csrfSafeMethod(method) {
 	// these HTTP methods do not require CSRF protection
 	return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
-function show_seq_image(index){
+function show_seq_image(index) {
 	var new_element = document.createElement("script");
 	new_element.setAttribute("type", "text/javascript");
 	new_element.setAttribute("src", "/static/rhythm/js/coordinate_transformation.js"); // 在这里引入了a.js
 	document.body.appendChild(new_element);
 	var rules = Rules[index];
 	var road_line = [];
-	for(var i=0;i<rules.front_count;i++){
-		var tmp={
+	for (var i = 0; i < rules.front_count; i++) {
+		var tmp = {
 			"road_name": rules.front_names[i],
 			"road_length": rules.front_length[i],
 			"road_coords": rules.front_coords[i]
 		}
 		road_line.push(tmp);
 	}
-	for(var i=0;i<rules.back_count;i++){
-		var tmp={
+	for (var i = 0; i < rules.back_count; i++) {
+		var tmp = {
 			"road_name": rules.back_names[i],
 			"road_length": rules.back_length[i],
 			"road_coords": rules.back_coords[i]
@@ -391,43 +392,43 @@ function show_seq_image(index){
 	var result = {
 		"road_line_poi_list": road_line
 	};
-	makeseq_roadsection(result,rules);
+	makeseq_roadsection(result, rules);
 }
-function makeseq_roadsection(data,rules) {
-	console.log(data,'data');
+function makeseq_roadsection(data, rules) {
+	console.log(data, 'data');
 
 	var road_list = handle_road_list(data['road_line_poi_list']);
 	//length:路段数
 	var length = road_list.length;
-	console.log(road_list,'road_list');
-	
+	console.log(road_list, 'road_list');
+
 	var myChart = echarts.init(document.getElementById("chart_seq_show"));
 	var app = {};
 	var option = null;
 	app.title = '序列模式挖掘结果';
 
 
-	
+
 	var option = {
-		title:{
-			text:"红线表示前键，蓝线表示后键"
+		title: {
+			text: "红线表示前键，蓝线表示后键"
 		},
 		tooltip: {
 			show: true,
 			trigger: 'item',
-//			formatter: '{b}'
+			//			formatter: '{b}'
 			formatter: function (params, ticket, callback) {
 				console.log(params);
-//				var poi = params[0].data.poi;
-//				var value = params[0].value;
-//				var name = params[0].name;
-//				return value + "<br/> POI:" + poi;
+				//				var poi = params[0].data.poi;
+				//				var value = params[0].value;
+				//				var name = params[0].name;
+				//				return value + "<br/> POI:" + poi;
 				return params.data.name;
 			}
 		},
 		bmap: {
-			
-			
+
+
 			center: [104.07, 30.68],
 			zoom: 13,
 			roam: true,
@@ -540,18 +541,18 @@ function makeseq_roadsection(data,rules) {
 				var t = [];
 				for (var i = 0; i < length; i++) {
 					var tmp = {
-						name: '名称:'+data['road_line_poi_list'][i]['road_name']+'\n长度:'+data['road_line_poi_list'][i]['road_length'].toFixed(2)+' m',
+						name: '名称:' + data['road_line_poi_list'][i]['road_name'] + '\n长度:' + data['road_line_poi_list'][i]['road_length'].toFixed(2) + ' m',
 						coords: road_list[i],
 						number: i,
 						lineStyle: {
 							color: (function () {
-								if(i<rules["front_count"]){
+								if (i < rules["front_count"]) {
 									return "#8B0000";
-								}else{
+								} else {
 									return "#00008B";
 								}
 							})(),
-//							opacity: 1,
+							//							opacity: 1,
 							width: 5,
 							curveness: 1
 						}
@@ -569,7 +570,7 @@ function makeseq_roadsection(data,rules) {
 		}]
 	};
 	console.log(option.series[0].data);
-    myChart.setOption(option)
+	myChart.setOption(option)
 
 	window.addEventListener('resize', function () {
 		myChart.resize();
@@ -577,15 +578,15 @@ function makeseq_roadsection(data,rules) {
 }
 
 //将poi频率向量转换成poi概率向量
-function handle_data(data){
+function handle_data(data) {
 	var length = data.length;
 	var t = [];
 	var sum = 0;
-	for(var i=0;i<length;i++){
-		sum+=data[i];
+	for (var i = 0; i < length; i++) {
+		sum += data[i];
 	}
-	for(var ii=0 ;ii<length;ii++){
-		var tmp = data[ii]*1.0/(sum+0.0);
+	for (var ii = 0; ii < length; ii++) {
+		var tmp = data[ii] * 1.0 / (sum + 0.0);
 		t.push(tmp);
 	}
 	return t;

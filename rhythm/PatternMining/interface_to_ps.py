@@ -7,6 +7,7 @@ from csv import reader
 
 def sequence_mining(min_support, token):
     current_dir = os.path.dirname(os.path.abspath(__file__))
+    # data_path = "{}\\dataset\\upload_sequence_processed{}.txt".format(
     data_path = "{}\\dataset\\upload_sequence_processed-{}.txt".format(
         current_dir, token)
     db = []
@@ -14,10 +15,16 @@ def sequence_mining(min_support, token):
         file = reader(f, delimiter=' ', quotechar='\r')
         i = 0
         for row in file:
-            if i % 2 == 0:
-                db.append([int(item) for item in row])
+            # if i % 2 == 0:
+            # if i % 2 == 0 or i % 2 == 1:
+                # print(row)
+            db.append([int(item) for item in row])
             i += 1
     row_count = len(db)
+    if min_support * row_count < 2:
+        if row_count != 0:
+            min_support = 2 / row_count
+    # print(db)
     # print(db)
     # print(row_count)
     ps = PrefixSpan(db)
@@ -51,6 +58,8 @@ def rules(all_sequence, min_conf):
 
 
 # length, all_seq = sequence_mining(0.1, '')
+# length, all_seq = sequence_mining(0.1, '431f07535336cdef91f15e3d0a674a1e')
+# length, all_seq = sequence_mining(0.1, '7645cfb5607e0a39acfdd70b4c8e06ba')
 # print(length, all_seq)
 # print(rules(all_seq, 0.1))
 # sequence_mining(0.5, 'bcd61d371c171b653be83bcae869a2f8')
