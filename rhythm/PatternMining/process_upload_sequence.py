@@ -95,7 +95,7 @@ def equal_grid_result(df, height, width, file_path):
     return data_range, rules
 
 
-def process_original_traj(token, time, weather, grid_or_not=True, height=10, width=10):
+def process_original_traj(token, time, weather, dayofweek, grid_or_not=True, height=10, width=10):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     df = read_csv(current_dir + "\\dataset\\" +
                   "upload_sequence_original-{}.csv".format(token))
@@ -103,20 +103,46 @@ def process_original_traj(token, time, weather, grid_or_not=True, height=10, wid
     # df = df.sample(n=1024)
     # df = df.loc[(df['time'] == time) & (df['weather'] == weather)][[
     #     'date_time', 'traj_num', 'longitude', 'latitude']]
-    df = df[['date_time', 'traj_num', 'longitude', 'latitude']]
+    # df = df[['date_time', 'traj_num', 'longitude', 'latitude']]
     # print(df)
     # sort by timestamp
-    df = df.sort_values(by=['traj_num', 'date_time'])
+    # df = df.sort_values(by=['traj_num', 'date_time'])
     # print(df)
+    if time != 2 & weather == 2 & dayofweek == 2:
+        select_df = df.loc[(df['time'] == time)]
+    if time == 2 & weather != 2 & dayofweek == 2:
+        select_df = df.loc[(df['weather'] == weather)]
+    if time == 2 & weather == 2 & dayofweek != 2:
+        select_df = df.loc[(df['dayofweek'] == dayofweek)]
+    if time == 2 & weather != 2 & dayofweek != 2:
+        select_df = df.loc[(df['weather'] == weather) &
+                           (df['dayofweek'] == dayofweek)]
+    if time != 2 & weather == 2 & dayofweek != 2:
+        select_df = df.loc[(df['time'] == time) & (
+            df['dayofweek'] == dayofweek)]
+    if time != 2 & weather != 2 & dayofweek == 2:
+        select_df = df.loc[(df['time'] == time) & (df['weather'] == weather)]
+    if time != 2 & weather != 2 & dayofweek != 2:
+        select_df = df.loc[(df['time'] == time) & (
+            df['weather'] == weather) & (df['dayofweek'] == dayofweek)]
+    if time == 2 & weather == 2 & dayofweek == 2:
+        select_df = df
+    seq_df = select_df.groupby(['traj_id'])['road_id'].apply(
+        list).reset_index(name='road_seq')
     file_path = '{}\\dataset\\upload_sequence_processed-{}.txt'.format(
         current_dir, token)
+    with open(file_path, 'w') as f:
+        for _, row in seq_df.iterrows():
+            f.writelines("{}\n".format(" ".join(str(item)
+                                                for item in row['road_seq'])))
+    return 0
     # traj_df =
-    if grid_or_not == True:
-        data_range, rules = equal_grid_result(
-            df, height, width, file_path)
-    else:
-        data_range, rules = map_match_result(df, file_path)
-    return data_range, rules
+    # if grid_or_not == True:
+    #     data_range, rules = equal_grid_result(
+    #         df, height, width, file_path)
+    # else:
+    #     data_range, rules = map_match_result(df, file_path)
+    # return data_range, rules
 
 # TODO change input and output file, also  try and exception record should add the file token info.
 
@@ -132,18 +158,20 @@ def process_upload_traj(token):
         # specified 4 headers
         keys = df.keys()
         if("time" not in keys or "weather" not in keys or
-            "traj_num" not in keys or "latitude" not in keys or
-                "longitude" not in keys or "date_time" not in keys):
+                "traj_id" not in keys or "road_id" not in keys or
+                "dayofweek" not in keys):
+            # "traj_num" not in keys or "latitude" not in keys or
+            #     "longitude" not in keys or "date_time" not in keys):
             # return 1
             raise KeyError(
                 "Lack of one or all specified keys, please check column names.")
         df = df[~df.isnull().any(axis=1)]
         # specified shape without null value
         row_count, column_count = df.shape
-        if(row_count < 1024 or column_count != 6):
-            # return 1
-            raise IndexError(
-                "Number of records without null value is less than 1024 or columns count is not 6.")
+        # if(row_count > 1024 or column_count != 5):
+        #     # return 1
+        #     raise IndexError(
+        #         "Number of records without null value is less than 1024 or columns count is not 5.")
         stop = default_timer()
         run_time = stop - start
         results = {
