@@ -27,11 +27,12 @@ function submit_sequential_minning() {
 	var formData = {
 		'sup': '0.1',
 		'conf': '0.1',
-		'token': '',
+		'token': token,
 		//		'sup': $('input[name=suppport_degree_seq]').val(),
 		//		'conf': $('input[name=confidence_level_seq]').val(),
 		'time': $('#method_seq_time option:selected').val(),
 		'weather': $('#method_seq_weather option:selected').val(),
+		'dayofweek': $("#method_seq_week option:selected").val()
 		//		"token": token
 	};
 	//如果正在加载则不能重复提交
@@ -69,6 +70,7 @@ function submit_sequential_minning() {
 		success: function (result) {
 			//有返回值
 			console.log(result);
+			submitted = false;
 			//						console.log(result["is_seq_empty"]);
 			if (result["is_seq_empty"] == false) {
 				submitted = false;
@@ -198,10 +200,10 @@ var wb; //读取完成的数据
 var rABS = false; //是否将文件读取为二进制字符串
 function importf_sequential_minning(obj) {
 	console.log(obj.val);
-	var flag = check_file();
-	if (flag == false) {
-		return;
-	}
+//	var flag = check_file();
+//	if (flag == false) {
+//		return;
+//	}
 
 
 	if (!obj.files) {
@@ -238,7 +240,6 @@ function check_file() {
 }
 //提交文件
 function submit_file_sequential_minning(obj) {
-
 	var csrftoken = getCookie('csrftoken');
 	$.ajaxSetup({
 		beforeSend: function (xhr, settings) {
