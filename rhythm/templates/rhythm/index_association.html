@@ -165,7 +165,7 @@
     <!--  <div class="margin_div_chart_item left div_chart_item">-->
     <div class="div_chart_item01">
       <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">序列模式挖掘展示图 </div>
-      <p id="chart_seq" class="p_chart"> <img id="image_freq" class="images" src="{% static 'rhythm/img/instruction_fre.png' %}"> </p>
+      <p id="chart_seq" class="p_chart"> <img id="image_freq" class="images" src="{% static 'rhythm/img/instruction_seq.png' %}"> </p>
       <div class="table_showdata table_p_freq" id="table_p_seq">
         <table class="table_showdata_freq" id="seq_table1" style="width: 95%;">
           <thead>
@@ -201,21 +201,24 @@
               </li>
               <li style="float:none; width: 100%; margin-top:5px;"> 选择时间：
                 <select name="method_seq_time" id="method_seq_time"  form="form6" style="width:60px; margin-right: 50px;">
-                  <option value="0">白天</option>
+                   <option value="2">全部</option>
+					<option value="0">白天</option>
                   <option value="1">夜晚</option>
-                  <option value="2">全部</option>
+               
                 </select>
                 选择星期：
                 <select name="method_seq_week" id="method_seq_week"  form="form6" style="width:70px; margin-right: 50px;">
+					<option value="2">全部</option>
                   <option value="0">工作日</option>
                   <option value="1">休息日</option>
-                  <option value="2">全部</option>
+                  
                 </select>
                 选择天气：
                 <select name="method_seq_weather" id="method_seq_weather"  form="form5" style="width:70px; margin-right: 50px;">
-                  <option value="1">阴雨天</option>
                   <option value="2">全部</option>
-                  <option value="0">晴天</option>
+					<option value="0">晴天</option>
+					<option value="1">阴雨天</option>
+                                    
                 </select>
               </li>
             </ul>
@@ -229,7 +232,7 @@
       </div>
       <div class="div_chart_item01">
         <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">序列模式可视化 </div>
-        <p id="chart_seq_show" class="p_chart" style="width: 70% ;margin: auto; margin-top: 10px;"><img id="image_chart_freq" class="images" src="{% static 'rhythm/img/instruction_fre.png' %}"></p>
+        <p id="chart_seq_show" class="p_chart" style="width: 70% ;margin: auto; margin-top: 10px;"><img id="image_chart_freq" class="images" src="{% static 'rhythm/img/instruction_seq.png' %}"></p>
       </div>
       <div class="div_table_box_showdata">
         <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">数据展示</div>

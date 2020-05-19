@@ -71,8 +71,7 @@ function submit_sequential_minning() {
 			//有返回值
 			console.log(result);
 			submitted = false;
-			//						console.log(result["is_seq_empty"]);
-			submitted = false;
+			//console.log(result["is_seq_empty"]);
 			if (result["is_seq_empty"] == false) {
 				$.getJSON('/static/rhythm/json/seq_encoding.json', function (seq_encoding) {
 					console.log(seq_encoding);
@@ -88,7 +87,7 @@ function submit_sequential_minning() {
 			console.log(result);
 			alert("异常！");
 			submitted = false;
-			$('#final_image').attr('src', '/static/rhythm/img/instruction_fre.png');
+			$('#final_image').attr('src', '/static/rhythm/img/instruction_seq.png');
 		}
 	});
 }
@@ -135,7 +134,7 @@ function handle_seq(result, formDat, seq_encoding) {
 		var front_name = front.road_names;
 		var fstr = "<td>";
 		for (var j = 0; j < front.count; j++) {
-			fstr = fstr + front_name[j] + "  ";
+			fstr = fstr + front_name[j] +"("+front.seq_set[j] + ")  ";
 		}
 		fstr += "</td>";
 		trf.append(fstr);
@@ -143,7 +142,7 @@ function handle_seq(result, formDat, seq_encoding) {
 		var back_name = back.road_names;
 		var bstr = "<td>";
 		for (var j = 0; j < back.count; j++) {
-			bstr = bstr + back_name[j] + "  ";
+			bstr = bstr + back_name[j] + "("+back.seq_set[j] + ")  ";
 		}
 		bstr += "</td>";
 		trf.append(bstr);
@@ -158,6 +157,7 @@ function handle_seq_data(seqset, seq_encoding) {
 	var l = seqset.length;
 	var road_names = [];
 	var road_coords = [];
+	var seq_set = [];
 	var road_length = [];
 	var ans;
 	var count = 0;
@@ -172,10 +172,15 @@ function handle_seq_data(seqset, seq_encoding) {
 				road_names[count] = tmp["road_name"];
 			}
 			road_coords[count] = tmp.road_coords;
+			seq_set[count] = seqset[i].toString();
 			road_length[count] = tmp.road_length;
 			count++;
 		} else {
-			continue;
+			//阐述空包含空字符串的键
+			return {
+				"flag": false
+			};
+//			continue;
 		}
 	}
 	if (count == 0) {
@@ -188,6 +193,7 @@ function handle_seq_data(seqset, seq_encoding) {
 		"road_names": road_names,
 		"road_coords": road_coords,
 		"road_length": road_length,
+		"seq_set": seq_set,
 		"count": count
 	};
 }
