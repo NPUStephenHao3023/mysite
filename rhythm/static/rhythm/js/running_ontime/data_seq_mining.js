@@ -70,6 +70,7 @@ function submit_sequential_minning() {
 		success: function (result) {
 			//有返回值
 			console.log(result);
+			submitted = false;
 			//						console.log(result["is_seq_empty"]);
 			submitted = false;
 			if (result["is_seq_empty"] == false) {
@@ -199,10 +200,10 @@ var wb; //读取完成的数据
 var rABS = false; //是否将文件读取为二进制字符串
 function importf_sequential_minning(obj) {
 	console.log(obj.val);
-	var flag = check_file();
-	if (flag == false) {
-		return;
-	}
+//	var flag = check_file();
+//	if (flag == false) {
+//		return;
+//	}
 
 
 	if (!obj.files) {
@@ -239,7 +240,6 @@ function check_file() {
 }
 //提交文件
 function submit_file_sequential_minning(obj) {
-
 	var csrftoken = getCookie('csrftoken');
 	$.ajaxSetup({
 		beforeSend: function (xhr, settings) {

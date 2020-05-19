@@ -36,8 +36,13 @@
 <div class="con left"> 
   
   <!--解释-->
-  <div class="select_time none">
-    <div class="static_top left"> <i></i><span>频繁模式挖掘展示图</span> </div>
+  <div class="select_time none" >
+    <div class="static_top left" style="float:left"> <i></i><span>频繁模式挖掘展示图</span> </div>
+	  <div class="right nav text_right " style="float: right ;margin-top: -20px;">
+    <ul>
+      <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_others' %}" style="color: #45059B">交通规律可视化工具</a> </li>
+    </ul>
+  </div>
   </div>
   <!--频繁模式挖掘展示图-->
   <div class="div_chart"> 
@@ -232,11 +237,10 @@
           <table >
             <thead>
               <tr>
-                <th>traj_num</th>
-                <th>longitude</th>
-                <th>latitude</th>
-                <th>date_time</th>
+                <th>traj_id</th>
+                <th>road_id</th>
                 <th>weather</th>
+                <th>dayofweek</th>
                 <th>time</th>
               </tr>
             </thead>
@@ -249,12 +253,15 @@
   </div>
   
   <!--解释-->
+<!--
   <div class="select_time none">
     <div class="static_top left"> <i></i><span>出租车迁移关系图</span> </div>
   </div>
+-->
   <!--出租车迁移关系图-->
+<!--
   <div class="div_chart"> 
-    <!--  <div class="margin_div_chart_item left div_chart_item">-->
+      <div class="margin_div_chart_item left div_chart_item">
     <div class="div_chart_item01">
       <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">出租车迁移关系图 </div>
       <p id="chart_1" class="p_chart"><img id="image_pie" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
@@ -296,14 +303,18 @@
       </div>
     </form>
   </div>
+-->
   
   <!--解释-->
+<!--
   <div class="select_time none">
     <div class="static_top left"> <i></i><span>分时段目的地划分</span> </div>
   </div>
+-->
   <!--分时段目的地划分图-->
+<!--
   <div class="div_chart"> 
-    <!--  <div class="margin_div_chart_item left div_chart_item">-->
+      <div class="margin_div_chart_item left div_chart_item">
     <div class="div_chart_item01">
       <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">分时段目的地划分图 </div>
       <p id="chart_2" class="p_chart"><img id="image_chart3" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
@@ -344,15 +355,17 @@
         </ul>
       </div>
     </form>
-    <!--  </div>--> 
+      </div> 
   </div>
+-->
   
-  <!-标签-->
+<!--  <!-标签-->-->
+<!--
   <div class="select_time">
     <div class="static_top left"> <i></i><span>poi整体概率分布</span> </div>
   </div>
   <div class="div_chart"> 
-    <!--  <div class="margin_div_chart_item left div_chart_item">-->
+      <div class="margin_div_chart_item left div_chart_item">
     <div class="div_chart_item01">
       <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">POI大类热度统计 </div>
       <p id="chart_3" class="p_chart"><img id="image_pie_01" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
@@ -391,13 +404,17 @@
         </ul>
       </div>
     </form>
-    <!--  </div>--> 
+      </div> 
   </div>
+-->
+<!--
   <div class="margin_top_60 select_time ">
     <div class="static_top left"> <i></i><span>poi分路段概率分布</span> </div>
   </div>
+-->
   
   <!--POI热度分层统计图，需求修改留存备用	-->
+<!--
   <div class="div_chart">
     <div class="margin_div_chart_item left div_chart_item">
       <div class="div_chart_item01">
@@ -446,6 +463,7 @@
       </div>
     </div>
   </div>
+-->
 </div>
 <!--
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
