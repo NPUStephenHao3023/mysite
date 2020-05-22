@@ -191,8 +191,10 @@ def upload_od(request):
         return HttpResponse(dumps(result, ensure_ascii=False))
     token = generate_token()
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = '{}\\PatternMining\\dataset\\upload_od_original-{}.csv'.format(
-        current_dir, token)
+    # file_path = '{}\\PatternMining\\dataset\\upload_od_original-{}.csv'.format(
+    #     current_dir, token)
+    file_path = os.path.join(current_dir, 'PatternMining', 'dataset',
+                             'upload_od_original-{}.csv'.format(token))
     with open(file_path, 'w+') as f:
         for chunk in csv_file.chunks():
             f.write(chunk.decode("utf-8"))
@@ -241,8 +243,10 @@ def upload_traj(request):
         return HttpResponse(dumps(result, ensure_ascii=False))
     token = generate_token()
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = '{}\\PatternMining\\dataset\\upload_sequence_original-{}.csv'.format(
-        current_dir, token)
+    # file_path = '{}\\PatternMining\\dataset\\upload_sequence_original-{}.csv'.format(
+    #     current_dir, token)
+    file_path = os.path.join(current_dir, 'PatternMining', 'dataset',
+                             'upload_sequence_original-{}.csv'.format(token))
     with open(file_path, 'w+') as f:
         for chunk in csv_file.chunks():
             f.write(chunk.decode("utf-8"))

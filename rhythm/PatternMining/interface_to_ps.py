@@ -8,8 +8,11 @@ from csv import reader
 def sequence_mining(min_support, token):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     # data_path = "{}\\dataset\\upload_sequence_processed{}.txt".format(
-    data_path = "{}\\dataset\\upload_sequence_processed-{}.txt".format(
-        current_dir, token)
+    # data_path = "{}\\dataset\\upload_sequence_processed-{}.txt".format(
+    #     current_dir, token)
+    data_path = os.path.join(current_dir, 'dataset',
+                             'upload_sequence_processed-{}.txt'.format(token)
+                             )
     db = []
     with open(data_path, 'r') as f:
         file = reader(f, delimiter=' ', quotechar='\r')
