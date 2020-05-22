@@ -10,8 +10,11 @@ from .eclat import eclat
 def read_data(token):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     # no headers in upload_preprocessed.txt
-    data_path = current_dir + \
-        '\\dataset\\upload_od_processed-{}.txt'.format(token)
+    # data_path = current_dir + \
+    #     '\\dataset\\upload_od_processed-{}.txt'.format(token)
+    data_path = os.path.join(current_dir, 'dataset',
+                             'upload_od_processed-{}.txt'.format(token)
+                             )
     data = []
     with open(data_path, 'r') as f:
         file = reader(f, delimiter=' ', quotechar='\r')
@@ -24,7 +27,8 @@ def write_result(result):
     """ abondon
     """
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    result_path = current_dir + '\\dataset\\upload_mined.txt'
+    # result_path = current_dir + '\\dataset\\upload_mined.txt'
+    result_path = os.path.join(current_dir, 'dataset', 'upload_mined.txt')
     with open(result_path, 'w') as file:
         file_data = writer(file, delimiter=',', quotechar='\r')
         for itemset_K in result[0]:
