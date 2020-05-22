@@ -132,8 +132,11 @@ def process_original_traj(token, time, weather, dayofweek, grid_or_not=True, hei
         select_df = df
     seq_df = select_df.groupby(['traj_id'])['road_id'].apply(
         list).reset_index(name='road_seq')
-    file_path = '{}\\dataset\\upload_sequence_processed-{}.txt'.format(
-        current_dir, token)
+    # file_path = '{}\\dataset\\upload_sequence_processed-{}.txt'.format(
+    #     current_dir, token)
+    file_path = os.path.join(current_dir, 'dataset',
+                             'upload_sequence_processed-{}.txt'.format(token)
+                             )
     with open(file_path, 'w') as f:
         for _, row in seq_df.iterrows():
             f.writelines("{}\n".format(" ".join(str(item)
