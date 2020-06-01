@@ -24,9 +24,12 @@ def generate_grid_position(height, width, latitude_pair, longitude_pair):
     coln_width = (longitude_pair[1] - longitude_pair[0]) / width
     for i in range(height):
         for j in range(width):
-            lat = latitude_pair[0] + i * row_height
-            lon = longitude_pair[0] + j * coln_width
-            points['{}'.format(i * width + j)] = (lat, lon)
+            upper_left_lat = latitude_pair[0] + i * row_height
+            upper_left_lon = longitude_pair[0] + j * coln_width
+            lower_right_lat = upper_left_lat - row_height
+            lower_right_lon = upper_left_lon + coln_width
+            points['{}'.format(i * width + j)] = [(upper_left_lat,
+                                                   upper_left_lon), (lower_right_lat, lower_right_lon)]
     return points
 
 
