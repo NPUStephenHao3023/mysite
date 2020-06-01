@@ -97,8 +97,11 @@ def equal_grid_result(df, height, width, file_path):
 
 def process_original_traj(token, time, weather, dayofweek, grid_or_not=True, height=10, width=10):
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    df = read_csv(current_dir + "\\dataset\\" +
-                  "upload_sequence_original-{}.csv".format(token))
+    # df = read_csv(current_dir + "\\dataset\\" +
+    #               "upload_sequence_original-{}.csv".format(token))
+    df = read_csv(os.path.join(current_dir, 'dataset',
+                               'upload_sequence_original-{}.csv'.format(token))
+                  )
     # sampling
     # df = df.sample(n=1024)
     # df = df.loc[(df['time'] == time) & (df['weather'] == weather)][[
@@ -129,8 +132,11 @@ def process_original_traj(token, time, weather, dayofweek, grid_or_not=True, hei
         select_df = df
     seq_df = select_df.groupby(['traj_id'])['road_id'].apply(
         list).reset_index(name='road_seq')
-    file_path = '{}\\dataset\\upload_sequence_processed-{}.txt'.format(
-        current_dir, token)
+    # file_path = '{}\\dataset\\upload_sequence_processed-{}.txt'.format(
+    #     current_dir, token)
+    file_path = os.path.join(current_dir, 'dataset',
+                             'upload_sequence_processed-{}.txt'.format(token)
+                             )
     with open(file_path, 'w') as f:
         for _, row in seq_df.iterrows():
             f.writelines("{}\n".format(" ".join(str(item)
@@ -153,8 +159,11 @@ def process_upload_traj(token):
     current_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
         start = default_timer()
-        df = read_csv(current_dir + "\\dataset\\" +
-                      "upload_sequence_original-{}.csv".format(token))
+        # df = read_csv(current_dir + "\\dataset\\" +
+        #               "upload_sequence_original-{}.csv".format(token))
+        df = read_csv(os.path.join(current_dir, 'dataset',
+                                   'upload_sequence_original-{}.csv'.format(token))
+                      )
         # specified 4 headers
         keys = df.keys()
         if("time" not in keys or "weather" not in keys or
@@ -180,8 +189,10 @@ def process_upload_traj(token):
             'run_time': run_time
         }
         new_row = DataFrame(results, index=[0])
-        file_path = '{}\\try_process_upload_sequence\\try_{}.csv'.format(
-            current_dir, current_date)
+        # file_path = '{}\\try_process_upload_sequence\\try_{}.csv'.format(
+        #     current_dir, current_date)
+        file_path = os.path.join(
+            current_dir, 'try_process_upload_sequence', 'try_{}.csv'.format(current_date))
         with open(file_path, 'a') as f:
             new_row.to_csv(f, header=False, index=False)
         return 0
@@ -194,8 +205,10 @@ def process_upload_traj(token):
         }
         # print(results)
         new_row = DataFrame(results, index=[0])
-        file_path = '{}\\except_process_upload_sequence\\except_{}.csv'.format(
-            current_dir, current_date)
+        # file_path = '{}\\except_process_upload_sequence\\except_{}.csv'.format(
+        #     current_dir, current_date)
+        file_path = os.path.join(
+            current_dir, 'except_process_upload_sequence', 'except_{}.csv'.format(current_date))
         with open(file_path, 'a') as f:
             new_row.to_csv(f, header=False, index=False)
         return 1

@@ -24,9 +24,12 @@ def generate_grid_position(height, width, latitude_pair, longitude_pair):
     coln_width = (longitude_pair[1] - longitude_pair[0]) / width
     for i in range(height):
         for j in range(width):
-            lat = latitude_pair[0] + i * row_height
-            lon = longitude_pair[0] + j * coln_width
-            points['{}'.format(i * width + j)] = (lat, lon)
+            upper_left_lat = latitude_pair[0] + i * row_height
+            upper_left_lon = longitude_pair[0] + j * coln_width
+            lower_right_lat = upper_left_lat - row_height
+            lower_right_lon = upper_left_lon + coln_width
+            points['{}'.format(i * width + j)] = [(upper_left_lat,
+                                                   upper_left_lon), (lower_right_lat, lower_right_lon)]
     return points
 
 
@@ -36,8 +39,11 @@ def process_original_od(token, height, width):
     current_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
         start = default_timer()
-        df = read_csv(current_dir + "\\dataset\\" +
-                      "upload_od_original-{}.csv".format(token))
+        # df = read_csv(current_dir + "\\dataset\\" +
+        #               "upload_od_original-{}.csv".format(token))
+        df = read_csv(os.path.join(current_dir, 'dataset',
+                                   'upload_od_original-{}.csv'.format(token))
+                      )
         # specified 4 headers
         keys = df.keys()
         if("day_of_week" not in keys or
@@ -87,8 +93,11 @@ def process_original_od(token, height, width):
                                                                             max_lon),
                                                        height, width), axis=1)
         # save to csv
-        file_path = '{}\\dataset\\upload_od_processed-{}.txt'.format(
-            current_dir, token)
+        # file_path = '{}\\dataset\\upload_od_processed-{}.txt'.format(
+        #     current_dir, token)
+        file_path = os.path.join(current_dir, 'dataset',
+                                 'upload_od_processed-{}.txt'.format(token)
+                                 )
         # with open(file_path, 'a') as f:
         df.to_csv(file_path, sep=' ', columns=[
                   'time', 'day_of_week', 'weather', 'o_num', 'd_num', 'o_poi', 'd_poi'],
@@ -112,8 +121,10 @@ def process_original_od(token, height, width):
             'run_time': run_time
         }
         new_row = DataFrame(results, index=[0])
-        file_path = '{}\\try_process_upload_od\\try_{}.csv'.format(
-            current_dir, current_date)
+        # file_path = '{}\\try_process_upload_od\\try_{}.csv'.format(
+        #     current_dir, current_date)
+        file_path = os.path.join(
+            current_dir, 'try_process_upload_od', 'try_{}.csv'.format(current_date))
         with open(file_path, 'a') as f:
             new_row.to_csv(f, header=False, index=False)
         return 0, data_range, point_pairs
@@ -126,8 +137,10 @@ def process_original_od(token, height, width):
         }
         # print(results)
         new_row = DataFrame(results, index=[0])
-        file_path = '{}\\except_process_upload_od\\except_{}.csv'.format(
-            current_dir, current_date)
+        # file_path = '{}\\except_process_upload_od\\except_{}.csv'.format(
+        #     current_dir, current_date)
+        file_path = os.path.join(
+            current_dir, 'except_process_upload_od', 'except_{}.csv'.format(current_date))
         with open(file_path, 'a') as f:
             new_row.to_csv(f, header=False, index=False)
         data_range = {}
