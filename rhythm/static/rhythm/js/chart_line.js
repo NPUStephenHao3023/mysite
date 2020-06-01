@@ -91,7 +91,7 @@ function makeChart_line(data) {
 	var option = {
 		backgroundColor: "#fff",
 		title: {
-			text: '成都市POI概率分布',
+//			text: '成都市POI概率分布',
 		},
 		tooltip: {
 			trigger: 'axis',
