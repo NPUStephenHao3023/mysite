@@ -38,13 +38,13 @@
   <!--解释-->
   <div class="select_time none" >
     <div class="static_top left" style="float:left"> <i></i><span>出租车迁移关系图</span> </div>
-	  <div class="right nav text_right " style="float: right ;margin-top: -20px;">
-    <ul>
-      <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_association' %}" style="color: #45059B">多元关联规则发现工具</a> </li>
-    </ul>
+    <div class="right nav text_right " style="float: right ;margin-top: -20px;">
+      <ul>
+        <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_association' %}" style="color: #45059B">多元关联规则发现工具</a> </li>
+      </ul>
+    </div>
   </div>
-  </div>
-	
+  
   <!--出租车迁移关系图-->
   <div class="div_chart"> 
     <!--  <div class="margin_div_chart_item left div_chart_item">-->
@@ -96,52 +96,54 @@
     <div class="static_top left"> <i></i><span>分时段目的地划分</span> </div>
   </div>
 -->
+  
   <!--分时段目的地划分图-->
-  <!--<div class="div_chart"> 
-      <div class="margin_div_chart_item left div_chart_item">
-    <div class="div_chart_item01">
-      <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">分时段目的地划分图 </div>
-      <p id="chart_2" class="p_chart"><img id="image_chart3" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
-    </div>
-    <form id="form2">
-      <div class="div_pie_parameter">
-        <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">参数设置</div>
-        <ul class="div_pp_ul">
-          <li>选择维度：
-            <input type="number" name="method9_1" id="method9_1" min="2" max="8" step="1" value="2" form="form2"/>
-            选择时间：
-            <select name="method9_2" id="method9_2"  form="form2" >
-              <option value="6_7">6点-7点</option>
-              <option value="7_8">7点-8点</option>
-              <option value="8_9">8点-9点</option>
-              <option value="9_10">9点-10点</option>
-              <option value="10_11">10点-11点</option>
-              <option value="11_12">11点-12点</option>
-              <option value="12_13">12点-13点</option>
-              <option value="13_14">13点-14点</option>
-              <option value="14_15">14点-15点</option>
-              <option value="15_16">15点-16点</option>
-              <option value="16_17">16点-17点</option>
-              <option value="17_18">17点-18点</option>
-              <option value="18_19">18点-19点</option>
-              <option value="19_20">19点-20点</option>
-              <option value="20_21">20点-22点</option>
-              <option value="21_22">21点-22点</option>
-              <option value="22_23">22点-23点</option>
-              <option value="23_24">23点-24点</option>
-            </select>
-          </li>
-          <li>
-            <div class="bottom2">
-              <input type="button" value="运行" onClick="submit_data_chart8_9('method9')">
-            </div>
-          </li>
-        </ul>
+<!--
+  <div class="div_chart">
+    <div class="margin_div_chart_item left div_chart_item">
+      <div class="div_chart_item01">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">分时段目的地划分图 </div>
+        <p id="chart_2" class="p_chart"><img id="image_chart3" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
       </div>
-    </form>
+      <form id="form2">
+        <div class="div_pie_parameter">
+          <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">参数设置</div>
+          <ul class="div_pp_ul">
+            <li>选择维度：
+              <input type="number" name="method9_1" id="method9_1" min="2" max="8" step="1" value="2" form="form2"/>
+              选择时间：
+              <select name="method9_2" id="method9_2"  form="form2" >
+                <option value="6_7">6点-7点</option>
+                <option value="7_8">7点-8点</option>
+                <option value="8_9">8点-9点</option>
+                <option value="9_10">9点-10点</option>
+                <option value="10_11">10点-11点</option>
+                <option value="11_12">11点-12点</option>
+                <option value="12_13">12点-13点</option>
+                <option value="13_14">13点-14点</option>
+                <option value="14_15">14点-15点</option>
+                <option value="15_16">15点-16点</option>
+                <option value="16_17">16点-17点</option>
+                <option value="17_18">17点-18点</option>
+                <option value="18_19">18点-19点</option>
+                <option value="19_20">19点-20点</option>
+                <option value="20_21">20点-22点</option>
+                <option value="21_22">21点-22点</option>
+                <option value="22_23">22点-23点</option>
+                <option value="23_24">23点-24点</option>
+              </select>
+            </li>
+            <li>
+              <div class="bottom2">
+                <input type="button" value="运行" onClick="submit_data_chart8_9('method9')">
+              </div>
+            </li>
+          </ul>
+        </div>
+      </form>
+    </div>
   </div>
 -->
-  
   <div class="select_time">
     <div class="static_top left"> <i></i><span>用户整体出行意图</span> </div>
   </div>
@@ -237,6 +239,12 @@
       <div class="div_chart_item01">
         <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">用户分路段出行意图概率分布 </div>
         <p id="chart_lines_2" class="p_chart"><img id="image_lines_2" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
+      </div>
+    </div>
+	  <div class="left div_chart_item">
+      <div class="div_chart_item01">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">出行意图相似度矩阵 </div>
+        <p id="chart_lines_3" class="p_chart"><img id="image_lines_3" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
       </div>
     </div>
   </div>
