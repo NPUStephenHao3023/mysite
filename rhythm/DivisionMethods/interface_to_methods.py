@@ -31,8 +31,10 @@ def interface_to_generate_img(file_name, token, method, args, test_or_not):
             'info': info
         }
         new_row = DataFrame(results)
-        file_path = '{}\\try_interface_to_methods\\try_{}.csv'.format(
-            current_dir, current_date)
+        # file_path = '{}\\try_interface_to_methods\\try_{}.csv'.format(
+        #     current_dir, current_date)
+        file_path = os.path.join(
+            current_dir, 'try_interface_to_methods', 'try_{}.csv'.format(current_date))
         with open(file_path, 'a') as f:
             new_row.to_csv(f, header=False, index=False)
     except:
@@ -46,8 +48,10 @@ def interface_to_generate_img(file_name, token, method, args, test_or_not):
         }
         new_row = DataFrame(results)
         # print(new_row)
-        file_path = '{}\\except_interface_to_methods\\except_{}.csv'.format(
-            current_dir, current_date)
+        # file_path = '{}\\except_interface_to_methods\\except_{}.csv'.format(
+        #     current_dir, current_date)
+        file_path = os.path.join(
+            current_dir, 'except_interface_to_methods', 'except_{}.csv'.format(current_date))
         with open(file_path, 'a') as f:
             new_row.to_csv(f, header=False, index=False)
     # print(results)
