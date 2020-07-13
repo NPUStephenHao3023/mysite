@@ -12,8 +12,11 @@ def process_original_csv(token):
     current_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
         start = default_timer()
-        df = read_csv(current_dir + "\\dataset\\" +
-                      "upload_original-{}.csv".format(token))
+        # df = read_csv(current_dir + "\\dataset\\" +
+        #               "upload_original-{}.csv".format(token))
+
+        df = read_csv(os.path.join(current_dir, 'dataset',
+                                   'upload_original-{}.csv'.format(token)))
         # specified 3 headers
         keys = df.keys()
         if("latitude" not in keys or "longitude" not in keys or "date_time" not in keys):
@@ -44,8 +47,11 @@ def process_original_csv(token):
         # sort by timestamp
         df = df.sort_values(by='date_time')
         # save to csv
-        file_path = '{}\\dataset\\upload_processed-{}.csv'.format(
-            current_dir, token)
+        # file_path = '{}\\dataset\\upload_processed-{}.csv'.format(
+        #     current_dir, token)
+        file_path = os.path.join(current_dir, 'dataset',
+                                 'upload_processed-{}.csv'.format(token)
+                                 )
         # with open(file_path, 'a') as f:
         df.to_csv(file_path, header=False, index=False)
         stop = default_timer()
@@ -56,8 +62,10 @@ def process_original_csv(token):
             'run_time': run_time
         }
         new_row = DataFrame(results, index=[0])
-        file_path = '{}\\try_process_upload_original\\try_{}.csv'.format(
-            current_dir, current_date)
+        # file_path = '{}\\try_process_upload_original\\try_{}.csv'.format(
+        #     current_dir, current_date)
+        file_path = os.path.join(
+            current_dir, 'try_process_upload_original', 'try_{}.csv'.format(current_date))
         with open(file_path, 'a') as f:
             new_row.to_csv(f, header=False, index=False)
         return 0
@@ -70,8 +78,10 @@ def process_original_csv(token):
         }
         # print(results)
         new_row = DataFrame(results, index=[0])
-        file_path = '{}\\except_process_upload_original\\except_{}.csv'.format(
-            current_dir, current_date)
+        # file_path = '{}\\except_process_upload_original\\except_{}.csv'.format(
+        #     current_dir, current_date)
+        file_path = os.path.join(
+            current_dir, 'except_process_upload_original', 'except_{}.csv'.format(current_date))
         with open(file_path, 'a') as f:
             new_row.to_csv(f, header=False, index=False)
         return 1

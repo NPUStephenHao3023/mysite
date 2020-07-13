@@ -60,19 +60,18 @@ def figure_to_img(dataset_, method_, args, test_or_not):
                 kurtosis,
                 number.
     """
-    # "\\..\\static\\rhythm\\img\\generated\\"
     dirname_ = os.path.dirname(os.path.abspath(__file__))
     # print("*", dirname_)
-    dataset_path = dirname_ + "\\dataset\\" + dataset_
+    dataset_path = os.path.join(dirname_, 'dataset', dataset_)
     database_ = np.array(pd.read_csv(dataset_path + ".csv", header=None))
     # print(database_)
     if test_or_not == False:
-        img_path = dirname_ + "\\..\\static\\rhythm\\img\\generated\\"
+        img_path = os.path.join(dirname_, '..', 'static',
+                                'rhythm', 'img', 'generated')
     else:
-        img_path = dirname_ + "\\generated\\" + method_
+        img_path = os.path.join(dirname_, 'generated', method_)
         # print(img_path)
     Path(img_path).mkdir(parents=True, exist_ok=True)
-    img_address = img_path + "\\"
     img_name = dataset_ + "-"
     whole_figure = plt.figure()
     if method_ == "2d_equal_grid":
@@ -118,8 +117,8 @@ def figure_to_img(dataset_, method_, args, test_or_not):
                                         parameter_second, whole_figure)
         img_name += method_ + "-" + \
             str(parameter_first) + "-" + str(parameter_second)
-    img_address += img_name + ".png"
-    # img_address += img_name + "-{}.png".format(token)
+    # img_address += img_name + ".png"
+    img_address = os.path.join(img_path, img_name + '.png')
     whole_figure.savefig(img_address)
     plt.close()
     # whole_figure.clf()
