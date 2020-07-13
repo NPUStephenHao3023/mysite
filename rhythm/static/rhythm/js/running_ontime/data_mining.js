@@ -441,25 +441,26 @@ function csrfSafeMethod(method) {
 }
 
 function show_fre_image(a) {
-	
 	var trules = Rules[a];
+	console.log("trules:",trules);
 	var front_data = trules.front_data;
 	var back_data = trules.back_data;
+	//o_gps，d_gps:两组点对分别表示划分范围的左上角和右下角
 	var o_gps = point_pairs[back_data[5]];
 	var d_gps = point_pairs[back_data[6]];
+	//
+	console.log("point_pairs",point_pairs);
+	console.log(o_gps,d_gps);
 	//	alert(a);
 	var len = 2; //点的数量
 	var x = new Array(); //点的经度
-	//	for (i = 0; i < len; i++) {
-	////		x[i] = result["idx_gps"][i][1];
-	//		x[]
-	//	}
-
+	
 	var y = new Array(); //点的纬度
-	x[0] = o_gps[1];
-	x[1] = d_gps[1];
-	y[0] = o_gps[0];
-	y[1] = d_gps[0];
+	x[0] = (o_gps[0][1]+o_gps[1][1])/2;
+	x[1] = (d_gps[0][1]+d_gps[1][1])/2;
+	y[0] = (o_gps[0][0]+d_gps[1][0])/2;
+	y[1] = (d_gps[0][0]+d_gps[1][0])/2;
+	console.log(x[0],x[1],y[0],y[1]);
 	//	for (i = 0; i < len; i++) {
 	//		y[i] = result["idx_gps"][i][0];
 	//	}
@@ -479,7 +480,6 @@ function show_fre_image(a) {
 	$('#chart_freq_show').width($('#chart_freq_show').width());
 	$('#chart_freq_show').height($('#chart_freq_show').height());
 	var dom = document.getElementById("chart_freq_show");
-	console.log('here', dom);
 //	alert(a);
 	var myChart = echarts.init(dom);
 	myChart.clear();
@@ -509,7 +509,7 @@ function show_fre_image(a) {
 			legendHoverLink: true,
 			coordinateSystem: 'bmap',
 			roam: true, //可缩放和平移漫游
-			focusNodeAdjacency: false, //选取某节点时高亮相邻的边和节点
+			focusNodeAdjacency: true, //选取某节点时高亮相邻的边和节点
 			symbol: "circle", //节点形状
 			symbolSize: 40,
 			data: (function () {
