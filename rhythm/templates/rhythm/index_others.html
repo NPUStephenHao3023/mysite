@@ -10,7 +10,7 @@
 <meta name="copyright" content="js代码(www.jsdaima.com)" />
 <!-- <link rel="stylesheet" href="css/base.css"> -->
 <link rel="icon" href="{% static 'rhythm/img/connected-car.jpg' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'rhythm/css/index_association.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'rhythm/css/index_others.css' %}">
 <!--<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>-->
 </head>
 
@@ -19,16 +19,16 @@
 <header class="header left">
   <div class="left nav">
     <ul>
-      <li > <i class="nav_1"></i><a href="{% url 'rhythm:index' %}">时空多粒度划分工具</a> </li>
+      <li > <i class="nav_1"></i><a href="{% url 'rhythm:index_association' %}">多元关联规则发现工具</a></li>
     </ul>
   </div>
   <div class="header_center left">
-    <h2><strong>大数据集成可视化平台</strong></h2>
-    <p class="color_font"><small>Large Data Visualization Platform</small></p>
+    <h2><strong>多领域关联挖掘</strong></h2>
+    <p class="color_font"><small>Multi-domain Association Rules Mining</small></p>
   </div>
   <div class="right nav text_right">
     <ul>
-      <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_association' %}">多元关联规则发现工具</a> </li>
+      <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_others' %}">交通规律可视化工具</a></li>
     </ul>
   </div>
 </header>
@@ -38,11 +38,13 @@
   <!--解释-->
   <div class="select_time none" >
     <div class="static_top left" style="float:left"> <i></i><span>出租车迁移关系图</span> </div>
+<!--
     <div class="right nav text_right " style="float: right ;margin-top: -20px;">
       <ul>
         <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_association' %}" style="color: #45059B">多元关联规则发现工具</a> </li>
       </ul>
     </div>
+-->
   </div>
   
   <!--出租车迁移关系图-->
@@ -198,7 +200,7 @@
     <div class="margin_div_chart_item left div_chart_item">
       <div class="div_chart_item01">
         <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">当前城市活跃路段图 </div>
-        <p id="chart_lines_1" class="p_chart"><img id="image_pie_02" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
+        <p id="chart_lines_1" class="p_chart"><img id="image_pie_02" class="images" style="width: 95%" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
       </div>
       <form id="form4">
         <div class="div_pie_parameter">
@@ -238,13 +240,13 @@
     <div class="left div_chart_item">
       <div class="div_chart_item01">
         <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">用户分路段出行意图概率分布 </div>
-        <p id="chart_lines_2" class="p_chart"><img id="image_lines_2" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
+        <p id="chart_lines_2" class="p_chart"><img id="image_lines_2" class="images" style="width: 95%" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
       </div>
     </div>
 	  <div class="left div_chart_item">
       <div class="div_chart_item01">
         <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">出行意图相似度矩阵 </div>
-        <p id="chart_lines_3" class="p_chart"><img id="image_lines_3" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
+        <p id="chart_lines_3" class="p_chart"><img id="image_lines_3" class="images"  style="width: 95%" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
       </div>
     </div>
   </div>
@@ -272,6 +274,7 @@
 <script type="text/javascript" src="{% static 'rhythm/js/chart_pie.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/chart_road_section.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/association_function.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/js2wordcloud/js2wordcloud.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/chart_line.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/running_ontime/data_mining.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/running_ontime/data_seq_mining.js' %}"></script> 

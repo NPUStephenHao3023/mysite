@@ -19,16 +19,16 @@
 <header class="header left">
   <div class="left nav">
     <ul>
-      <li > <i class="nav_1"></i><a href="{% url 'rhythm:index' %}">时空多粒度划分工具</a> </li>
+      <li > <i class="nav_1"></i><a href="{% url 'rhythm:index_association' %}">多元关联规则发现工具</a> </li>
     </ul>
   </div>
   <div class="header_center left">
-    <h2><strong>大数据集成可视化平台</strong></h2>
-    <p class="color_font"><small>Large Data Visualization Platform</small></p>
+    <h2><strong>多领域关联挖掘</strong></h2>
+    <p class="color_font"><small>Multi-domain Association Rules Mining</small></p>
   </div>
   <div class="right nav text_right">
     <ul>
-      <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_association' %}">多元关联规则发现工具</a> </li>
+      <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_others' %}">交通规律可视化工具</a> </li>
     </ul>
   </div>
 </header>
@@ -36,101 +36,74 @@
 <div class="con left"> 
   
   <!--解释-->
+<!--
   <div class="select_time none" >
     <div class="static_top left" style="float:left"> <i></i><span>频繁模式挖掘展示图</span> </div>
-	  <div class="right nav text_right " style="float: right ;margin-top: -20px;">
-    <ul>
-      <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_others' %}" style="color: #45059B">交通规律可视化工具</a> </li>
-    </ul>
+    <div class="right nav text_right " style="float: right ;margin-top: -20px;">
+      <ul>
+        <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_others' %}" style="color: #45059B">交通规律可视化工具</a> </li>
+      </ul>
+    </div>
   </div>
-  </div>
+-->
   <!--频繁模式挖掘展示图-->
   <div class="div_chart"> 
     <!--  <div class="margin_div_chart_item left div_chart_item">-->
-    <div class="div_chart_item01">
-      <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">频繁模式挖掘展示图 </div>
-      <p id="chart_freq" class="p_chart"> <img id="image_freq" class="images" src="{% static 'rhythm/img/instruction_fre.png' %}"> </p>
-      <div class="table_showdata table_p_freq" id="table_p_freq">
-        <table class="table_showdata_freq" id="freq_table1">
-          <thead>
-            <tr>
-              <th colspan="5">前键</th>
-            </tr>
-            <tr>
-              <th>星期</th>
-              <th>时间</th>
-              <th>天气</th>
-              <!--              <th>O点编码</th>--> 
-              <!--              <th>D点编码</th>--> 
-            </tr>
-          </thead>
-          <tbody id="tbody_freq_1">
-          </tbody>
-        </table>
-        <table  class="table_showdata_freq" id="freq_tabel2">
-          <thead>
-            <tr>
-              <th colspan="5">后键</th>
-            </tr>
-            <tr>
-              <th>O点POI</th>
-              <th>D点POI</th>
-              <th>O点编码</th>
-              <th>D点编码</th>
-              <th>置信度</th>
-              <th>图示</th>
-            </tr>
-          </thead>
-          <tbody id="tbody_freq_2">
-          </tbody>
-        </table>
+    <div class="left div_chart_item">
+      <div class="div_chart_item01" >
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">跨域知识挖掘展示图 </div>
+<!--        <p id="chart_freq" class="p_chart"> <img id="image_freq" class="images" src="{% static 'rhythm/img/instruction_fre.png' %}"> </p>-->
+        <div class="table_showdata table_p_freq" id="table_p_freq">
+          <table  class="table_showdata_freq" id="freq_tabel2">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>跨域数目</th>
+                <th>跨域种类</th>
+                <th>支持度</th>
+                <th>图示</th>
+              </tr>
+            </thead>
+            <tbody id="tbody_freq_2">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!--可视化展示-->
+    <div class="left div_chart_item">
+      <div class="div_chart_item01">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">跨域知识可视化 </div>
+        <p id="chart_freq_show" class="p_chart" style="width: 90% ;margin: auto; margin-top: 10px;">
+<!--			<img id="image_chart_freq" class="images" src="{% static 'rhythm/img/instruction_fre.png' %}">-->
+		  </p>
+		 <img src="{% static 'rhythm/img/图例.png' %}" style="width:90%;">
       </div>
     </div>
     <form id="form5">
-      <div class="div_pie_parameter">
-        <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">参数设置</div>
-        <ul class="div_pp_ul">
-          <li>
-            <ul style="float:none; width: 100%; margin-top:0px;">
-              <li style="float:none; width: 100%; margin-top:0px;"> 数据文件：
-                <input type="file"  id="csv_input_freq" name="csv_input_freq" onchange="importf_frequent_minning(this)" accept=".csv"/>
-                支持度：
-                <input type="number" name="suppport_degree_freq" id="support_degree_freq" min="0.02" max="0.99" step="0.05" value="0.02" form="form5"/>
-                置信度：
-                <input type="number" name="confidence_level_freq" id="confidence_level_freq" min="0.1" max="0.99" step="0.05" value="0.1" form="form5"/>
-              </li>
-              <li style="float:none; width: 100%; margin-top:5px;"> 选择时间：
-                <select name="method_freq_time" id="method_freq_time"  form="form5" style="width:60px; margin-right: 50px;">
-                  <option value="全部">全部</option>
-                  <option value="白天">白天</option>
-                  <option value="夜晚">夜晚</option>
-                </select>
-                选择星期：
-                <select name="method_freq_week" id="method_freq_week"  form="form5" style="width:70px; margin-right: 50px;">
-                  <option value="全部">全部</option>
-                  <option value="工作日">工作日</option>
-                  <option value="休息日">休息日</option>
-                </select>
-                选择天气：
-                <select name="method_freq_weather" id="method_freq_weather"  form="form5" style="width:70px; margin-right: 50px;">
-                  <option value="全部">全部</option>
-                  <option value="晴天">晴天</option>
-                  <option value="阴雨天">阴雨天</option>
-                </select>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <div class="bottom2">
-              <input type="button" value="运行" onClick="submit_frequent_minning()">
-            </div>
-          </li>
-        </ul>
+      <div class="left div_chart_item_100">
+        <div class="div_pie_parameter">
+          <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">参数设置</div>
+          <ul class="div_pp_ul">
+            <li>
+              <ul style="float:none; width: 100%; margin-top:0px;">
+                <li style="float:none; width: 100%; margin-top:0px;">
+                  <a id="radio">跨域数据占比：</a>
+                </li>
+         </ul>
+            </li>
+            <li>
+              <div class="bottom2">
+                <input type="button" value="运行" onClick="submit_frequent_minning()">
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="div_chart_item01">
-        <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">频繁模式可视化 </div>
-        <p id="chart_freq_show" class="p_chart" style="width: 70% ;margin: auto; margin-top: 10px;"><img id="image_chart_freq" class="images" src="{% static 'rhythm/img/instruction_fre.png' %}"></p>
-      </div>
+    </form>
+    <!--数据展示-->
+<!--
+    <div class="left div_chart_item_100">
       <div class="div_table_box_showdata">
         <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">数据展示</div>
         <div class="table_showdata table_p">
@@ -153,16 +126,20 @@
           </table>
         </div>
       </div>
-    </form>
+    </div>
+-->
   </div>
   
-  <!--解释-->
+  <!--解释--> 
+  <!--
   <div class="select_time none">
     <div class="static_top left"> <i></i><span>序列模式挖掘展示图</span> </div>
   </div>
-  <!--序列模式挖掘展示图-->
+--> 
+  <!--序列模式挖掘展示图--> 
+  <!--
   <div class="div_chart"> 
-    <!--  <div class="margin_div_chart_item left div_chart_item">-->
+      <div class="margin_div_chart_item left div_chart_item">
     <div class="div_chart_item01">
       <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">序列模式挖掘展示图 </div>
       <p id="chart_seq" class="p_chart"> <img id="image_freq" class="images" src="{% static 'rhythm/img/instruction_seq.png' %}"> </p>
@@ -249,15 +226,16 @@
       </div>
     </form>
   </div>
+--> 
   
-  <!--解释-->
-<!--
+  <!--解释--> 
+  <!--
   <div class="select_time none">
     <div class="static_top left"> <i></i><span>出租车迁移关系图</span> </div>
   </div>
--->
-  <!--出租车迁移关系图-->
-<!--
+--> 
+  <!--出租车迁移关系图--> 
+  <!--
   <div class="div_chart"> 
       <div class="margin_div_chart_item left div_chart_item">
     <div class="div_chart_item01">
@@ -301,16 +279,16 @@
       </div>
     </form>
   </div>
--->
+--> 
   
-  <!--解释-->
-<!--
+  <!--解释--> 
+  <!--
   <div class="select_time none">
     <div class="static_top left"> <i></i><span>分时段目的地划分</span> </div>
   </div>
--->
-  <!--分时段目的地划分图-->
-<!--
+--> 
+  <!--分时段目的地划分图--> 
+  <!--
   <div class="div_chart"> 
       <div class="margin_div_chart_item left div_chart_item">
     <div class="div_chart_item01">
@@ -355,9 +333,9 @@
     </form>
       </div> 
   </div>
--->
+--> 
   
-<!--
+  <!--
   <div class="select_time">
     <div class="static_top left"> <i></i><span>poi整体概率分布</span> </div>
   </div>
@@ -403,15 +381,15 @@
     </form>
       </div> 
   </div>
--->
-<!--
+--> 
+  <!--
   <div class="margin_top_60 select_time ">
     <div class="static_top left"> <i></i><span>poi分路段概率分布</span> </div>
   </div>
--->
+--> 
   
-  <!--POI热度分层统计图，需求修改留存备用	-->
-<!--
+  <!--POI热度分层统计图，需求修改留存备用	--> 
+  <!--
   <div class="div_chart">
     <div class="margin_div_chart_item left div_chart_item">
       <div class="div_chart_item01">
@@ -460,7 +438,7 @@
       </div>
     </div>
   </div>
--->
+--> 
 </div>
 <!--
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
@@ -470,6 +448,7 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>	
+<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/data_seq_mining.js' %}"></script>c'v
 --> 
 <script type="text/javascript" src="{% static 'rhythm/js/echarts_using/echarts.min.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/echarts_using/echarts-gl.min.js' %}"></script> 
@@ -486,8 +465,9 @@
 <script type="text/javascript" src="{% static 'rhythm/js/chart_road_section.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/association_function.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/chart_line.js' %}"></script> 
-<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/data_mining.js' %}"></script> 
-<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/data_seq_mining.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/cross_data_mining.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/cross_data_chart.js' %}"
+
 <script type="text/javascript" src="{% static 'rhythm/js/running_ontime/xlsx.core.min.js' %}"></script> 
 <script type="text/javascript" src="{% static 'rhythm/js/running_ontime/ajaxfileupload.js' %}"></script>
 </body>
