@@ -69,14 +69,14 @@ def frequent_mining(request):
     post = request.POST
     token = post['token']
     min_sup = float(post['sup'])
-    min_conf = float(post['conf'])
+    # min_conf = float(post['conf'])
     rtn, itemset = interface_to_eclat.frequent_itemset_mining(min_sup, token)
     if rtn == 1:
         context = {
             'is_itemset_empty': True
         }
     else:
-        cnt, rule = interface_to_eclat.rules(itemset[1], min_conf)
+        cnt, rule = interface_to_eclat.fr_rules(itemset[1], token)
         context = {
             'is_itemset_empty': False,
             'itemset_count': len(itemset[0]),
