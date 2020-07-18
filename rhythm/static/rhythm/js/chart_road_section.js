@@ -55,7 +55,7 @@ function submit_data_lines() {
 		$.getJSON(url, function (result) {
 			console.log("result", result);
 			makeChart_roadsection(result);
-
+//			makeChart_roadsection_wordcloud(result);
 			makeChart_thermograph(result);
 		});
 	}
@@ -261,7 +261,7 @@ function makeChart_roadsection(data) {
 	myChart.off('click');
 	myChart.on('click', function (param) {
 		console.log(param);
-		submit_data_roadsection_2(param.data.number, data);
+		submit_data_roadsection_wordcloud(param.data.number, data);
 
 	});
 
@@ -290,7 +290,33 @@ function handle_data(data) {
 	}
 	return t;
 }
-
+//根据路段绘制词云
+function submit_data_roadsection_wordcloud(index, data) {
+	var poi_types = data["poi_types"];
+	var poi_vector = data["road_line_poi_list"][index]["poi_vector"];
+	var length =poi_types.length;
+	var arr = [];
+	for (var i = 0; i < length; i++) {
+		arr.push([poi_types[i], poi_vector[i]]);
+	}
+	var option = {
+		tooltip: {
+			show: true,
+			formatter: function (item) {
+				return item[0] + ': 频率' + item[1];
+			}
+		},
+		list: arr,
+        fontSizeFactor: 0.2,                                    // 当词云值相差太大，可设置此值进字体行大小微调，默认0.1
+        maxFontSize: 60,                                        // 最大fontSize，用来控制weightFactor，默认60
+        minFontSize: 10,
+		color: 'random-dark',
+		shape: 'circle',
+		ellipticity: 1
+	}
+	var wc = new Js2WordCloud(document.getElementById('chart_lines_2'))
+	wc.setOption(option);
+}
 function submit_data_roadsection_2(index, data) {
 	var poi_types = data["poi_types"];
 

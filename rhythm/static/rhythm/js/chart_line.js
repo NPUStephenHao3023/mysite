@@ -41,57 +41,87 @@ function submit_data_line() {
 	//发送后submited=true，并更换加载图片，表示正在加载。
 	method_choice = formData["method"];
 	//	$('#final_image').attr('src', '/static/rhythm/img/loading.gif');
-	
+
 	if (method_choice == 'method10') {
 		method_choice = "";
 		time = formData['method10'];
-		
+
 		//暂时数据写死
-//		time = '6_7';
-		
+		//		time = '6_7';
+
 		url = "/static/rhythm/json/taxi_track_one_hour_poi_road/20140803_taxi_track_" + time + "_poi_road" + ".json";
 		$.getJSON(url, function (result) {
 			console.log(result);
-			makeChart_line(result)
+//			makeChart_line(result);
+			makeChart_wordcloud(result);
 		});
 	}
 
 }
 //将poi频率向量转换成poi概率向量
-function handle_data(data){
+function handle_data(data) {
 	var length = data.length;
 	var t = [];
 	var sum = 0;
-	for(var i=0;i<length;i++){
-		sum+=data[i];
+	for (var i = 0; i < length; i++) {
+		sum += data[i];
 	}
-	for(var ii=0 ;ii<length;ii++){
-		var tmp = data[ii]*1.0/(sum+0.0);
+	for (var ii = 0; ii < length; ii++) {
+		var tmp = data[ii] * 1.0 / (sum + 0.0);
 		t.push(tmp);
 	}
 	return t;
 }
+//绘制词云
+function makeChart_wordcloud(data) {
+	var poi_types = data["poi_types"];
+	var length = poi_types.length;
+	var poi_vector = handle_data(data["whole_poi_vector"]);
+	var arr = [];
+	for (var i = 0; i < length; i++) {
+		arr.push([poi_types[i], data["whole_poi_vector"][i]]);
+	}
+	var option = {
+		tooltip: {
+			show: true,
+			formatter: function (item) {
+				return item[0] + ': 频率' + item[1];
+			}
+		},
+		list: arr,
+        fontSizeFactor: 0.2,                                    // 当词云值相差太大，可设置此值进字体行大小微调，默认0.1
+        maxFontSize: 60,                                        // 最大fontSize，用来控制weightFactor，默认60
+        minFontSize: 10,
+		color: 'random-dark',
+		shape: 'circle',
+		ellipticity: 1
+	}
+	var wc = new Js2WordCloud(document.getElementById('chart_3'))
+	wc.setOption(option);
+
+}
+
 function makeChart_line(data) {
 	var poi_types = data["poi_types"];
-	
+
 	var poi_probability = handle_data(data["whole_poi_vector"]);
 	console.log(poi_probability);
-//	return ;
+	//	return ;
 	var myChart = echarts.init($("#chart_3")[0]);
 	var len = poi_types.length;
-	
+
 	//生成一段序列
 	var ls = [];
 	var lg = data['poi_types'].length;
-	for(var i=0;i<lg;i++){
-		ls.push(i+1);
+	for (var i = 0; i < lg; i++) {
+		ls.push(i + 1);
 	}
-	
-	
+
+
 	var option = {
 		backgroundColor: "#fff",
 		title: {
-//			text: '成都市POI概率分布',
+			//			text: '成都市POI概率分布',
 		},
 		tooltip: {
 			trigger: 'axis',
@@ -100,22 +130,22 @@ function makeChart_line(data) {
 				var poi = params[0].data.poi;
 				var value = params[0].value;
 				var name = params[0].name;
-				return  '序号:' + name+ "<br/>名称:" + poi+ '<br/>出现频率:' + value;
+				return '序号:' + name + "<br/>名称:" + poi + '<br/>出现频率:' + value;
 			}
 		},
-//		xAxis: {
-//			data: data.map(function (item) {
-//				return item[2];
-//			})
-//		},
-		xAxis:{
+		//		xAxis: {
+		//			data: data.map(function (item) {
+		//				return item[2];
+		//			})
+		//		},
+		xAxis: {
 			data: ls,
 			name: '编号'
 		},
 		yAxis: {
 			splitLine: {
 				show: false,
-				
+
 			},
 			name: '频率'
 		},
@@ -132,7 +162,7 @@ function makeChart_line(data) {
 				for (var i = 0; i < len; i++) {
 					var tmp = {
 						value: poi_probability[i],
-						name: i+1,
+						name: i + 1,
 						poi: poi_types[i]
 					};
 					t.push(tmp);

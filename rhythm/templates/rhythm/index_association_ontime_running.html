@@ -1,0 +1,494 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>大数据集成可视化平台</title>
+<meta name="keywords" content="大数据集成可视化平台" />
+<meta name="description" content="数据集成可视化平台，主界面提供基本信息统计与可视化，子界面提供多元关联规则发现工具与时空多粒度划分工具的交互操作" />
+<meta name="author" content="js代码(www.jsdaima.com)" />
+<meta name="copyright" content="js代码(www.jsdaima.com)" />
+<!-- <link rel="stylesheet" href="css/base.css"> -->
+<link rel="icon" href="{% static 'rhythm/img/connected-car.jpg' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'rhythm/css/index_association.css' %}">
+<!--<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>-->
+</head>
+
+<body>
+<!--顶部-->
+<header class="header left">
+  <div class="left nav">
+    <ul>
+      <li > <i class="nav_1"></i><a href="{% url 'rhythm:index' %}">时空多粒度划分工具</a> </li>
+    </ul>
+  </div>
+  <div class="header_center left">
+    <h2><strong>大数据集成可视化平台</strong></h2>
+    <p class="color_font"><small>Large Data Visualization Platform</small></p>
+  </div>
+  <div class="right nav text_right">
+    <ul>
+      <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_association' %}">多元关联规则发现工具</a> </li>
+    </ul>
+  </div>
+</header>
+<!--内容部分-->
+<div class="con left"> 
+  
+  <!--解释-->
+  <div class="select_time none" >
+    <div class="static_top left" style="float:left"> <i></i><span>频繁模式挖掘展示图</span> </div>
+	  <div class="right nav text_right " style="float: right ;margin-top: -20px;">
+    <ul>
+      <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_others' %}" style="color: #45059B">交通规律可视化工具</a> </li>
+    </ul>
+  </div>
+  </div>
+  <!--频繁模式挖掘展示图-->
+  <div class="div_chart"> 
+    <!--  <div class="margin_div_chart_item left div_chart_item">-->
+    <div class="div_chart_item01">
+      <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">频繁模式挖掘展示图 </div>
+      <p id="chart_freq" class="p_chart"> <img id="image_freq" class="images" src="{% static 'rhythm/img/instruction_fre.png' %}"> </p>
+      <div class="table_showdata table_p_freq" id="table_p_freq">
+        <table class="table_showdata_freq" id="freq_table1">
+          <thead>
+            <tr>
+              <th colspan="5">前键</th>
+            </tr>
+            <tr>
+              <th>星期</th>
+              <th>时间</th>
+              <th>天气</th>
+              <!--              <th>O点编码</th>--> 
+              <!--              <th>D点编码</th>--> 
+            </tr>
+          </thead>
+          <tbody id="tbody_freq_1">
+          </tbody>
+        </table>
+        <table  class="table_showdata_freq" id="freq_tabel2">
+          <thead>
+            <tr>
+              <th colspan="5">后键</th>
+            </tr>
+            <tr>
+              <th>O点POI</th>
+              <th>D点POI</th>
+              <th>O点编码</th>
+              <th>D点编码</th>
+              <th>置信度</th>
+              <th>图示</th>
+            </tr>
+          </thead>
+          <tbody id="tbody_freq_2">
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <form id="form5">
+      <div class="div_pie_parameter">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">参数设置</div>
+        <ul class="div_pp_ul">
+          <li>
+            <ul style="float:none; width: 100%; margin-top:0px;">
+              <li style="float:none; width: 100%; margin-top:0px;"> 数据文件：
+                <input type="file"  id="csv_input_freq" name="csv_input_freq" onchange="importf_frequent_minning(this)" accept=".csv"/>
+                支持度：
+                <input type="number" name="suppport_degree_freq" id="support_degree_freq" min="0.02" max="0.99" step="0.05" value="0.02" form="form5"/>
+                置信度：
+                <input type="number" name="confidence_level_freq" id="confidence_level_freq" min="0.1" max="0.99" step="0.05" value="0.1" form="form5"/>
+              </li>
+              <li style="float:none; width: 100%; margin-top:5px;"> 选择时间：
+                <select name="method_freq_time" id="method_freq_time"  form="form5" style="width:60px; margin-right: 50px;">
+                  <option value="全部">全部</option>
+                  <option value="白天">白天</option>
+                  <option value="夜晚">夜晚</option>
+                </select>
+                选择星期：
+                <select name="method_freq_week" id="method_freq_week"  form="form5" style="width:70px; margin-right: 50px;">
+                  <option value="全部">全部</option>
+                  <option value="工作日">工作日</option>
+                  <option value="休息日">休息日</option>
+                </select>
+                选择天气：
+                <select name="method_freq_weather" id="method_freq_weather"  form="form5" style="width:70px; margin-right: 50px;">
+                  <option value="全部">全部</option>
+                  <option value="晴天">晴天</option>
+                  <option value="阴雨天">阴雨天</option>
+                </select>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <div class="bottom2">
+              <input type="button" value="运行" onClick="submit_frequent_minning()">
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="div_chart_item01">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">频繁模式可视化 </div>
+        <p id="chart_freq_show" class="p_chart" style="width: 70% ;margin: auto; margin-top: 10px;"><img id="image_chart_freq" class="images" src="{% static 'rhythm/img/instruction_fre.png' %}"></p>
+      </div>
+      <div class="div_table_box_showdata">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">数据展示</div>
+        <div class="table_showdata table_p">
+          <table >
+            <thead>
+              <tr>
+                <th>time</th>
+                <th>o_longitude</th>
+                <th>o_latitude</th>
+                <th>d_longitude</th>
+                <th>d_latitude</th>
+                <th>weather</th>
+                <th>day_of_week</th>
+                <th>o_poi</th>
+                <th>d_poi</th>
+              </tr>
+            </thead>
+            <tbody id="tbody_frequent_minning">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+  <!--解释-->
+  <div class="select_time none">
+    <div class="static_top left"> <i></i><span>序列模式挖掘展示图</span> </div>
+  </div>
+  <!--序列模式挖掘展示图-->
+  <div class="div_chart"> 
+    <!--  <div class="margin_div_chart_item left div_chart_item">-->
+    <div class="div_chart_item01">
+      <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">序列模式挖掘展示图 </div>
+      <p id="chart_seq" class="p_chart"> <img id="image_freq" class="images" src="{% static 'rhythm/img/instruction_seq.png' %}"> </p>
+      <div class="table_showdata table_p_freq" id="table_p_seq">
+        <table class="table_showdata_freq" id="seq_table1" style="width: 95%;">
+          <thead>
+            <tr>
+              <th>前键序列</th>
+              <th>后键序列</th>
+              <th>置信度</th>
+              <th>图示</th>
+            </tr>
+          </thead>
+          <tbody id="tbody_seq_1">
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <form id="form6">
+      <div class="div_pie_parameter">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">参数设置</div>
+        <ul class="div_pp_ul">
+          <li>
+            <ul style="float:none; width: 100%; margin-top:0px;">
+              <li style="float:none; width: 100%; margin-top:0px;"> 数据文件：
+                <input type="file"  id="csv_input_seq" name="csv_input_seq" onchange="importf_sequential_minning(this)" accept=".csv"/>
+                支持度：
+                <input type="number" name="suppport_degree_seq" id="support_degree_seq" min="0.02" max="0.99" step="0.05" value="0.02" form="form6"/>
+                置信度：
+                <input type="number" name="confidence_level_seq" id="confidence_level_seq" min="0.1" max="0.99" step="0.05" value="0.1" form="form6"/>
+              </li>
+              <li style="float:none; width: 100%; margin-top:5px;"> 选择时间：
+                <select name="method_seq_time" id="method_seq_time"  form="form6" style="width:60px; margin-right: 50px;">
+                   <option value="2">全部</option>
+					<option value="0">白天</option>
+                  <option value="1">夜晚</option>
+               
+                </select>
+                选择星期：
+                <select name="method_seq_week" id="method_seq_week"  form="form6" style="width:70px; margin-right: 50px;">
+					<option value="2">全部</option>
+                  <option value="0">工作日</option>
+                  <option value="1">休息日</option>
+                  
+                </select>
+                选择天气：
+                <select name="method_seq_weather" id="method_seq_weather"  form="form5" style="width:70px; margin-right: 50px;">
+                  <option value="2">全部</option>
+					<option value="0">晴天</option>
+					<option value="1">阴雨天</option>
+                                    
+                </select>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <div class="bottom2">
+              <input type="button" value="运行" onClick="submit_sequential_minning()">
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="div_chart_item01">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">序列模式可视化 </div>
+        <p id="chart_seq_show" class="p_chart" style="width: 70% ;margin: auto; margin-top: 10px;"><img id="image_chart_freq" class="images" src="{% static 'rhythm/img/instruction_seq.png' %}"></p>
+      </div>
+      <div class="div_table_box_showdata">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">数据展示</div>
+        <div class="table_showdata table_p">
+          <table >
+            <thead>
+              <tr>
+                <th>traj_id</th>
+                <th>road_id</th>
+                <th>weather</th>
+                <th>dayofweek</th>
+                <th>time</th>
+              </tr>
+            </thead>
+            <tbody id="tbody_sequential_minning">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+  <!--解释-->
+<!--
+  <div class="select_time none">
+    <div class="static_top left"> <i></i><span>出租车迁移关系图</span> </div>
+  </div>
+-->
+  <!--出租车迁移关系图-->
+<!--
+  <div class="div_chart"> 
+      <div class="margin_div_chart_item left div_chart_item">
+    <div class="div_chart_item01">
+      <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">出租车迁移关系图 </div>
+      <p id="chart_1" class="p_chart"><img id="image_pie" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
+    </div>
+    <form id="form1">
+      <div class="div_pie_parameter">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">参数设置</div>
+        <ul class="div_pp_ul">
+          <li>选择维度：
+            <input type="number" name="method8_1" id="method8_1" min="2" max="8" step="1" value="2" form="form1"/>
+            选择时间：
+            <select name="method8_2" id="method8_2"  form="form1" >
+              <option value="6_7">6点-7点</option>
+              <option value="7_8">7点-8点</option>
+              <option value="8_9">8点-9点</option>
+              <option value="9_10">9点-10点</option>
+              <option value="10_11">10点-11点</option>
+              <option value="11_12">11点-12点</option>
+              <option value="12_13">12点-13点</option>
+              <option value="13_14">13点-14点</option>
+              <option value="14_15">14点-15点</option>
+              <option value="15_16">15点-16点</option>
+              <option value="16_17">16点-17点</option>
+              <option value="17_18">17点-18点</option>
+              <option value="18_19">18点-19点</option>
+              <option value="19_20">19点-20点</option>
+              <option value="20_21">20点-22点</option>
+              <option value="21_22">21点-22点</option>
+              <option value="22_23">22点-23点</option>
+              <option value="23_24">23点-24点</option>
+            </select>
+          </li>
+          <li>
+            <div class="bottom2">
+              <input type="button" value="运行" onClick="submit_data_chart8_9('method8')">
+            </div>
+          </li>
+        </ul>
+      </div>
+    </form>
+  </div>
+-->
+  
+  <!--解释-->
+<!--
+  <div class="select_time none">
+    <div class="static_top left"> <i></i><span>分时段目的地划分</span> </div>
+  </div>
+-->
+  <!--分时段目的地划分图-->
+<!--
+  <div class="div_chart"> 
+      <div class="margin_div_chart_item left div_chart_item">
+    <div class="div_chart_item01">
+      <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">分时段目的地划分图 </div>
+      <p id="chart_2" class="p_chart"><img id="image_chart3" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
+    </div>
+    <form id="form2">
+      <div class="div_pie_parameter">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">参数设置</div>
+        <ul class="div_pp_ul">
+          <li>选择维度：
+            <input type="number" name="method9_1" id="method9_1" min="2" max="8" step="1" value="2" form="form2"/>
+            选择时间：
+            <select name="method9_2" id="method9_2"  form="form2" >
+              <option value="6_7">6点-7点</option>
+              <option value="7_8">7点-8点</option>
+              <option value="8_9">8点-9点</option>
+              <option value="9_10">9点-10点</option>
+              <option value="10_11">10点-11点</option>
+              <option value="11_12">11点-12点</option>
+              <option value="12_13">12点-13点</option>
+              <option value="13_14">13点-14点</option>
+              <option value="14_15">14点-15点</option>
+              <option value="15_16">15点-16点</option>
+              <option value="16_17">16点-17点</option>
+              <option value="17_18">17点-18点</option>
+              <option value="18_19">18点-19点</option>
+              <option value="19_20">19点-20点</option>
+              <option value="20_21">20点-22点</option>
+              <option value="21_22">21点-22点</option>
+              <option value="22_23">22点-23点</option>
+              <option value="23_24">23点-24点</option>
+            </select>
+          </li>
+          <li>
+            <div class="bottom2">
+              <input type="button" value="运行" onClick="submit_data_chart8_9('method9')">
+            </div>
+          </li>
+        </ul>
+      </div>
+    </form>
+      </div> 
+  </div>
+-->
+  
+<!--
+  <div class="select_time">
+    <div class="static_top left"> <i></i><span>poi整体概率分布</span> </div>
+  </div>
+  <div class="div_chart"> 
+      <div class="margin_div_chart_item left div_chart_item">
+    <div class="div_chart_item01">
+      <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">POI大类热度统计 </div>
+      <p id="chart_3" class="p_chart"><img id="image_pie_01" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
+    </div>
+    <form id="form3">
+      <div class="div_pie_parameter">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">参数设置</div>
+        <ul class="div_pp_ul">
+          <li>选择时间：
+            <select name="method10" id="method10"  form="form3" >
+              <option value="6_7">6点-7点</option>
+              <option value="7_8">7点-8点</option>
+              <option value="8_9">8点-9点</option>
+              <option value="9_10">9点-10点</option>
+              <option value="10_11">10点-11点</option>
+              <option value="11_12">11点-12点</option>
+              <option value="12_13">12点-13点</option>
+              <option value="13_14">13点-14点</option>
+              <option value="14_15">14点-15点</option>
+              <option value="15_16">15点-16点</option>
+              <option value="16_17">16点-17点</option>
+              <option value="17_18">17点-18点</option>
+              <option value="18_19">18点-19点</option>
+              <option value="19_20">19点-20点</option>
+              <option value="20_21">20点-22点</option>
+              <option value="21_22">21点-22点</option>
+              <option value="22_23">22点-23点</option>
+              <option value="23_24">23点-24点</option>
+            </select>
+          </li>
+          <li>
+            <div class="bottom2">
+              <input type="button" value="运行" onClick="submit_data_line()">
+            </div>
+          </li>
+        </ul>
+      </div>
+    </form>
+      </div> 
+  </div>
+-->
+<!--
+  <div class="margin_top_60 select_time ">
+    <div class="static_top left"> <i></i><span>poi分路段概率分布</span> </div>
+  </div>
+-->
+  
+  <!--POI热度分层统计图，需求修改留存备用	-->
+<!--
+  <div class="div_chart">
+    <div class="margin_div_chart_item left div_chart_item">
+      <div class="div_chart_item01">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">POI大类热度统计 </div>
+        <p id="chart_lines_1" class="p_chart"><img id="image_pie_02" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
+      </div>
+      <form id="form4">
+        <div class="div_pie_parameter">
+          <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">参数设置</div>
+          <ul class="div_pp_ul">
+            <li>选择时间：
+              <select name="method11" id="method11"  form="form4" >
+                <option value="6_7">6点-7点</option>
+                <option value="7_8">7点-8点</option>
+                <option value="8_9">8点-9点</option>
+                <option value="9_10">9点-10点</option>
+                <option value="10_11">10点-11点</option>
+                <option value="11_12">11点-12点</option>
+                <option value="12_13">12点-13点</option>
+                <option value="13_14">13点-14点</option>
+                <option value="14_15">14点-15点</option>
+                <option value="15_16">15点-16点</option>
+                <option value="16_17">16点-17点</option>
+                <option value="17_18">17点-18点</option>
+                <option value="18_19">18点-19点</option>
+                <option value="19_20">19点-20点</option>
+                <option value="20_21">20点-22点</option>
+                <option value="21_22">21点-22点</option>
+                <option value="22_23">22点-23点</option>
+                <option value="23_24">23点-24点</option>
+              </select>
+            </li>
+            <li>
+              <div class="bottom2">
+                <input type="button" value="运行" onClick="submit_data_lines()">
+              </div>
+            </li>
+          </ul>
+        </div>
+      </form>
+    </div>
+    <div class="left div_chart_item">
+      <div class="div_chart_item01">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">POI细分热度统计 </div>
+        <p id="chart_lines_2" class="p_chart"><img id="image_lines_2" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
+      </div>
+    </div>
+  </div>
+-->
+</div>
+<!--
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>	
+--> 
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/echarts.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/echarts-gl.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/ecStat.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/dataTool.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/china.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/world.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/echarts_using/bmap.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/jquery/jQuery-2.2.0.min.js' %}"></script> 
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=5ieMMexWmzB9jivTq6oCRX9j&callback"></script> 
+<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/base.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/chart_pie.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/chart_road_section.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/association_function.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/chart_line.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/data_mining.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/data_seq_mining.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/xlsx.core.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'rhythm/js/running_ontime/ajaxfileupload.js' %}"></script>
+</body>
+</html>
