@@ -5,8 +5,8 @@ from json import dump
 from pandas import read_csv
 import random
 #-----------------------------#
-from eclat import eclat
-# from .eclat import eclat
+# from eclat import eclat
+from .eclat import eclat
 #-----------------------#
 
 
@@ -140,10 +140,10 @@ def associ_rules(FreqItems, confidence):
 # print(len(items))
 
 
-rtn, items = frequent_itemset_mining(0.001, '9ddfdeb821c2bbb1f5a770a212c0af15')
-cnt, rules = fr_rules(items[1], '9ddfdeb821c2bbb1f5a770a212c0af15')
-# print(cnt)
-# print(rules[-1])
-random.shuffle(rules)
-with open('fr_rules.json', 'w+', encoding='utf-8') as f:
-    dump(rules, f, ensure_ascii=False)
+# rtn, items = frequent_itemset_mining(0.001, '9ddfdeb821c2bbb1f5a770a212c0af15')
+# cnt, rules = fr_rules(items[1], '9ddfdeb821c2bbb1f5a770a212c0af15')
+# # print(cnt)
+# # print(rules[-1])
+# random.shuffle(rules)
+# with open('fr_rules.json', 'w+', encoding='utf-8') as f:
+#     dump(rules, f, ensure_ascii=False)
