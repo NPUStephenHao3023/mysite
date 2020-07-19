@@ -19,7 +19,8 @@
 <header class="header left">
   <div class="left nav">
     <ul>
-      <li > <i class="nav_1"></i><a href="{% url 'rhythm:index_association' %}">多元关联规则发现工具</a></li>
+	<li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_others' %}">多元关联规则发现工具</a></li>
+     
     </ul>
   </div>
   <div class="header_center left">
@@ -28,7 +29,7 @@
   </div>
   <div class="right nav text_right">
     <ul>
-      <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_others' %}">交通规律可视化工具</a></li>
+       <li > <i class="nav_1"></i><a href="{% url 'rhythm:index_association' %}">交通规律可视化工具</a></li>
     </ul>
   </div>
 </header>
@@ -240,13 +241,17 @@
     <div class="left div_chart_item">
       <div class="div_chart_item01">
         <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">用户分路段出行意图概率分布 </div>
-        <p id="chart_lines_2" class="p_chart"><img id="image_lines_2" class="images" style="width: 95%" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
+        <p id="chart_lines_2" class="p_chart">
+<!--			<img id="image_lines_2" class="images" style="width: 95%" src="{% static 'rhythm/img/instruction_pie.png' %}">-->
+		  </p>
       </div>
     </div>
 	  <div class="left div_chart_item">
       <div class="div_chart_item01">
         <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">出行意图相似度矩阵 </div>
-        <p id="chart_lines_3" class="p_chart"><img id="image_lines_3" class="images"  style="width: 95%" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
+        <p id="chart_lines_3" class="p_chart">
+<!--			<img id="image_lines_3" class="images"  style="width: 95%" src="{% static 'rhythm/img/instruction_pie.png' %}">-->
+		  </p>
       </div>
     </div>
   </div>
