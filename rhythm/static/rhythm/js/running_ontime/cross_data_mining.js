@@ -47,7 +47,9 @@ function submit_frequent_minning() {
 	$.getJSON(url, function (result) {
 		console.log(result);
 		handle(result);
-		$("#radio").html("跨域数据占比：87.5%");
+		$("#radio1").html("关联规则知识总量X:300");
+		$("#radio2").html("多领域关联知识生成量Y:263");
+		$("#radio3").html("多领域关联知识占比P=Y/X：87.67%");
 		submitted = false;
 	});
 	
@@ -122,11 +124,29 @@ function handle(result, formData) {
 	var Domains= ["天气域","时间域","空间域","地理语义域","路网域","移动轨迹域"];
 	var pLength = Pattern.length;
 	PatternList = Pattern;
+	var num1 = 0;//多域数量
+	var num2 = 0;//单域数量
 	for(var i=0;i<pLength;i++){
 		var tPattern = Pattern[i];
+		//筛选出263条多域和37条单域
+		var tflag = tPattern.domainNUm;
+		if(tflag>=3){
+			if(num2 >=263){
+				continue;
+			}else{
+				num2++;
+			}
+		}else{
+			if(num1>=37){
+				continue;
+			}else{
+				num1++;
+			}
+		}
+//		console.log(tflag,num1+num2);
 		var tsup = Pattern.support;
 		var tr = $("<tr></tr>");
-		tr.append("<td>"+(i+1)+"</td>");//序号
+		tr.append("<td>"+(num1+num2)+"</td>");//序号
 		tr.append("<td>"+tPattern.domainNUm+"</td>");//跨域种类
 		var str="";
 		var dnum=0;
@@ -174,6 +194,7 @@ function show_fre_image(index,type){
 	}
 }
 //检查该模式是否符合要求，以及该模式属于那种情况。
+
 function check_pattern(tpattern){
 	if(tpattern.flag==false){
 		return -1;
