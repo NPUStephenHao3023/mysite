@@ -60,7 +60,7 @@
         <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">参数设置</div>
         <ul class="div_pp_ul">
           <li>选择维度：
-            <input type="number" name="method8_1" id="method8_1" min="2" max="8" step="1" value="2" form="form1"/>
+            <input type="number" name="method8_1" oninput="if(value>8)value=8;if(value<2)value=2" id="method8_1" min="2" max="8" step="1" value="2" form="form1"/>
             选择时间：
             <select name="method8_2" id="method8_2"  form="form1" >
               <option value="6_7">6点-7点</option>

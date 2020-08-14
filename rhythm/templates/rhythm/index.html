@@ -141,47 +141,47 @@
               <tbody>
                 <tr>
                   <td>1&nbsp;
-                    <input type="radio" name="method" value="method1" onclick="onchangeradio(this,1)"></td>
+                    <input type="radio"   name="method" value="method1" onclick="onchangeradio(this,1)"></td>
                   <td>二维等网络</td>
-                  <td><input type="number" name="method1" id="method1" min="5" max="30" step="5" value="5" class="hide" /></td>
+                  <td><input type="number" name="method1" oninput="if(value>30)value=30;if(value<5)value=5" id="method1" min="5" max="30" step="5" value="5" class="hide" /></td>
                 </tr>
                 <tr>
                   <td>2&nbsp;
                     <input type="radio" name="method" value="method2" onclick="onchangeradio(this,2)" /></td>
                   <td>空间kdtree</td>
-                  <td><input type="number" name="method2" id="method2" min="2" max="12" step="1" value="2" class="hide" /></td>
+                  <td><input type="number" name="method2" oninput="if(value>10)value=10;if(value<2)value=2" id="method2" min="2" max="10" step="1" value="2" class="hide" /></td>
                 </tr>
                 <tr>
                   <td>3&nbsp;
                     <input type="radio" name="method" value="method3" onclick="onchangeradio(this,3)" /></td>
                   <td>三维等网络</td>
-                  <td><input name="method3" id="method3" type="number" min="2" max="12" step="1" value="2" class="hide" /></td>
+                  <td><input name="method3" id="method3" oninput="if(value>12)value=12;if(value<2)value=2" type="number" min="2" max="12" step="1" value="2" class="hide" /></td>
                 </tr>
                 <tr>
                   <td>4&nbsp;
                     <input type="radio" name="method" value="method4" onclick="onchangeradio(this,4)" /></td>
                   <td>三维kdtree</td>
-                  <td><input type="number" name="method4" id="method4" min="2" max="12" step="1" value="2" class="hide" /></td>
+                  <td><input type="number" name="method4" oninput="if(value>7)value=7;if(value<2)value=2" id="method4" min="2" max="7" step="1" value="2" class="hide" /></td>
                 </tr>
                 <tr>
                   <td>5&nbsp;
                     <input type="radio" name="method" value="method5" onclick="onchangeradio(this,5)" /></td>
                   <td>三维细分合并</td>
-                  <td><input type="number" name="method5" id="method5" min="2" max="12" value="2" step="1" class="hide" /></td>
+                  <td><input type="number" name="method5" oninput="if(value>12)value=12;if(value<2)value=2" id="method5" min="2" max="12" value="2" step="1" class="hide" /></td>
                 </tr>
                 <tr>
                   <td>6&nbsp;
                     <input type="radio" name="method" value="method6" onclick="onchangeradio(this,6)" /></td>
                   <td>先时间再空间</td>
-                  <td><input type="number" name="method6_1" id="method6_1" min="2" max="12" step="1" value="2" class="hide" />
-                    <input type="number" name="method6_2" id="method6_2" min="2" max="12" step="1" value="2" class="hide" /></td>
+                  <td><input type="number" name="method6_1" oninput="if(value>12)value=12;if(value<2)value=2" id="method6_1" min="2" max="12" step="1" value="2" class="hide" />
+                    <input type="number" name="method6_2" oninput="if(value>6)value=6;if(value<2)value=2" id="method6_2" min="2" max="6" step="1" value="2" class="hide" /></td>
                 </tr>
                 <tr>
                   <td>7&nbsp;
                     <input type="radio" name="method" value="method7" onclick="onchangeradio(this,7)" /></td>
                   <td>先空间再时间</td>
-                  <td><input type="number" name="method7_1" id="method7_1" min="2" max="12" step="1" value="3" class="hide" />
-                    <input type="number" name="method7_2" id="method7_2" min="2" max="12" step="1" value="3" class="hide" /></td>
+                  <td><input type="number" name="method7_1" oninput="if(value>9)value=9;if(value<2)value=2" id="method7_1" min="2" max="9" step="1" value="3" class="hide" />
+                    <input type="number" name="method7_2" oninput="if(value>12)value=12;if(value<2)value=2" id="method7_2" min="2" max="12" step="1" value="3" class="hide" /></td>
                 </tr>
               </tbody>
             </table>
