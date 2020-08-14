@@ -5,8 +5,8 @@ from json import dump
 from pandas import read_csv
 import random
 #-----------------------------#
-from eclat import eclat
-# from .eclat import eclat
+# from eclat import eclat
+from .eclat import eclat
 #-----------------------#
 
 
