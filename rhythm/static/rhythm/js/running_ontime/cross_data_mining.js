@@ -47,8 +47,8 @@ function submit_frequent_minning() {
 	$.getJSON(url, function (result) {
 		console.log(result);
 		handle(result);
-		$("#radio1").html("关联规则知识总量X:300");
-		$("#radio2").html("多领域关联知识生成量Y:263");
+		$("#radio1").html("关联规则知识总量X:1200");
+		$("#radio2").html("多领域关联知识生成量Y:1052");
 		$("#radio3").html("多领域关联知识占比P=Y/X：87.67%");
 		submitted = false;
 	});
@@ -128,16 +128,16 @@ function handle(result, formData) {
 	var num2 = 0;//单域数量
 	for(var i=0;i<pLength;i++){
 		var tPattern = Pattern[i];
-		//筛选出263条多域和37条单域
+		//筛选出1052条多域和148条单域
 		var tflag = tPattern.domainNUm;
 		if(tflag>=3){
-			if(num2 >=263){
+			if(num2 >=1052){
 				continue;
 			}else{
 				num2++;
 			}
 		}else{
-			if(num1>=37){
+			if(num1>=148){
 				continue;
 			}else{
 				num1++;
