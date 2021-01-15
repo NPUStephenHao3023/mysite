@@ -10,7 +10,7 @@ var Right;
 var Top;
 var Bottom;
 function submit_data_chart8_9(method) {
-	
+
 	var csrftoken = getCookie('csrftoken');
 	//包装数据
 
@@ -32,8 +32,8 @@ function submit_data_chart8_9(method) {
 		'method10': $("#method10  option:selected").val(),
 		'dataset': $('input[name=dataset]:checked').val()
 	};
-	
-	
+
+
 
 	//暂时给method9随机赋值
 	if (formData['method'] == 'method9') {
@@ -298,8 +298,8 @@ function runMethod8(result, depth) {
 	for (i = 0; i < len; i++) {
 		value[i] = maps[i][i];
 	}
-	var re_points = getRectangle(len,result);
-	console.log('re_points',re_points);
+	var re_points = getRectangle(len, result);
+	console.log('re_points', re_points);
 	var xMax = 0;
 	var xMin = 200;
 	var yMax = 0;
@@ -410,8 +410,8 @@ function runMethod8(result, depth) {
 						},
 						tooltip: {
 							formatter: (function () {
-//								return 'No' + i + ':' + value[i - 1] + ',(' + x[i - 1] + ',' + y[i - 1] + ')';
-								return 'No' + i + ':' + value[i - 1] + ',(' + re_points[i - 1][0][1] + ',' + re_points[i-1][0][0] + '),(' +re_points[i-1][1][1]+',' +re_points[i-1][1][0]+')';
+								//								return 'No' + i + ':' + value[i - 1] + ',(' + x[i - 1] + ',' + y[i - 1] + ')';
+								return 'No' + i + ':' + value[i - 1] + ',(' + re_points[i - 1][0][1] + ',' + re_points[i - 1][0][0] + '),(' + re_points[i - 1][1][1] + ',' + re_points[i - 1][1][0] + ')';
 							})(),
 							textStyle: {
 								fontFamily: 'Verdana, sans-serif',
@@ -474,26 +474,26 @@ function runMethod8(result, depth) {
 	myChart.setOption(option, true);
 
 }
-function getRectangle(len,result){
+function getRectangle(len, result) {
 	var res = [];
 	var idx_gps = result["idx_gps"];
 	var leaf_node = result["kd_tree_not_leaf_node"];
 	var treeLen = leaf_node.length;
-	for(var i=0;i<len;i++){
-		var y = idx_gps[i][0],x = idx_gps[i][1];
-		for(var j=0;j<treeLen;j++){
+	for (var i = 0; i < len; i++) {
+		var y = idx_gps[i][0], x = idx_gps[i][1];
+		for (var j = 0; j < treeLen; j++) {
 			var tmpNode = leaf_node[j];
-//			console.log(tmpNode["left_nodeptr"],tmpNode["right_nodeptr"]);
-			if(tmpNode["left_nodeptr"] == -1 && tmpNode["right_nodeptr"] == -1 ){
+			//			console.log(tmpNode["left_nodeptr"],tmpNode["right_nodeptr"]);
+			if (tmpNode["left_nodeptr"] == -1 && tmpNode["right_nodeptr"] == -1) {
 				var topNode = tmpNode["hrect"][1];
 				var bottomNode = tmpNode["hrect"][0];
-				console.log(y,x,topNode,bottomNode);
-				if(y>=bottomNode[0]&&y<=topNode[0]&&x>=bottomNode[1]&&x<=topNode[1]){
-					var coords = [topNode,bottomNode];
+				console.log(y, x, topNode, bottomNode);
+				if (y >= bottomNode[0] && y <= topNode[0] && x >= bottomNode[1] && x <= topNode[1]) {
+					var coords = [topNode, bottomNode];
 					res.push(coords);
 					break;
 				}
-			} 
+			}
 		}
 	}
 	return res;

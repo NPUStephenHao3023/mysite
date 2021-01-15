@@ -2,8 +2,8 @@ import os
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
-# from MapMatch import MyTool, mapmatch
-from .MapMatch import MyTool, mapmatch
+# from MapMatch import MyTool
+from .MapMatch import MyTool
 from pyproj import Proj, transform
 from json import dump, loads
 
