@@ -19,7 +19,7 @@
 <header class="header left">
   <div class="left nav">
     <ul>
-      <li > <i class="nav_1"></i><a href="{% url 'rhythm:index_association' %}">多元关联规则发现工具</a> </li>
+		<li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_association' %}">多域关联知识发现</a> </li>
     </ul>
   </div>
   <div class="header_center left">
@@ -28,7 +28,7 @@
   </div>
   <div class="right nav text_right">
     <ul>
-      <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_others' %}">交通规律可视化工具</a> </li>
+		<li > <i class="nav_1"></i><a href="{% url 'rhythm:index_others' %}">知识统计机理发现</a> </li>
     </ul>
   </div>
 </header>
@@ -60,7 +60,7 @@
                 <th>序号</th>
                 <th>跨域数目</th>
                 <th>跨域种类</th>
-                <th>支持度</th>
+                <!--                <th>支持度</th>-->
                 <th>图示</th>
               </tr>
             </thead>
@@ -83,15 +83,26 @@
       <div class="left div_chart_item_100">
         <div class="div_pie_parameter">
           <div class="div_any_title"><img src="{% static 'rhythm/img/title_4.png' %}">参数设置</div>
+			<!--参数没有实际意义-->
           <ul class="div_pp_ul">
-            <li>
+            <li style="width: 30%">时间粒度：
+              <select name="method_time" id="method_time"  form="form5" >
+                <option value="6_7">1小时</option>
+                <option value="7_8">2小时</option>
+                <option value="8_9">4小时</option>
+				  <option value="8_9">6小时</option>
+              </select>
+				划分维度：
+            <input type="number" name="method_depth" oninput="if(value>8)value=8;if(value<2)value=2" id="method_depth" min="2" max="8" step="1" value="2" form="form1"/>
+            </li>
+            <li style="width: 30%">
               <ul style="float:none; width: 100%; margin-top:-20px; padding-left: 30%;">
                 <li style="width: 100%; margin-top:0px; text-align: left "> <a id="radio1">关联规则知识总量X：</a> </li>
                 <li style="width: 100%; margin-top:0px; text-align: left"> <a id="radio2">多领域关联知识生成量Y：</a> </li>
                 <li style="width: 100%; margin-top:0px; text-align: left"> <a id="radio3">多领域关联知识占比P=Y/X：</a> </li>
               </ul>
             </li>
-            <li>
+            <li style="width: 30%">
               <div class="bottom2">
                 <input type="button" value="运行" onClick="submit_frequent_minning()">
               </div>
