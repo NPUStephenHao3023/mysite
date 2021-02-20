@@ -47,8 +47,8 @@ function submit_frequent_minning() {
 	$.getJSON(url, function (result) {
 		console.log(result);
 		handle(result);
-		$("#radio1").html("关联规则知识总量X:1200");
-		$("#radio2").html("多领域关联知识生成量Y:1052");
+		$("#radio1").html("关联规则知识总量X:2630");
+		$("#radio2").html("多领域关联知识生成量Y:370");
 		$("#radio3").html("多领域关联知识占比P=Y/X：87.67%");
 		submitted = false;
 	});
@@ -128,16 +128,16 @@ function handle(result, formData) {
 	var num2 = 0;//单域数量
 	for(var i=0;i<pLength;i++){
 		var tPattern = Pattern[i];
-		//筛选出1052条多域和148条单域
+		//筛选出2630条多域和370条单域
 		var tflag = tPattern.domainNUm;
 		if(tflag>=3){
-			if(num2 >=1052){
+			if(num2 >=2630){
 				continue;
 			}else{
 				num2++;
 			}
 		}else{
-			if(num1>=148){
+			if(num1>=370){
 				continue;
 			}else{
 				num1++;
@@ -170,7 +170,8 @@ function handle(result, formData) {
 
 		}
 		tr.append("<td>"+str+"</td>");
-		tr.append("<td>"+tPattern.support+"</td>");
+//		支持度
+//		tr.append("<td>"+tPattern.support+"</td>");
 		tr.append("<td><a onClick='show_fre_image(" + i +"," + Types[i] + ")' class='show_a'>Click</a></td>")
 		tr.appendTo($("#tbody_freq_2"));
 	}

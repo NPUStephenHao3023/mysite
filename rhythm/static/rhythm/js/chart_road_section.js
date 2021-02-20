@@ -56,7 +56,7 @@ function submit_data_lines() {
 			console.log("result", result);
 			makeChart_roadsection(result);
 //			makeChart_roadsection_wordcloud(result);
-			makeChart_thermograph(result);
+//			makeChart_thermograph(result);
 		});
 	}
 }
@@ -102,7 +102,7 @@ function makeChart_roadsection(data) {
 			trigger: 'item',
 			//			formatter: '{b}'
 			formatter: function (params, ticket, callback) {
-				console.log(params);
+//				console.log(params);
 				//				var poi = params[0].data.poi;
 				//				var value = params[0].value;
 				//				var name = params[0].name;
@@ -262,7 +262,7 @@ function makeChart_roadsection(data) {
 	myChart.on('click', function (param) {
 		console.log(param);
 		submit_data_roadsection_wordcloud(param.data.number, data);
-
+		chart_top50_similarity_roadsection(param.data.number,data);
 	});
 
 
@@ -275,7 +275,206 @@ function makeChart_roadsection(data) {
 		myChart.resize();
 	});
 }
+//绘制所选节点top50相似度的路段
+function chart_top50_similarity_roadsection(number,data){
+	console.log('here');
+	var poi_list = data["road_line_poi_list"]; 
+	var nRoad = 50;
+	var nPoi = 216;
+	var csMatrix = [];
+	for (var i = 0; i < poi_list.length; i++) {
+		var vector1 = poi_list[i]["poi_vector"];
+		var vector2 = poi_list[number]["poi_vector"];
+		var cs;
+		if(i==number){
+			cs = 100;
+		}else{
+			cs = cosine_similarity(vector1, vector2)*100;
+		}
+		csMatrix.push([i, number, cs]);
+	}
+	csMatrix.sort(function(a, b){return b[2] - a[2]}); 
+	var IndexList = [];
+	var roadList = [];
+	//筛选相似度top50的路段
+	for(var i=0;i<nRoad;i++){
+		IndexList.push(csMatrix[i][0]);
+		roadList.push(poi_list[csMatrix[i][0]]);
+	}
+	var road_list = handle_road_list(roadList);
+	//length:路段数
+	var length = road_list.length;
+	console.log(road_list, 'road_list');
 
+	var myChart = echarts.init(document.getElementById("chart_lines_4"));
+	var app = {};
+	var option = null;
+	app.title = '出行意图TOP50相似路段';
+	var option = {
+		tooltip: {
+			show: true,
+			trigger: 'item',
+			//			formatter: '{b}'
+			formatter: function (params, ticket, callback) {
+				console.log(params);
+				//				var poi = params[0].data.poi;
+				//				var value = params[0].value;
+				//				var name = params[0].name;
+				//				return value + "<br/> POI:" + poi;
+				return params.data.name;
+			}
+		},
+		bmap: {
+			center: [104.07, 30.68],
+			zoom: 13,
+			roam: true,
+			mapStyle: {
+				styleJson: [{
+					'featureType': 'water',
+					'elementType': 'all',
+					'stylers': {
+						'color': '#d1d1d1'
+					}
+				}, {
+					'featureType': 'land',
+					'elementType': 'all',
+					'stylers': {
+						'color': '#f3f3f3'
+					}
+				}, {
+					'featureType': 'railway',
+					'elementType': 'all',
+					'stylers': {
+						'visibility': 'off'
+					}
+				}, {
+					'featureType': 'highway',
+					'elementType': 'all',
+					'stylers': {
+						'color': '#fdfdfd'
+					}
+				}, {
+					'featureType': 'highway',
+					'elementType': 'labels',
+					'stylers': {
+						'visibility': 'off'
+					}
+				}, {
+					'featureType': 'arterial',
+					'elementType': 'geometry',
+					'stylers': {
+						'color': '#fefefe'
+					}
+				}, {
+					'featureType': 'arterial',
+					'elementType': 'geometry.fill',
+					'stylers': {
+						'color': '#fefefe'
+					}
+				}, {
+					'featureType': 'poi',
+					'elementType': 'all',
+					'stylers': {
+						'visibility': 'off'
+					}
+				}, {
+					'featureType': 'green',
+					'elementType': 'all',
+					'stylers': {
+						'visibility': 'off'
+					}
+				}, {
+					'featureType': 'subway',
+					'elementType': 'all',
+					'stylers': {
+						'visibility': 'off'
+					}
+				}, {
+					'featureType': 'manmade',
+					'elementType': 'all',
+					'stylers': {
+						'color': '#d1d1d1'
+					}
+				}, {
+					'featureType': 'local',
+					'elementType': 'all',
+					'stylers': {
+						'color': '#d1d1d1'
+					}
+				}, {
+					'featureType': 'arterial',
+					'elementType': 'labels',
+					'stylers': {
+						'visibility': 'off'
+					}
+				}, {
+					'featureType': 'boundary',
+					'elementType': 'all',
+					'stylers': {
+						'color': '#fefefe'
+					}
+				}, {
+					'featureType': 'building',
+					'elementType': 'all',
+					'stylers': {
+						'color': '#d1d1d1'
+					}
+				}, {
+					'featureType': 'label',
+					'elementType': 'labels.text.fill',
+					'stylers': {
+						'color': '#999999'
+					}
+				}]
+			}
+		},
+		series: [{
+			type: 'lines',
+			coordinateSystem: 'bmap',
+			polyline: true, //表示曲线
+			//			data:busLines,
+			data: (function () {
+				var t = [];
+				for (var i = 0; i < length; i++) {
+					var tmp = {
+						name: '名称:' + data['road_line_poi_list'][csMatrix[i][0]]['road_name'] + '\n长度:' + data['road_line_poi_list'][csMatrix[i][0]]['road_length'].toFixed(2) + ' m',
+						coords: road_list[i],
+						number: i,
+						lineStyle: {
+							color: (function () {
+								var colorList = ['#EE1289', '#DC143C', '	#E066FF', '#FF1493', '#FF6347', '#FF0000', '#B23AEE', '#BA55D3', '#C71585', '#9B30FF', '#969696', '#8E388E', '#8B008B', '#7D9EC0', '#7A7A7A', '#7A67EE', '#696969', '#515151', '#404040', '#12121', '#191970', '#00CD66', '#0000EE', '#00CDCD', '#7D26CD', '#71C671', '#76EE00', '#87CEFA', '#698B22', '#7171C6', '#ADADAD', '#DEB887'];
+								return colorList[Math.floor(Math.random() * colorList.length)];
+							})(),
+							opacity: 0.5,
+							width: 4,
+							curveness: 1
+						}
+					}
+					t.push(tmp);
+				}
+
+				return t;
+			})(),
+			silent: false, //
+			//			effect: {
+			//				show: true,
+			//				symbol: 'circle',
+			//				symbolSize: 4,
+			//
+			//			},
+			symbol: 'circle',
+			progressiveThreshold: 500,
+			progressive: 200,
+			animation: false
+		}]
+	};
+	console.log(option.series[0].data);
+	myChart.setOption(option)
+	makeChart_thermograph_top50(roadList);
+	window.addEventListener('resize', function () {
+		myChart.resize();
+	});
+}
 //将poi频率向量转换成poi概率向量
 function handle_data(data) {
 	var length = data.length;
@@ -390,9 +589,9 @@ function submit_data_roadsection_2(index, data) {
 		myChart.resize();
 	});
 }
-//计算余弦相似度并绘制热力图
-function makeChart_thermograph(result) {
-	var poi_list = result["road_line_poi_list"];
+//top50相似路段间热力图
+function makeChart_thermograph_top50(poi_list) {
+	var poi_list = poi_list;
 //	var nRoad = poi_list.length;
 	var nRoad = 50;
 	var nPoi = 216;
@@ -529,6 +728,146 @@ function makeChart_thermograph(result) {
 	};
 	myChart.setOption(option);
 }
+
+//计算余弦相似度并绘制热力图
+//function makeChart_thermograph(result) {
+//	var poi_list = result["road_line_poi_list"];
+////	var nRoad = poi_list.length;
+//	var nRoad = 50;
+//	var nPoi = 216;
+//	var csMatrix = [];
+//	for (var i = 0; i < nRoad; i++) {
+//		for (var j = 0; j < nRoad; j++) {
+//			var vector1 = poi_list[i]["poi_vector"];
+//			var vector2 = poi_list[j]["poi_vector"];
+//			var cs;
+//			if(i==j){
+//				cs = 100;
+//			}else{
+//				cs = cosine_similarity(vector1, vector2)*100;
+//			}
+//			csMatrix.push([i, j, cs]);
+//		}
+//	}
+//	csMatrix = csMatrix.map(function (item) {
+//		return [item[0], item[1], item[2] || '-'];
+//	});
+//	var road_list = [];
+//	for(var i=0;i<nRoad;i++){
+//		var tmp = poi_list[i]["road_name"];
+//		if (tmp instanceof Array) {
+//				road_list.push(tmp[0].split(" ")[0]);
+//		}else{
+//			road_list.push(tmp.split(" ")[0]);
+//		}
+//		
+//	}
+//	//	console.log(csMatrix.length,nRoad);
+//	//	console.log(csMatrix);
+//
+//	//绘图
+//	var myChart = echarts.init($("#chart_lines_3")[0]);
+//	option = {
+//		dataZoom: [
+//
+//			{
+//				id: 'dataZoomY',
+//				type: 'slider',
+//				yAxisIndex: [0],
+//				startValue: 0,
+//				endValue: 50,
+//				filterMode: 'empty'
+//			},{
+//				id: 'dataZoomX',
+//				type: 'slider',
+//				xAxisIndex: [0],
+//				startValue: 0,
+//				endValue: 50,
+//				filterMode: 'empty'
+//			}
+//		],
+//		tooltip: {
+//			position: 'top',
+//			formatter: function (params) {
+//				return '路段：' +road_list[params.value[0]]  +"——"+road_list[params.value[1]] + '<br/>' + '余弦相似度：' + params.data[2];
+//			}
+//		},
+//		animation: false,
+//		grid: {
+//			left: '3%',
+//			right: '8%',
+//			bottom: '8%',
+//			containLabel: true
+//		},
+//		xAxis: {
+//			type: 'value',
+////			data: road_list,
+//			axisLine: {
+//				lineStyle: {
+//					color: '#000'
+//				}
+//			},
+//			axisLabel: {
+//				interval: 0,
+//				rotate: 40
+//
+//			},
+//			splitArea: {
+//				show: true
+//			},
+//			name: '镇街'
+//		},
+//		yAxis: {
+//			type: 'value',
+////			data: road_list,
+//			axisLine: {
+//				lineStyle: {
+//					color: '#000'
+//				}
+//			},
+//			axisLabel: {
+//				interval: 0,
+//				rotate: 40
+//
+//			},
+//			splitArea: {
+//				show: true
+//			},
+//			name: '路段'
+//		},
+//		visualMap: {
+//			min: 1,
+//			max: 100,
+//			calculable: true,
+//			orient: 'horizontal',
+//			left: 'center',
+//			top: '1%',
+//			text: ['100', '1'], // 文本，默认为数值文本
+//			//color:['#20a0ff','#D2EDFF'],
+//			calculable: false,
+//			color: [
+//				'#22DDDD', '#fec42c', '#80F1BE'
+//			]
+//		},
+//		series: [{
+//			name: 'Punch Card',
+//			type: 'heatmap',
+//			data: csMatrix,
+//			label: {
+//				normal: {
+//					show: false
+//				}
+//			},
+//			itemStyle: {
+//				emphasis: {
+//					shadowBlur: 10,
+//					shadowColor: 'rgba(120, 0, 0, 0.5)'
+//				}
+//			}
+//		}]
+//	};
+//	myChart.setOption(option);
+//}
 
 function cosine_similarity(vector1, vector2) {
 	var vlength = vector1.length;
