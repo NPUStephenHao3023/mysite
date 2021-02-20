@@ -19,8 +19,7 @@
 <header class="header left">
   <div class="left nav">
     <ul>
-	<li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_others' %}">多元关联规则发现工具</a></li>
-     
+      <li > <i class="nav_1"></i><a href="{% url 'rhythm:index_association' %}">多域关联知识发现</a></li>
     </ul>
   </div>
   <div class="header_center left">
@@ -29,7 +28,7 @@
   </div>
   <div class="right nav text_right">
     <ul>
-       <li > <i class="nav_1"></i><a href="{% url 'rhythm:index_association' %}">交通规律可视化工具</a></li>
+      <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_others' %}">知识统计机理发现</a></li>
     </ul>
   </div>
 </header>
@@ -38,21 +37,21 @@
   
   <!--解释-->
   <div class="select_time none" >
-    <div class="static_top left" style="float:left"> <i></i><span>出租车迁移关系图</span> </div>
-<!--
+    <div class="static_top left" style="float:left"> <i></i><span>城市群体出行迁移关系</span> </div>
+    <!--
     <div class="right nav text_right " style="float: right ;margin-top: -20px;">
       <ul>
         <li class="nav_active"><i class="nav_7"></i><a href="{% url 'rhythm:index_association' %}" style="color: #45059B">多元关联规则发现工具</a> </li>
       </ul>
     </div>
--->
+--> 
   </div>
   
   <!--出租车迁移关系图-->
   <div class="div_chart"> 
     <!--  <div class="margin_div_chart_item left div_chart_item">-->
     <div class="div_chart_item01">
-      <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">出租车迁移关系图 </div>
+      <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">城市群体出行迁移关系图 </div>
       <p id="chart_1" class="p_chart"><img id="image_pie" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
     </div>
     <form id="form1">
@@ -93,15 +92,15 @@
     </form>
   </div>
   
-  <!--解释-->
-<!--
+  <!--解释--> 
+  <!--
   <div class="select_time none">
     <div class="static_top left"> <i></i><span>分时段目的地划分</span> </div>
   </div>
--->
+--> 
   
-  <!--分时段目的地划分图-->
-<!--
+  <!--分时段目的地划分图--> 
+  <!--
   <div class="div_chart">
     <div class="margin_div_chart_item left div_chart_item">
       <div class="div_chart_item01">
@@ -148,12 +147,12 @@
   </div>
 -->
   <div class="select_time">
-    <div class="static_top left"> <i></i><span>用户整体出行意图</span> </div>
+    <div class="static_top left"> <i></i><span>城市群体出行意图</span> </div>
   </div>
   <div class="div_chart"> 
     <!--  <div class="margin_div_chart_item left div_chart_item">-->
     <div class="div_chart_item01">
-      <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">用户整体出行意图概率分布 </div>
+      <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">城市群体出行意图刻画 </div>
       <p id="chart_3" class="p_chart"><img id="image_pie_01" class="images" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
     </div>
     <form id="form3">
@@ -193,7 +192,7 @@
     <!--  </div>--> 
   </div>
   <div class="margin_top_60 select_time ">
-    <div class="static_top left"> <i></i><span>用户分路段出行意图</span> </div>
+    <div class="static_top left"> <i></i><span>分路段出行意图刻画</span> </div>
   </div>
   
   <!--POI热度分层统计图，需求修改留存备用	-->
@@ -240,18 +239,34 @@
     </div>
     <div class="left div_chart_item">
       <div class="div_chart_item01">
-        <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">用户分路段出行意图概率分布 </div>
-        <p id="chart_lines_2" class="p_chart">
-<!--			<img id="image_lines_2" class="images" style="width: 95%" src="{% static 'rhythm/img/instruction_pie.png' %}">-->
-		  </p>
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">分路段出行意图刻画 </div>
+        <p id="chart_lines_2" class="p_chart"> 
+          <!--			<img id="image_lines_2" class="images" style="width: 95%" src="{% static 'rhythm/img/instruction_pie.png' %}">--> 
+        </p>
       </div>
     </div>
-	  <div class="left div_chart_item">
+<!--
+    <div class="left div_chart_item">
       <div class="div_chart_item01">
         <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">出行意图相似度矩阵 </div>
-        <p id="chart_lines_3" class="p_chart">
-<!--			<img id="image_lines_3" class="images"  style="width: 95%" src="{% static 'rhythm/img/instruction_pie.png' %}">-->
-		  </p>
+        <p id="chart_lines_3" class="p_chart"> 
+        </p>
+      </div>
+    </div>
+-->
+  </div>
+  <div class="div_chart">
+    <div class="margin_div_chart_item left div_chart_item">
+      <div class="div_chart_item01">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">出行意图TOP50相似路段 </div>
+        <p id="chart_lines_4" class="p_chart"><img id="image_pie_02" class="images" style="width: 95%" src="{% static 'rhythm/img/instruction_pie.png' %}"></p>
+      </div>
+    </div>
+    <div class="left div_chart_item">
+      <div class="div_chart_item01">
+        <div class="div_any_title"><img src="{% static 'rhythm/img/title_1.png' %}">出行意图相似度矩阵 </div>
+        <p id="chart_lines_3" class="p_chart"> 
+        </p>
       </div>
     </div>
   </div>
