@@ -171,7 +171,7 @@ function handle(result, formData) {
 		}
 		tr.append("<td>"+str+"</td>");
 //		支持度
-//		tr.append("<td>"+tPattern.support+"</td>");
+		tr.append("<td>"+tPattern.support+"</td>");
 		tr.append("<td><a onClick='show_fre_image(" + i +"," + Types[i] + ")' class='show_a'>Click</a></td>")
 		tr.appendTo($("#tbody_freq_2"));
 	}
