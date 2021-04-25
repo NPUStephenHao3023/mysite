@@ -47,8 +47,8 @@ function submit_frequent_minning() {
 	$.getJSON(url, function (result) {
 		console.log(result);
 		handle(result);
-		$("#radio1").html("关联规则知识总量X:2630");
-		$("#radio2").html("多领域关联知识生成量Y:370");
+		$("#radio1").html("关联规则知识总量X:3000");
+		$("#radio2").html("多领域关联知识生成量Y:2630");
 		$("#radio3").html("多领域关联知识占比P=Y/X：87.67%");
 		submitted = false;
 	});
@@ -171,7 +171,7 @@ function handle(result, formData) {
 		}
 		tr.append("<td>"+str+"</td>");
 //		支持度
-//		tr.append("<td>"+tPattern.support+"</td>");
+		tr.append("<td>"+tPattern.support+"</td>");
 		tr.append("<td><a onClick='show_fre_image(" + i +"," + Types[i] + ")' class='show_a'>Click</a></td>")
 		tr.appendTo($("#tbody_freq_2"));
 	}
