@@ -48,7 +48,7 @@ function submit_frequent_minning() {
 		console.log(result);
 		handle(result);
 		$("#radio1").html("关联规则知识总量X:3000");
-		$("#radio2").html("多领域关联知识生成量Y:2630");
+		$("#radio2").html("多领域关联知识生成量Y（跨域数量>=3）:2630");
 		$("#radio3").html("多领域关联知识占比P=Y/X：87.67%");
 		submitted = false;
 	});
