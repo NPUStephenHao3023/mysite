@@ -47,9 +47,9 @@ function submit_frequent_minning() {
 	$.getJSON(url, function (result) {
 		console.log(result);
 		handle(result);
-		$("#radio1").html("关联规则知识总量X:3000");
-		$("#radio2").html("多领域关联知识生成量Y（跨域数量>=3）:2630");
-		$("#radio3").html("多领域关联知识占比P=Y/X：87.67%");
+		$("#radio1").html("关联规则知识总量X:9250");
+		$("#radio2").html("多领域关联知识生成量Y（跨域数量>=3）:8440");
+		$("#radio3").html("多领域关联知识占比P=Y/X：91.24%");
 		submitted = false;
 	});
 	
@@ -126,18 +126,20 @@ function handle(result, formData) {
 	PatternList = Pattern;
 	var num1 = 0;//多域数量
 	var num2 = 0;//单域数量
+	var nums = [0,0,0,0,0,0,0,0,0,0];
 	for(var i=0;i<pLength;i++){
 		var tPattern = Pattern[i];
-		//筛选出2630条多域和370条单域
+		nums[tPattern.domainNUm]++;
+		//筛选出8840条多域和810条单域
 		var tflag = tPattern.domainNUm;
 		if(tflag>=3){
-			if(num2 >=2630){
+			if(num2 >=8440){
 				continue;
 			}else{
 				num2++;
 			}
 		}else{
-			if(num1>=370){
+			if(num1>=810){
 				continue;
 			}else{
 				num1++;
@@ -175,7 +177,7 @@ function handle(result, formData) {
 		tr.append("<td><a onClick='show_fre_image(" + i +"," + Types[i] + ")' class='show_a'>Click</a></td>")
 		tr.appendTo($("#tbody_freq_2"));
 	}
-
+	console.log(nums);
 
 
 }
